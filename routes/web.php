@@ -30,6 +30,18 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
     Route::get('/education_level', 'DashboardController@educationLevel')->name('education_level');
     Route::get('/paper_type', 'DashboardController@paperType')->name('paper_type');
 
+    Route::group(['prefix' => 'announcement', 'as' => 'announce.'], function () {
+        Route::get('/', 'AnnouncementController@index')->name('index');
+        Route::get('/new', 'AnnouncementController@newAnnouncement')->name('new');
+        Route::post('/store', 'AnnouncementController@store')->name('store');
+    });
+    
+    Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
+        Route::get('/', 'OrdersController@index')->name('index');
+        Route::get('/new', 'OrdersController@newOrder')->name('new');
+        Route::post('/store', 'OrdersController@store')->name('store');
+    });
+
     Route::group(['prefix' => 'discipline', 'as' => 'discipline.'], function () {
         Route::post('/add', 'DisciplineController@add')->name('add');
         Route::get('/delete/{discipline}', 'DisciplineController@deleteDiscipline')->name('delete');

@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin/';
 
     /**
      * Create a new controller instance.
@@ -52,6 +52,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone_number' => ['required'],
+            'user_type' => ['required'],
         ]);
     }
 
@@ -67,6 +69,8 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'phone_number' => $data['phone_number'],
+            'user_type' => $data['user_type']
         ]);
     }
 }

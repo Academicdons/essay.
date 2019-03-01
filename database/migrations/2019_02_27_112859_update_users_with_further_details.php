@@ -17,7 +17,7 @@ class UpdateUsersWithFurtherDetails extends Migration
         Schema::table('users',function (Blueprint $table){
             $table->string('avatar')->nullable();
             $table->float('ratings')->default(9);
-            $table->string('phone_number');
+            $table->string('phone_number')->nullable();
 
         });
     }

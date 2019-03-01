@@ -18,7 +18,7 @@ class UpdateUsersWithFurtherDetails extends Migration
             $table->string('avatar')->nullable();
             $table->float('ratings')->default(9);
             $table->string('phone_number');
-            $table->
+
         });
     }
 

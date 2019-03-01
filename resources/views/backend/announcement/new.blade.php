@@ -4,12 +4,12 @@
 
     <section class="content-header">
         <h1>
-            Orders
+            Announcement
             <small>Control panel</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Orders</li>
+            <li class="active">Announcement</li>
         </ol>
     </section>
 
@@ -18,9 +18,9 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Create/Edit Order</h3>
+                        <h3 class="box-title">Create/Edit Announcement</h3>
                         <div class="box-tools">
-                            <a href="" class="btn btn-sm btn-primary">Back to Orders</a>
+                            <a href="" class="btn btn-sm btn-primary">Back to Announcement</a>
                         </div>
                     </div>
                     <div class="box-body">

@@ -96,8 +96,8 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">MAIN NAVIGATION</li>
                 <li class="active"><a href="{{ route('admin.index') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                <li class="active"><a href="{{ route('admin.announce.index') }}"><i class="fa fa-dashboard"></i> Announcements</a></li>
-                <li class="active"><a href="{{ route('admin.orders.index') }}"><i class="fa fa-dashboard"></i> Orders</a></li>
+                <li class="active"><a href="{{ route('admin.announce.index') }}"><i class="fa fa-microphone"></i> Announcements</a></li>
+                <li class="active"><a href="{{ route('admin.orders.index') }}"><i class="fa fa-list"></i> Orders</a></li>
                 <li class="active"><a href="{{ route('admin.discipline') }}"><i class="fa fa-dashboard"></i> Disciplines</a></li>
                 <li class="active"><a href="{{ route('admin.education_level') }}"><i class="fa fa-dashboard"></i> Education Levels</a></li>
                 <li class="active"><a href="{{ route('admin.paper_type') }}"><i class="fa fa-dashboard"></i> Paper Types</a></li>

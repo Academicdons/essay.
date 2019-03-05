@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Models\Discipline;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Response;
 
 class DisciplineController extends Controller
 {
@@ -30,5 +31,12 @@ class DisciplineController extends Controller
         }
 
         return back();
+    }
+
+    public function editDiscipline(Discipline $discipline)
+    {
+        return Response::json([
+            'discipline' => $discipline
+        ]);
     }
 }

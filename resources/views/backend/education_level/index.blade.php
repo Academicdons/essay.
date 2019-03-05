@@ -38,7 +38,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $education->name }}</td>
                                                 <td>
-                                                    {{--<a href="{{ route('admin.discipline.edit', $discipline->id) }}"><i class="fa fa-edit"></i></a>--}}
+                                                    <a href="javascript:editEdLevel('{{ $education->id }}')"><i class="fa fa-edit"></i></a>
                                                     <a href="{{ route('admin.education_level.delete', $education->id) }}"><i style="color: red;" class="fa fa-trash-o"></i></a>
                                                 </td>
                                             </tr>
@@ -66,14 +66,14 @@
                 <div class="modal-content">
                     <div class="box">
                         <div class="box-header">
-                            <div class="box-title" id="album_name"></div>
+                            <div class="box-title">Add/Edit Education Level</div>
                         </div>
 
                         <div class="box-body">
                             <form method="POST" action="{{ route('admin.education_level.add') }}">
                                 @csrf
 
-                                <input type="hidden" name="id" value="{{ old('id') }}">
+                                <input type="hidden" name="id" id="id" value="{{ old('id') }}">
 
                                 <div class="form-group row">
                                     <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
@@ -103,4 +103,22 @@
             </div>
         </div>
     </section>
+@stop
+
+@section('script')
+    <script>
+        function editEdLevel(education_id) {
+            var base_url = '{{ route('admin.education_level.index') }}';
+            var url = base_url + '/edit'+'/'+education_id;
+
+            axios.get(url)
+                .then(function (res) {
+                    console.log(res);
+
+                    $('#id').val(res.data.education.id);
+                    $('#name').val(res.data.education.name);
+                    $('#edlevelsModal').modal('show');
+                })
+        }
+    </script>
 @stop

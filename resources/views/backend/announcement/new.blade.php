@@ -20,7 +20,7 @@
                     <div class="box-header">
                         <h3 class="box-title">Create/Edit Announcement</h3>
                         <div class="box-tools">
-                            <a href="" class="btn btn-sm btn-primary">Back to Announcement</a>
+                            <a href="{{ route('admin.announce.index') }}" class="btn btn-sm btn-primary">Back to Announcement</a>
                         </div>
                     </div>
                     <div class="box-body">

@@ -51,18 +51,18 @@
 
                 <ul class="nav navbar-nav">
 
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <form class="form-inline ml-3" action="{{url('logout')}}" method="post">
-                                {{csrf_field()}}
-                                <button type="submit" class="btn btn-sm btn-warning"><i class="fa fa-sign-out"></i> Logout</button>
-                            </form>
-                        </a>
-                    </li>
-                    <!-- Control Sidebar Toggle Button -->
-                    {{--<li>--}}
-                        {{--<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>--}}
+                    {{--<li class="dropdown user user-menu">--}}
+                        {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown">--}}
+                            {{--<form class="form-inline ml-3" action="{{url('logout')}}" method="post">--}}
+                                {{--{{csrf_field()}}--}}
+                                {{--<button type="submit" class="btn btn-sm btn-warning"><i class="fa fa-sign-out"></i> Logout</button>--}}
+                            {{--</form>--}}
+                        {{--</a>--}}
                     {{--</li>--}}
+                    <!-- Control Sidebar Toggle Button -->
+                    <li>
+                        <a href="{{ url('/logout') }}" class=""><i class="fa fa-sign-out"></i> Logout</a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -77,7 +77,7 @@
                     <img src="{{ asset('dist/img/anonymous.jpg') }}" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>Alexander Pierce</p>
+                    <p>{{ \Illuminate\Support\Facades\Auth::user()->name }}</p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -98,25 +98,9 @@
                 <li class="active"><a href="{{ route('admin.index') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
                 <li class="active"><a href="{{ route('admin.announce.index') }}"><i class="fa fa-microphone"></i> Announcements</a></li>
                 <li class="active"><a href="{{ route('admin.orders.index') }}"><i class="fa fa-list"></i> Orders</a></li>
-                <li class="active"><a href="{{ route('admin.discipline') }}"><i class="fa fa-dashboard"></i> Disciplines</a></li>
-                <li class="active"><a href="{{ route('admin.education_level') }}"><i class="fa fa-dashboard"></i> Education Levels</a></li>
-                <li class="active"><a href="{{ route('admin.paper_type') }}"><i class="fa fa-dashboard"></i> Paper Types</a></li>
-
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-files-o"></i>
-                        <span>Layout Options</span>
-                        <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
-            </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-                        <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
-                        <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-                        <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-                    </ul>
-                </li>
+                <li class="active"><a href="{{ route('admin.discipline') }}"><i class="fa fa-book"></i> Disciplines</a></li>
+                <li class="active"><a href="{{ route('admin.education_level') }}"><i class="fa fa-graduation-cap"></i> Education Levels</a></li>
+                <li class="active"><a href="{{ route('admin.paper_type') }}"><i class="fa fa-paperclip"></i> Paper Types</a></li>
             </ul>
         </section>
         <!-- /.sidebar -->

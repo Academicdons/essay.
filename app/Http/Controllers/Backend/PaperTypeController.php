@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Models\PaperType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Response;
 
 class PaperTypeController extends Controller
 {
@@ -30,5 +31,12 @@ class PaperTypeController extends Controller
         }
 
         return back();
+    }
+
+    public function editPaperType(PaperType $paperType)
+    {
+        return Response::json([
+            'paper' => $paperType
+        ]);
     }
 }

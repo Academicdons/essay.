@@ -38,8 +38,8 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $paper->name }}</td>
                                                 <td>
-                                                    <button onclick="editPaperType('{{ $paper->id }}')"><i class="fa fa-edit"></i></button>
-                                                    <a href="{{ route('admin.education_level.delete', $paper->id) }}"><i style="color: red;" class="fa fa-trash-o"></i></a>
+                                                    <a href="javascript:editPaperType('{{ $paper->id }}')"><i class="fa fa-edit"></i></a>
+                                                    <a href="{{ route('admin.paper_type.delete', $paper->id) }}"><i style="color: red;" class="fa fa-trash-o"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -73,7 +73,7 @@
                             <form method="POST" action="{{ route('admin.paper_type.add') }}">
                                 @csrf
 
-                                <input type="hidden" name="id" value="{{ old('id') }}">
+                                <input type="hidden" name="id" id="id" value="{{ old('id') }}">
 
                                 <div class="form-group row">
                                     <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
@@ -108,7 +108,17 @@
 @section('script')
     <script>
         function editPaperType(paper_id){
-            alert(paper_id);
+            var base_url = '{{ route('admin.paper_type.index') }}';
+            var url = base_url + '/edit'+'/'+paper_id;
+
+            axios.get(url)
+                .then(function (res) {
+                    console.log(res);
+
+                    $('#id').val(res.data.paper.id);
+                    $('#name').val(res.data.paper.name);
+                    $('#paperTypeModal').modal('show');
+                })
         }
     </script>
 @stop

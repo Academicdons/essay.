@@ -32,7 +32,7 @@
 
                                         </div>
                                         <div class="box-body box-comments">
-                                            @foreach(\App\Models\Announcement::all() as $announce)
+                                            @foreach(\App\Models\Announcement::orderBy('id', 'desc')->get() as $announce)
                                                 <div class="box-comment">
                                                     <div class="row">
                                                         <div class="col-sm-1" style="padding-right: 0">
@@ -55,48 +55,6 @@
                                 </div>
                             </div>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="disciplinesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="z-index: 100000000000;" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="box">
-                        <div class="box-header">
-                            <div class="box-title" id="album_name"></div>
-                        </div>
-
-                        <div class="box-body">
-                            <form method="POST" action="{{ route('admin.discipline.add') }}">
-                                @csrf
-
-                                <input type="hidden" name="id" value="{{ old('id') }}">
-
-                                <div class="form-group row">
-                                    <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
-
-                                    <div class="col-md-6">
-                                        <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
-
-                                        @if ($errors->has('name'))
-                                            <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <div class="col-md-6 offset-md-4">
-                                        <button type="submit" class="btn btn-primary">
-                                            Submit
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>

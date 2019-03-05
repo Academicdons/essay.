@@ -20,7 +20,7 @@
                 <div class="box-header">
                     <h3 class="box-title">Create/Edit Order</h3>
                     <div class="box-tools">
-                        <a href="" class="btn btn-sm btn-primary">Back to Orders</a>
+                        <a href="{{ route('admin.orders.index') }}" class="btn btn-sm btn-primary">Back to Orders</a>
                     </div>
                 </div>
                 <div class="box-body">
@@ -73,9 +73,9 @@
                                 <div class="form-group">
                                     <label for="order_assign_type">Order Assign Type</label>
                                     <select name="order_assign_type" id="order_assign_type" class="form-control">
-                                        <option value="1">Bid</option>
-                                        <option value="2">Take</option>
-                                        <option value="3">Manual</option>
+                                        <option value="1" {{ old('order_assign_type') == 1?"selected":'' }}>Bid</option>
+                                        <option value="2" {{ old('order_assign_type') == 2?"selected":'' }}>Take</option>
+                                        <option value="3" {{ old('order_assign_type') == 3?"selected":'' }}>Manual</option>
                                     </select>
                                     <span class="form-control-feedback text-danger text-sm">{{($errors->has('order_assign_type')?$errors->first('order_assign_type'):"")}}</span>
                                 </div>

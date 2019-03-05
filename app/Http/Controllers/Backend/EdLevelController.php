@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Models\EducationLevel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Response;
 
 class EdLevelController extends Controller
 {
@@ -30,5 +31,12 @@ class EdLevelController extends Controller
         }
 
         return back();
+    }
+
+    public function editEdLevel(EducationLevel $educationLevel)
+    {
+        return Response::json([
+            'education' => $educationLevel
+        ]);
     }
 }

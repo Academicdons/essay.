@@ -6,6 +6,8 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 
 class OrdersController extends Controller
 {
@@ -40,5 +42,26 @@ class OrdersController extends Controller
         $order->save();
 
         return Redirect::route('admin.orders.index');
+    }
+
+    public function deleteOrder(Order $order)
+    {
+        try {
+            $order->delete();
+        } catch (\Exception $e) {
+        }
+
+        return back();
+    }
+
+    public function editOrder(Order $order)
+    {
+
+        Session::flash('_old_input', $order);
+        return view('backend.orders.new');
+
+//        return Response::json([
+//            'order' => $order
+//        ]);
     }
 }

@@ -60,17 +60,25 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    {{--<a href="{{ route('admin.discipline.edit', $discipline->id) }}"><i class="fa fa-edit"></i></a>--}}
-                                                    <a href="{{ route('admin.education_level.delete', $order->id) }}"><i style="color: red;" class="fa fa-trash-o"></i></a>
+                                                    {{--<a href="javascript:editOrder('{{ $order->id }}')"><i class="fa fa-edit"></i></a>--}}
+                                                    <a href="{{ route('admin.orders.edit', $order->id) }}"><i class="fa fa-edit"></i></a>
+                                                    <a href="{{ route('admin.orders.delete', $order->id) }}"><i style="color: red;" class="fa fa-trash-o"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">No.</th>
-                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Name</th>
-                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Action</th>
+                                            <th>No.</th>
+                                            <th>Order No.</th>
+                                            <th>Title</th>
+                                            <th>No. Pages</th>
+                                            <th>No. Words</th>
+                                            <th>Amount</th>
+                                            <th>Order Expiry Time</th>
+                                            <th>Deadline</th>
+                                            <th>Order Assign Type</th>
+                                            <th>Action</th>
                                         </tr>
                                         </tfoot>
                                     </table>

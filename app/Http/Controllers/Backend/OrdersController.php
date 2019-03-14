@@ -59,9 +59,10 @@ class OrdersController extends Controller
 
         Session::flash('_old_input', $order);
         return view('backend.orders.new');
+    }
 
-//        return Response::json([
-//            'order' => $order
-//        ]);
+    public function viewOrder(Order $order)
+    {
+        return view('backend.orders.view')->withOrder($order);
     }
 }

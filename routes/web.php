@@ -44,6 +44,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::post('/store', 'OrdersController@store')->name('store');
         Route::get('/delete/{order}', 'OrdersController@deleteOrder')->name('delete');
         Route::get('/edit/{order}', 'OrdersController@editOrder')->name('edit');
+        Route::get('/view/{order}', 'OrdersController@viewOrder')->name('view');
     });
 
     Route::group(['prefix' => 'discipline', 'as' => 'discipline.'], function () {

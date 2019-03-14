@@ -60,7 +60,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    {{--<a href="javascript:editOrder('{{ $order->id }}')"><i class="fa fa-edit"></i></a>--}}
+                                                    <a data-toggle="tooltip" title="View Order" href="{{ route('admin.orders.view', $order->id) }}"><i style="color: black;" class="fa fa-eye"></i></a>
                                                     <a href="{{ route('admin.orders.edit', $order->id) }}"><i class="fa fa-edit"></i></a>
                                                     <a href="{{ route('admin.orders.delete', $order->id) }}"><i style="color: red;" class="fa fa-trash-o"></i></a>
                                                 </td>

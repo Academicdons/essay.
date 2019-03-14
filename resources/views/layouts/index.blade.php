@@ -129,6 +129,23 @@
                 font-size:14px;
             }
 
+            .table-recent{
+                font-size: 13px !important;
+            }
+            .table-recent thead th{
+                border-top: none !important;
+            }
+
+            .brnd{
+                color: green !important;
+                font-weight: bold;
+            }
+
+            .testimonials{
+                background: #00ab6b;
+                color: white;
+            }
+
         </style>
 
     </head>
@@ -154,7 +171,7 @@
     </div>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand brnd" href="#">Hoework pro writers</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -165,11 +182,11 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" href="#">About us</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
+                        My account
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="#">Action</a>
@@ -179,166 +196,36 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    <a class="nav-link" href="#" tabindex="-1">Recent orders</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa fa-user"></i> Register</button>
+                <button class="btn btn-warning my-2 my-sm-0 ml-3" type="submit"><i class="fa fa-key"></i> Login</button>
             </form>
         </div>
     </nav>
 
 
-    <section class="header">
-
-        <div class="container pt-5 pb-5">
-
-            <div class="row mt-5 mb-5">
-                <div class="col-sm-6">
-
-                    <h1 class="heading heading-light">Get Your Paper Done</h1>
-                    <div class="separator"></div>
-                    <h3 class="mt-5">Let professional writers handle your academic paper work
-                    </h3>
-
-                    <a href="" class="btn btn-primary bg-homework mt-3">Place order</a>
-
-                    <div class="row mt-5">
-                        <div class="col-sm-6">
-                            <div class="stats">
-                                <div class="stats__amount">281</div>
-                                <div class="stats__caption">Current orders</div>
-                                <div class="stats__change">
-                                    <div class="stats__value stats__value--positive">+7%</div>
-                                    <div class="stats__period">this week</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="stats">
-                                <div class="stats__amount">3641</div>
-                                <div class="stats__caption">Loyal customers</div>
-                                <div class="stats__change">
-                                    <div class="stats__value stats__value--positive">+21%</div>
-                                    <div class="stats__period">this week</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                        
-                </div>
-                <div class="col-sm-6">
-                    <img src="https://unixtitan.net/images/transparent-writers-png-2.png" class="img-fluid" alt="">
-                </div>
-            </div>
-        </div>
-
-    </section>
-
-    <section class="become-writer">
-
-        <div class="container pt-5 pb-1">
-
-            <div class="row mt-5 mb-5">
-
-                <div class="col-sm-6">
-                    <img src="https://pngimage.net/wp-content/uploads/2018/06/png-company-register-5.png" class="img-fluid" alt="">
-                </div>
-
-                <div class="col-sm-6 pt-5">
-
-                    <h1 class="heading">Enjoy writting?</h1>
-                    <div class="separator"></div>
-                    <h3 class="mt-5">Join our network of freelance academic writers
-                    </h3>
-
-                    <ul>
-                        <li>Create an account and perform evaluation. On success, your writer accout will be activated</li>
-                        <li>Bid for academic papers orders</li>
-                        <li>Research the work and submit on the site</li>
-                        <li>Get paid conveniently through <b>M-pesa</b> or <b>paypal</b> and <b>cash</b></li>
-                    </ul>
-
-                    <a href="" class="btn btn-primary mt-4">Become a writer now</a>
-
-                </div>
-
-            </div>
-        </div>
-
-    </section>
-    
-    <section class="partners">
-        
-        <div class="container p-4">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    <center>
-                        <img src="https://seeklogo.com/images/M/mpesa-logo-AE44B6F8EB-seeklogo.com.png" class="partner-img" alt="">
-                        <img src="https://www.freepnglogos.com/uploads/paypal-logo-png-3.png" class="partner-img" alt="">
-                    </center>
-
-                </div>
-            </div>
-        </div>
-        
-    </section>
-
-
-    <section class="about-us pt-5 pb-5">
-
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h1 class="heading">About us?</h1>
-                </div>
-                <div class="col-sm-12">
-                    <p>Academia-Research is an online academic writing and consulting company. Since 2004, we have worked to ensure the highest quality standards of service and offer a stable income for aspiring academic writers. We value our employees, ensure career growth, provide various rewards programs, and 24/7 support.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <p class="icon"><i class="fa fa-edit"></i></p>
-                    <h5 class="about-title mt-2">Zero plagiarism</h5>
-                    <p class="mt-2">
-                        Ensure constant communication with the writer via live chat and ensure all your needs are met
-                    </p>
-                </div>
-                <div class="col-sm-3">
-                    <p class="icon"><i class="fa fa-briefcase"></i></p>
-                    <h5 class="about-title mt-2">Professional work</h5>
-                    <p class="mt-2">
-                        Ensure constant communication with the writer via live chat and ensure all your needs are met
-                    </p>
-                </div>
-                <div class="col-sm-3">
-                    <p class="icon"><i class="fa fa-comment"></i></p>
-                    <h5 class="about-title mt-2">Realtime chat</h5>
-                    <p class="mt-2">
-                        Ensure constant communication with the writer via live chat and ensure all your needs are met
-                    </p>
-
-                </div>
-                <div class="col-sm-3">
-                    <p class="icon"><i class="fa fa-google-wallet"></i></p>
-                    <h5 class="about-title mt-2">Get paid</h5>
-                    <p class="mt-2">
-                        Ensure constant communication with the writer via live chat and ensure all your needs are met
-                    </p>
-
-                </div>
-            </div>
-        </div>
-
-    </section>
+    @yield('content')
 
 
     <section class="footer">
 
         <div class="container">
-            <div class="row mt-5 mb-3">
+            <div class="row mt-5 mb-5">
                 <div class="col-sm-6">
+
+
+                    <img src="https://www.academia-research.com/wp-content/themes/academia-ux/images/svg/fl.svg" alt="">
+
+                    <h4>Homework pro writers</h4>
+
+                    <ul class="bottom-list">
+                        <li><a href=""><i class="fa fa-facebook-square"></i> Facebook</a></li>
+                        <li><a href=""><i class="fa fa-twitter-square"></i> Twitter</a></li>
+                        <li><a href=""><i class="fa fa-reddit-square"></i> Reddit</a></li>
+                    </ul>
 
                 </div>
                 <div class="col-sm-6">

@@ -18,3 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],function(){
+
+    Route::group(['name'=>'orders.','prefix'=>'orders'],function(){
+        Route::get('create','OrdersController@create')->name('create');
+        Route::get('store','OrdersController@store')->name('store');
+    });
+
+});

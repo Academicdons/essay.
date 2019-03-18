@@ -15,16 +15,19 @@
     <section class="content">
         <div class="row">
             <div class="col-xs-12">
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">Orders</h3>
-                        <div class="box-tools">
-                            <a href="{{ route('admin.orders.new') }}" class="btn btn-sm btn-info">New Order</a>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap"><div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row"><div class="col-sm-12"><table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+
+                <div class="nav-tabs-custom" style="cursor: move;">
+                    <!-- Tabs within a box -->
+                    <ul class="nav nav-tabs pull-right ui-sortable-handle">
+                        <li class=""><a href="#sales-chart" data-toggle="tab" aria-expanded="false" status="3"><i class="fa fa-check"></i> Complete</a></li>
+                        <li class=""><a href="#sales-chart" data-toggle="tab" aria-expanded="false" status="2"><i class="fa fa-refresh"></i> Revision</a></li>
+                        <li class=""><a href="#sales-chart" data-toggle="tab" aria-expanded="false" status="1"><i class="fa fa-circle"></i> In progress</a></li>
+                        <li class="active"><a href="#revenue-chart" data-toggle="tab" aria-expanded="true" status="0"><i class="fa fa-envelope-open"></i> Available</a></li>
+                        <li class="pull-left header"><i class="fa fa-inbox"></i> Orders</li>
+                    </ul>
+                    <div class="tab-content no-padding">
+                        <br>
+                        <div id="orders_area" class="dataTables_wrapper form-inline dt-bootstrap"><div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row"><div class="col-sm-12"><table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
                                         <thead>
                                         <tr role="row">
                                             <th>No.</th>
@@ -33,39 +36,28 @@
                                             <th>No. Pages</th>
                                             <th>No. Words</th>
                                             <th>Amount</th>
-                                            <th>Order Expiry Time</th>
                                             <th>Deadline</th>
-                                            <th>Order Assign Type</th>
+                                            <th>Assign Type</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach(\App\Models\Order::all() as $order)
-                                            <tr role="row" class="odd">
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $order->order_no }}</td>
-                                                <td>{{ $order->title }}</td>
-                                                <td>{{ $order->no_pages }}</td>
-                                                <td>{{ $order->no_words }}</td>
-                                                <td>{{ $order->amount }}</td>
-                                                <td>{{ $order->bid_expiry }}</td>
-                                                <td>{{ $order->deadline }}</td>
-                                                <td>
-                                                    @if($order->order_assign_type == 1)
-                                                        <i class="badge badge-info">Bid</i>
-                                                    @elseif($order->order_assign_type == 2)
-                                                        <i class="badge badge-light">Take</i>
-                                                    @else
-                                                        <i class="badge badge-primary">Manual</i>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <a data-toggle="tooltip" title="View Order" href="{{ route('admin.orders.view', $order->id) }}"><i style="color: black;" class="fa fa-eye"></i></a>
-                                                    <a href="{{ route('admin.orders.edit', $order->id) }}"><i class="fa fa-edit"></i></a>
-                                                    <a href="{{ route('admin.orders.delete', $order->id) }}"><i style="color: red;" class="fa fa-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                        <tr v-for="(order, index) in orders">
+                                            <td>@{{ index+1 }}</td>
+                                            <td>@{{ order.order_no }}</td>
+                                            <td>@{{ order.title }}</td>
+                                            <td>@{{ order.no_pages }}</td>
+                                            <td>@{{ order.no_words }}</td>
+                                            <td>@{{ order.amount }}</td>
+                                            <td>@{{ order.deadline }}</td>
+                                            <td>
+                                                <span class="label label-success" v-if="order.order_assign_type==0">Take</span>
+                                                <span class="label label-success" v-if="order.order_assign_type==1">Bid</span>
+                                            </td>
+                                            <td>
+                                                <a :href="'{{url('/admin/orders/view')}}/' + order.id"><i class="fa fa-eye"></i></a>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                         <tfoot>
                                         <tr>
@@ -75,9 +67,8 @@
                                             <th>No. Pages</th>
                                             <th>No. Words</th>
                                             <th>Amount</th>
-                                            <th>Order Expiry Time</th>
                                             <th>Deadline</th>
-                                            <th>Order Assign Type</th>
+                                            <th>Assign Type</th>
                                             <th>Action</th>
                                         </tr>
                                         </tfoot>
@@ -87,6 +78,16 @@
 
                         </div>
                     </div>
+                </div>
+
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Manually place an order</h3>
+                        <div class="box-tools">
+                            <a href="{{ route('admin.orders.new') }}" class="btn btn-sm btn-info">New Order</a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -134,3 +135,40 @@
         </div>
     </section>
 @stop
+
+@section('script')
+
+    <script type="text/javascript">
+
+        $(function () {
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var status = $(e.target).attr("status");
+                window.orders_vue.getOrders(status)
+            });
+
+        });
+
+        window.orders_vue = new Vue({
+            el:'#orders_area',
+            data:{
+                orders:[]
+            },
+            created:function () {
+                this.getOrders(0)
+            },
+            methods:{
+                getOrders:function (status) {
+                    let url='{{route('admin.orders.all')}}'+"?status="+status
+                    let me = this;
+                    axios.get(url)
+                        .then(function (res) {
+                            me.orders=res.data.orders
+                        })
+                }
+            }
+        });
+
+    </script>
+
+    @endsection

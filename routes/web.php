@@ -33,12 +33,36 @@ Route::get('/testing', function (){
     return view('layouts.admin');
 });
 
+
+
+#Routes controlling writers workspace
+Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 'middleware' => ['auth']],function(){
+
+    #Orders routes
+    Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
+        Route::get('/available', 'OrdersController@availableOrders')->name('available');
+        Route::get('/all', 'OrdersController@allOrders')->name('all');
+        Route::get('/user_orders', 'OrdersController@getUsersOrders')->name('user_orders');
+        Route::get('/view/{order}', 'OrdersController@viewOrder')->name('view');
+        Route::get('/reviews/{order}', 'OrdersController@orderReviews')->name('reviews');
+        Route::get('/messages/{order}', 'OrdersController@getMessages')->name('messages');
+        Route::post('/save_messages/{order}', 'OrdersController@saveMessage')->name('save_messages');
+        Route::post('/upload_file/{order}', 'OrdersController@saveFile')->name('upload_file');
+    });
+
+});
+
+
 //Backend Routes:
 Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', 'middleware' => ['admin', 'auth']], function () {
     Route::get('/', 'DashboardController@index')->name('index');
     Route::get('/discipline/index', 'DashboardController@discipline')->name('discipline');
     Route::get('/education_level/index', 'DashboardController@educationLevel')->name('education_level');
     Route::get('/paper_type/index', 'DashboardController@paperType')->name('paper_type');
+
+    Route::group(['prefix' => 'general', 'as' => 'general.'], function () {
+        Route::get('/suggest_writer', 'GeneralController@suggestWriters')->name('suggest_writer');
+    });
 
     Route::group(['prefix' => 'announcement', 'as' => 'announce.'], function () {
         Route::get('/', 'AnnouncementController@index')->name('index');
@@ -48,11 +72,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
     
     Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
         Route::get('/', 'OrdersController@index')->name('index');
+        Route::get('/all', 'OrdersController@getOrders')->name('all');
         Route::get('/new', 'OrdersController@newOrder')->name('new');
         Route::post('/store', 'OrdersController@store')->name('store');
+        Route::post('/manual_assign', 'OrdersController@manualAssign')->name('manual_assign');
         Route::get('/delete/{order}', 'OrdersController@deleteOrder')->name('delete');
         Route::get('/edit/{order}', 'OrdersController@editOrder')->name('edit');
         Route::get('/view/{order}', 'OrdersController@viewOrder')->name('view');
+        Route::get('/reviews/{order}', 'OrdersController@orderReviews')->name('reviews');
+        Route::get('/chat_data/{order}', 'OrdersController@getChatData')->name('chat_data');
+        Route::get('/messages/{order}', 'OrdersController@getChatMessages')->name('messages');
+        Route::post('/save_messages/{order}', 'OrdersController@saveChatMessage')->name('save_messages');
     });
 
     Route::group(['prefix' => 'discipline', 'as' => 'discipline.'], function () {
@@ -67,6 +97,15 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::post('/add', 'EdLevelController@add')->name('add');
         Route::get('/delete/{educationLevel}', 'EdLevelController@deleteEdLevel')->name('delete');
         Route::get('/edit/{educationLevel}', 'EdLevelController@editEdLevel');
+    });
+
+    Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+        Route::get('/list/{type}', 'UsersController@users')->name('all');
+        Route::get('/create', 'UsersController@create')->name('create');
+        Route::post('/store', 'UsersController@store')->name('store');
+        Route::get('/edit/{user}', 'UsersController@editUser')->name('edit');
+        Route::get('/status/{status}/{user}', 'UsersController@toggleStatus')->name('status');
+
     });
 
     Route::group(['prefix' => 'paper_type', 'as' => 'paper_type.'], function () {

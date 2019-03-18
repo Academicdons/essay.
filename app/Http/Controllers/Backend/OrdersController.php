@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\Conversation;
 use App\Models\Discipline;
 use App\Models\EducationLevel;
+use App\Models\Message;
 use App\Models\Order;
 use App\Models\PaperType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Webpatser\Uuid\Uuid;
+use App\Models\Assignment;
 
 class OrdersController extends Controller
 {
@@ -20,9 +24,52 @@ class OrdersController extends Controller
         return view('backend.orders.index');
     }
 
+    public function getOrders(Request $request)
+    {
+        return \response()->json([
+            'orders'=>Order::where('status',request('status'))->get()
+        ]);
+    }
+
     public function newOrder()
     {
         return view('backend.orders.new')->withDisciplines(Discipline::all())->withEducations(EducationLevel::all())->withPapers(PaperType::all());
+    }
+
+    public function manualAssign(Request $request)
+    {
+        $as = Assignment::where([['order_id',request('par1')],['user_id',request('par2')]])->first();
+        $order = Order::find(request('par1'));
+        if($as == null){
+
+            /*
+             * update all other assignments to invalid
+             */
+            Assignment::where('order_id', '=', request('par1'))
+                ->update(['status' => 1]);
+
+
+            $as = new Assignment();
+            $as->id = Uuid::generate();
+            $as->order_id = request('par1');
+            $as->user_id = request('par2');
+            $as->Save();
+
+            $order->active_assignment = $as->id;
+            $order->save();
+        }else{
+
+            Assignment::where('order_id', '=', request('par1'))
+                ->update(['status' => 1]);
+            $as->status = 0;
+            $order->active_assignment = $as->id;
+            $order->save();
+
+        }
+
+        return response()->json([
+            'success'=>true
+        ]);
     }
 
     public function store(Request $request)
@@ -74,5 +121,80 @@ class OrdersController extends Controller
     public function viewOrder(Order $order)
     {
         return view('backend.orders.view')->withOrder($order);
+    }
+
+    public function getChatData(Order $order)
+    {
+        return \response()->json([
+            'assignments'=>$order->assignedWriters
+        ]);
+    }
+
+    public function getChatMessages(Order $order,Request $request)
+    {
+        if($request->has('mode')){
+            if($request->input('mode')==0){
+                /*
+                 * this is a writers conversation
+                 * get the current assignment user in the order and thats the relevant conversation
+                 */
+                $assignment = $order->currentAssignment();
+                $conversation = Conversation::firstOrCreate(['user_id' => $assignment->user_id,'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $assignment->user_id,'order_id'=>$order->id]);
+                return \response()->json([
+                    'conversation'=>$conversation,
+                    'messages'=>$conversation->messages()->with('user')->get(),
+                    'conversation_user'=>$conversation->user
+                ]);
+
+
+            }else{
+
+                /*
+                 * this is a client conversation request
+                 * get the person who created the order and do shit with it
+                 */
+
+                $conversation = Conversation::firstOrCreate(['user_id' => $order->created_by,'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $order->created_by,'order_id'=>$order->id]);
+                return \response()->json([
+                    'conversation'=>$conversation,
+                    'messages'=>$conversation->messages()->with('user')->get(),
+                    'conversation_user'=>$conversation->user
+                ]);
+
+            }
+
+        }else if($request->has('user')){
+
+            $conversation = Conversation::firstOrCreate(['user_id' => $request->input('user'),'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $request->input('user'),'order_id'=>$order->id]);
+            return \response()->json([
+                'conversation'=>$conversation,
+                'messages'=>$conversation->messages()->with('user')->get(),
+                'conversation_user'=>$conversation->user
+            ]);
+
+        }else{
+            return \response()->json([
+                'messages'=>[],
+                'conversation_user'=>null,
+            ]);
+        }
+    }
+
+    public function saveChatMessage(Order $order,Request $request)
+    {
+        $msg = $request->all();
+        $msg['user_id'] = Auth::id();
+        $msg['id'] = Uuid::generate()->string;
+        Message::create($msg);
+
+        return \response()->json([
+            'success'=>true
+        ]);
+
+    }
+
+    public function orderReviews(Order $order)
+    {
+        return \response()->json(['reviews'=>$order->reviews()->with('user')->get()]);
     }
 }

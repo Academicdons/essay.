@@ -42,7 +42,7 @@
 
                 </div>
                 <div class="col-sm-6">
-                    <img src="https://unixtitan.net/images/transparent-writers-png-2.png" class="img-fluid" alt="">
+                    <img src="{{asset('images/landing page resource.svg')}}" class="img-fluid" alt="">
                 </div>
             </div>
         </div>
@@ -219,27 +219,27 @@
                     <h3>How it works</h3>
                 </div>
                 <div class="col-sm-3 text-center">
-                    <img src="https://www.academia-research.com/wp-content/themes/academia-ux/images/hiw/hiw-1.png" class="img-fluid" alt="">
+                    <img src="{{asset('images/signup.png')}}" class="img-fluid" alt="">
                     <h4 class="mt-3">Sign up</h4>
                     <p class="mt-3">Get started by submitting a form in less than 5 minutes.
                     </p>
                 </div>
 
                 <div class="col-sm-3 text-center">
-                    <img src="https://www.academia-research.com/wp-content/themes/academia-ux/images/hiw/hiw-1.png" class="img-fluid" alt="">
-                    <h4 class="mt-3">Sign up</h4>
+                    <img src="{{asset('images/start-career.png')}}" class="img-fluid" alt="">
+                    <h4 class="mt-3">Start career</h4>
                     <p class="mt-3">Get started by submitting a form in less than 5 minutes.
                     </p>
                 </div>
                 <div class="col-sm-3 text-center">
-                    <img src="https://www.academia-research.com/wp-content/themes/academia-ux/images/hiw/hiw-1.png" class="img-fluid" alt="">
-                    <h4 class="mt-3">Sign up</h4>
+                    <img src="{{asset('images/show-skill.png')}}" class="img-fluid" alt="">
+                    <h4 class="mt-3">Show skills</h4>
                     <p class="mt-3">Get started by submitting a form in less than 5 minutes.
                     </p>
                 </div>
 
                 <div class="col-sm-3 text-center">
-                    <img src="https://www.academia-research.com/wp-content/themes/academia-ux/images/hiw/hiw-1.png" class="img-fluid" alt="">
+                    <img src="{{asset('images/get-paid.png')}}" class="img-fluid" alt="">
                     <h4 class="mt-3">Sign up</h4>
                     <p class="mt-3">Get started by submitting a form in less than 5 minutes.
                     </p>

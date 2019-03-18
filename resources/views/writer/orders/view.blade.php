@@ -1,8 +1,6 @@
-@extends('layouts.admin')
+@extends('layouts.writer')
 
 @section('style')
-
-    <link rel="stylesheet" href="{{asset('plugins/easycomplete/easy-autocomplete.css')}}">
 
     <style type="text/css">
         .border-right{
@@ -44,36 +42,13 @@
         .chat-foot{
             margin-bottom: 3px;
         }
-
-        .easy-autocomplete{
-            width:100% !important
-        }
-
-        .easy-autocomplete input{
-            width: 100%;
-        }
-
-        .form-wrapper{
-            width: 500px;
-        }
-
     </style>
     @endsection
 
 @section('content')
-    <section class="content-header">
-        <h1>
-            Orders
-            <small>Control panel</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Orders</li>
-            <li class="active">View Order</li>
-        </ol>
-    </section>
 
-    <section class="content">
+
+    <section class="container content">
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
@@ -81,7 +56,6 @@
                         <h3 class="box-title">Order No. {{ $order->order_no }}</h3>
                         <div class="box-tools">
                             <a href="{{ route('admin.orders.index') }}" class="btn btn-xs btn-info">Back To Orders</a>
-                            <a href="javascript:;" class="btn btn-xs btn-warning" onclick="manualAssign()">Manual assign</a>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -157,7 +131,6 @@
                                     </table>
                                 </div>
                                 <div class="col-sm-6 border-right">
-
                                     <div class="row" id="review_area">
                                         <div class="col-sm-12">
                                             <h4><u>Clients review:</u></h4>
@@ -185,9 +158,8 @@
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="pull-right">
-                                        <form action="https://academicdons.com/admin/save_file" method="post" enctype="multipart/form-data">
-                                            <input type="hidden" name="_token" value="zKZlLTxABOWHmdOl56Lz1RHrXQilvvfC7IlAsxTF">
-                                            <input type="hidden" name="task_id" value="639">
+                                        <form action="{{route('writer.orders.upload_file',$order->id)}}" method="post" enctype="multipart/form-data">
+                                            @csrf
                                             <input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name">
                                             <label for="file" class="btn btn-xs btn-warning">Choose file</label>
                                             <input type="file" name="file" id="file" style="display: none">
@@ -240,15 +212,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4" id="chat_area">
-                                <div class="row chat">
+                            <div class="col-sm-4">
+                                <div class="row chat" id="chat_area">
                                     <div class="col-sm-12 chat-header">
                                         <div class="row">
-                                            <div class="col-sm-6 br" @click="getMessages(0)">
-                                                <p class="text-center">Writer</p>
-                                            </div>
-                                            <div class="col-sm-6" @click="getMessages(1)">
-                                                <p class="text-center">Client</p>
+                                            <div class="col-sm-12 br">
+                                                <p class="text-center">Order chat</p>
                                             </div>
                                         </div>
 
@@ -306,19 +275,6 @@
                                     </div>
 
 
-                                    <div class="col-sm-12">
-                                        <h4>Assignments:</h4>
-                                        <hr>
-                                        <ul class="users-list clearfix">
-                                            <li v-for="ass in assignments" @click="getUserConversation(ass.id)">
-                                                <img src="{{asset('dist/img/user1-128x128.jpg')}}" alt="User Image">
-                                                <a class="users-list-name" href="#">@{{ ass.name }}</a>
-                                                <span class="users-list-date">@{{ ass.phone_number }}</span>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-
                                 </div>
 
                             </div>
@@ -329,159 +285,11 @@
             </div>
         </div>
     </section>
-
-
-    <!------------------ manual assign Modals----------------->
-    <div id="assignModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="box">
-                <div class="box-header">
-
-                </div>
-                <div class="box-body">
-                    <div class="alert alert-error" id="error_message" style="display: none">
-                        <p>Select a writer before proceeding</p>
-                    </div>
-                    <form action="">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="">Type the writers username to assign</label>
-                                    <input id="example-mail" class="form-control"/>
-                                </div>
-
-                                <div class="form-group text-center">
-                                    <button type="button" onclick="assignOrder()" class="btn btn">Assign to this writer</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 @stop
 
+
 @section('script')
-
-    <script src="{{asset('plugins/easycomplete/jquery.easy-autocomplete.min.js')}}"></script>
-
-    <script type="text/javascript">
-
-        function assignOrder() {
-
-            if(window.selected==null){
-                $('#error_message').slideDown()
-            }else{
-                $('#error_message').hide()
-            }
-
-            let url = '{{route('admin.orders.manual_assign')}}'
-            let order_id = '{{$order->id}}'
-            axios.post(url,{par1:order_id,par2:selected})
-                .then(function (res) {
-                    $('#assignModal').modal('hide');
-                    window.location.reload()
-                })
-        }
-
-        $(function () {
-
-
-            var options = {
-                url: "{{route('admin.general.suggest_writer')}}",
-
-                getValue: "name",
-
-                template: {
-                    type: "description",
-                    fields: {
-                        description: "email"
-                    }
-                },
-
-                list: {
-                    onSelectItemEvent: function() {
-                        window.selected = $("#example-mail").getSelectedItemData().id;
-
-                    },
-                    match: {
-                        enabled: true
-                    }
-                },
-
-                theme: "plate-dark"
-            };
-
-            $("#example-mail").easyAutocomplete(options);
-
-        })
-
-
-        function manualAssign(){
-            $('#assignModal').modal('show');
-        }
-
-        let chatVue = new Vue({
-            'el':'#chat_area',
-            data:{
-                assignments:[],
-                conversation_user:{},
-                messages:[],
-                message:{}
-            },
-
-            created:function () {
-                console.log('Chat vue created')
-                this.getChatAreaData()
-            },
-            methods: {
-                getChatAreaData:function(){
-                    let url = '{{route('admin.orders.chat_data',$order->id)}}'
-                    let me = this;
-                    axios.get(url)
-                        .then(function (res) {
-                            console.log(res.data)
-                            me.assignments = res.data.assignments;
-                        })
-                },
-                getMessages(mode){
-                    let url = '{{route('admin.orders.messages',$order->id)}}'+"?mode="+mode;
-                    let me = this;
-                    axios.get(url)
-                        .then(function (res) {
-                            me.conversation_user  = res.data.conversation_user;
-                            me.messages  = res.data.messages;
-                            me.message.conversation_id  = res.data.conversation.id;
-                        })
-
-                },
-                sendMessage:function(){
-                    let url = '{{route('admin.orders.save_messages',$order->id)}}'
-                    let me = this;
-                    axios.post(url,this.message)
-                        .then(function(res){
-                            me.message={}
-                        })
-
-
-                },
-                getUserConversation:function(id){
-                    let url = '{{route('admin.orders.messages',$order->id)}}'+"?user="+id;
-                    let me = this;
-                    axios.get(url)
-                        .then(function (res) {
-                            me.conversation_user  = res.data.conversation_user;
-                            me.messages  = res.data.messages;
-                            me.message.conversation_id  = res.data.conversation.id;
-                        })
-                }
-            }
-
-        });
-
+    <script>
         var reviewArea = new Vue({
             el:'#review_area',
             data:{
@@ -493,7 +301,7 @@
             },
             methods:{
                 getOrderReviews:function () {
-                    let url = '{{route('admin.orders.reviews',$order->id)}}';
+                    let url = '{{route('writer.orders.reviews',$order->id)}}';
                     let me = this;
                     axios.get(url)
                         .then(function (res) {
@@ -503,6 +311,42 @@
             }
         })
 
-    </script>
 
+        var chat_area = new Vue({
+            el:'#chat_area',
+            data:{
+                message:{},
+                messages:[],
+                conversation_user:{}
+            },
+            created:function(){
+                console.log("the conversation vue has been created")
+                this.getConversations();
+            },
+            methods:{
+                getConversations(){
+                    let url = '{{route('writer.orders.messages',$order->id)}}';
+                    let me = this;
+                    axios.get(url)
+                        .then(function (res) {
+                            me.conversation_user  = res.data.conversation_user;
+                            me.messages  = res.data.messages;
+                            me.message.conversation_id  = res.data.conversation.id;
+                        })
+
+                },
+                sendMessage:function(){
+                    let url = '{{route('writer.orders.save_messages',$order->id)}}'
+                    let me = this;
+                    axios.post(url,this.message)
+                        .then(function(res){
+                            me.message={}
+                        })
+
+
+                }
+            }
+        })
+
+    </script>
     @endsection

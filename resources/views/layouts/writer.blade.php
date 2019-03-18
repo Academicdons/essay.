@@ -18,6 +18,8 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{{asset('dist/css/skins/_all-skins.min.css')}}">
 
+  @yield('style')
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -29,7 +31,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
-<body class="hold-transition skin-blue layout-top-nav">
+<body class="hold-transition skin-green layout-top-nav">
 <div class="wrapper">
 
   <header class="main-header">
@@ -45,8 +47,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Link</a></li>
+            <li class="active"><a href="{{route('writer.orders.available')}}">Available orders <span class="sr-only">(current)</span></a></li>
+            <li><a href="{{route('writer.orders.all')}}">My orders</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
@@ -205,7 +207,8 @@
                     <a href="#" class="btn btn-default btn-flat">Profile</a>
                   </div>
                   <div class="pull-right">
-                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                    <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Sign out</a>
+
                   </div>
                 </li>
               </ul>
@@ -219,44 +222,26 @@
   </header>
   <!-- Full Width Column -->
   <div class="content-wrapper">
-    <div class="container">
+    <section class="content-header" style="background: white;padding-bottom: 10px">
+      <h1>
+        Writers portal
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">writer</a></li>
+        <li class="active">@yield('page')</li>
+      </ol>
+    </section>
+
+    <div class="container-fluid">
       <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <h1>
-          Top Navigation
-          <small>Example 2.0</small>
-        </h1>
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-          <li><a href="#">Layout</a></li>
-          <li class="active">Top Navigation</li>
-        </ol>
-      </section>
+
 
       <!-- Main content -->
       <section class="content">
-        <div class="callout callout-info">
-          <h4>Tip!</h4>
 
-          <p>Add the layout-top-nav class to the body tag to get this layout. This feature can also be used with a
-            sidebar! So use this class if you want to remove the custom dropdown menus from the navbar and use regular
-            links instead.</p>
-        </div>
-        <div class="callout callout-danger">
-          <h4>Warning!</h4>
-
-          <p>The construction of this layout differs from the normal one. In other words, the HTML markup of the navbar
-            and the content will slightly differ than that of the normal layout.</p>
-        </div>
-        <div class="box box-default">
-          <div class="box-header with-border">
-            <h3 class="box-title">Blank Box</h3>
-          </div>
-          <div class="box-body">
-            The great content goes here
-          </div>
-          <!-- /.box-body -->
-        </div>
+        @yield('content')
         <!-- /.box -->
       </section>
       <!-- /.content -->
@@ -269,7 +254,7 @@
       <div class="pull-right hidden-xs">
         <b>Version</b> 2.4.0
       </div>
-      <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+      <strong>Copyright &copy; {{date('Y')}} <a href="https://adminlte.io">Homework pro</a>.</strong> All rights
       reserved.
     </div>
     <!-- /.container -->
@@ -283,5 +268,10 @@
 <script src="{{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
+<script src="{{asset('axios.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+@yield('script')
+
 </body>
 </html>

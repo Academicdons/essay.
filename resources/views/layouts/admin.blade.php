@@ -97,6 +97,20 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">MAIN NAVIGATION</li>
                 <li class="active"><a href="{{ route('admin.index') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                <li class="active treeview menu-open">
+                    <a href="#">
+                        <i class="fa fa-users"></i> <span>Users</span>
+                                <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                    </a>
+                    <ul class="treeview-menu" style="">
+                        <li class="active"><a href="{{route('admin.users.all',1)}}"><i class="fa fa-circle-o"></i>Writers</a></li>
+                        <li class="active"><a href="{{route('admin.users.all',2)}}"><i class="fa fa-circle-o"></i>Clients</a></li>
+                        <li><a href="{{route('admin.users.all',0)}}"><i class="fa fa-circle-o"></i>Admins</a></li>
+                        <li><a href="{{route('admin.users.create')}}"><i class="fa fa-circle-o"></i>Add user</a></li>
+                    </ul>
+                </li>
                 <li class="active"><a href="{{ route('admin.announce.index') }}"><i class="fa fa-microphone"></i> Announcements</a></li>
                 <li class="active"><a href="{{ route('admin.orders.index') }}"><i class="fa fa-list"></i> Orders</a></li>
                 <li class="active"><a href="{{ route('admin.discipline') }}"><i class="fa fa-book"></i> Disciplines</a></li>
@@ -325,6 +339,7 @@
 <script>
     $.widget.bridge('uibutton', $.ui.button);
 </script>
+
 <!-- Bootstrap 3.3.7 -->
 <script src="{{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- AdminLTE App -->
@@ -334,6 +349,8 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('dist/js/demo.js')}}"></script>
 <script src="{{asset('axios.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
 @yield('script')
 </body>
 </html>

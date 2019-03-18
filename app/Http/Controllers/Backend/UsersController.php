@@ -70,7 +70,7 @@ class UsersController extends Controller
                 return back()->withErrors(new MessageBag(['avatar'=>'The file uploaded is invalid']));
             } else {
 
-                $user=Auth::User();
+//                $user=Auth::User();
                 $image=Input::file('avatar');
                 $filename=time() . '.' . $image->getClientOriginalExtension();
                 $path = public_path('uploads/user_pictures/');
@@ -82,20 +82,26 @@ class UsersController extends Controller
                 }
 
                 $user->avatar=$filename;
-                $user->Save();
+//                $user->Save();
 
-                return back();
+//                return back();
+
+                $user->name = request('name');
+                $user->email = request('email');
+                $user->user_type = request('user_type');
+                $user->phone_number = request('phone_number');
+                $user->password = request('password');
+                $user->save();
+
+                return redirect()->route('admin.users.all',$user->user_type);
             }
+
+
         }else{
             return back()->withErrors(new MessageBag(['avatar'=>'No file set for upload']));
 
         }
 
-        $user->name = request('name');
-        $user->email = request('email');
-        $user->user_type = request('user_type');
-        $user->save();
 
-        return redirect()->route('admin.users.all',$user->user_type);
     }
 }

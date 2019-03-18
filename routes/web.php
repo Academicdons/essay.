@@ -14,6 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+//terms and conditions
+Route::get('terms',function (){
+   return view('terms_and_condition');
+});
+
 
 Auth::routes();
 
@@ -90,6 +95,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/chat_data/{order}', 'OrdersController@getChatData')->name('chat_data');
         Route::get('/messages/{order}', 'OrdersController@getChatMessages')->name('messages');
         Route::post('/save_messages/{order}', 'OrdersController@saveChatMessage')->name('save_messages');
+        //send email
+        Route::post('send_email_','OrdersController@sendEmail');
     });
 
     Route::group(['prefix' => 'discipline', 'as' => 'discipline.'], function () {

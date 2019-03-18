@@ -53,6 +53,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'folder' => env('APP_FOLDER', '/var/www/public_html/writer/public/uploads'),
+
 
     'asset_url' => env('ASSET_URL', null),
 

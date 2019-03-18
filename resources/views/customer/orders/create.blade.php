@@ -353,9 +353,9 @@
     <script type="text/javascript">
         var r = new Resumable({
             @if(old('id')==null)
-            target: '{{url('/upload_order_files_main')}}'
-            @else
             target: '{{url('/upload_order_files')}}'
+            @else
+            target: '{{url('/upload_order_files_main')}}'
             @endif
         });
         r.assignBrowse(document.getElementById('upload-area'));

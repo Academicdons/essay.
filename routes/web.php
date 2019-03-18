@@ -97,6 +97,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::post('/add', 'DisciplineController@add')->name('add');
         Route::get('/delete/{discipline}', 'DisciplineController@deleteDiscipline')->name('delete');
         Route::get('/edit/{discipline}', 'DisciplineController@editDiscipline');
+
+        //group routes
+        Route::get('/group','DisciplineController@groupsView')->name('group');
+        Route::post('/add_grouping','DisciplineController@saveGrouping')->name('add_grouping');
+
     });
 
     Route::group(['prefix' => 'education_level', 'as' => 'education_level.'], function () {

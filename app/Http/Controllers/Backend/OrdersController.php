@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Mail\EssyMail;
 use App\Models\Conversation;
 use App\Models\Discipline;
 use App\Models\EducationLevel;
@@ -11,6 +12,7 @@ use App\Models\PaperType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
@@ -197,4 +199,11 @@ class OrdersController extends Controller
     {
         return \response()->json(['reviews'=>$order->reviews()->with('user')->get()]);
     }
+
+    public function sendEmail()
+    {
+        $email='admin@admin.com.';
+        Mail::to(Auth::user())->send(new EssyMail(Auth::user(),$email));
+    }
 }
+

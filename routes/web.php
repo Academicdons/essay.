@@ -21,6 +21,12 @@ Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+#Links for resume able uploads feature
+Route::get('get_session_files','GeneralController@sessionFiles')->name('get_session_files');
+Route::get('upload_order_files','GeneralController@uploadOrderFiles')->name('upload_order_files');
+Route::get('upload_order_files_main','GeneralController@uploadOrderFilesMain')->name('upload_order_files_main');
+
+
 Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],function(){
 
     Route::group(['name'=>'orders.','prefix'=>'orders'],function(){

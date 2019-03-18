@@ -15,7 +15,7 @@
                     <h3 class="mt-5">Let professional writers handle your academic paper work
                     </h3>
 
-                    <a href="" class="btn btn-primary bg-homework mt-3">Place order</a>
+                    <a href="{{route('client.place_order')}}" class="btn btn-primary bg-homework mt-3">Place order</a>
 
                     <div class="row mt-5">
                         <div class="col-sm-6">

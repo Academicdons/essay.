@@ -35,6 +35,16 @@ Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],fu
         Route::get('store','OrdersController@store')->name('store');
     });
 
+    Route::group(['middleware'=>'auth'],function (){
+
+        #Reoutes regarding to orders
+        Route::group(['as'=>'orders.','prefix'=>'orders'],function () {
+            Route::get('list','OrdersController@list')->name('list');
+            Route::get('view/{order]','OrdersController@view')->name('view');
+        });
+
+    });
+
 });
 Route::get('/testing', function (){
     return view('layouts.admin');

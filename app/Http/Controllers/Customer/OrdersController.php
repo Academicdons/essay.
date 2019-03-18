@@ -14,4 +14,11 @@ class OrdersController extends Controller
     {
         return View::make('customer.orders.create');
     }
+
+    public function list()
+    {
+
+          return View::make('customer.orders.list');
+
+    }
 }

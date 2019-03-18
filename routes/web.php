@@ -23,8 +23,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 #Links for resume able uploads feature
 Route::get('get_session_files','GeneralController@sessionFiles')->name('get_session_files');
-Route::get('upload_order_files','GeneralController@uploadOrderFiles')->name('upload_order_files');
-Route::get('upload_order_files_main','GeneralController@uploadOrderFilesMain')->name('upload_order_files_main');
+Route::post('upload_order_files','GeneralController@uploadOrderFiles')->name('upload_order_files');
+Route::post('upload_order_files_main','GeneralController@uploadOrderFilesMain')->name('upload_order_files_main');
+Route::get('delete_order_upload/{file}','GeneralController@deleteSessionFile')->name('delete_order_upload');
 
 
 Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],function(){

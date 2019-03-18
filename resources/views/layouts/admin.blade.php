@@ -113,7 +113,26 @@
                 </li>
                 <li class="active"><a href="{{ route('admin.announce.index') }}"><i class="fa fa-microphone"></i> Announcements</a></li>
                 <li class="active"><a href="{{ route('admin.orders.index') }}"><i class="fa fa-list"></i> Orders</a></li>
-                <li class="active"><a href="{{ route('admin.discipline') }}"><i class="fa fa-book"></i> Disciplines</a></li>
+
+
+                <li class="active treeview menu-open">
+                    <a href="#">
+                        <i class="fa fa-users"></i> <span>Disciplines</span>
+                        <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                    </a>
+                    <ul class="treeview-menu" style="">
+                        <li class="active"><a href="{{route('admin.discipline.group')}}"><i class="fa fa-circle-o"></i>Groups</a></li>
+                        <li class="active"><a href="{{route('admin.discipline')}}"><i class="fa fa-circle-o"></i>Disciplines</a></li>
+                        {{--<li><a href="{{route('admin.users.all',0)}}"><i class="fa fa-circle-o"></i>Admins</a></li>--}}
+                        {{--<li><a href="{{route('admin.users.create')}}"><i class="fa fa-circle-o"></i>Add user</a></li>--}}
+                    </ul>
+                </li>
+
+
+
+                {{--<li class="active"><a href="{{ route('admin.discipline') }}"><i class="fa fa-book"></i> Disciplines</a></li>--}}
                 <li class="active"><a href="{{ route('admin.education_level') }}"><i class="fa fa-graduation-cap"></i> Education Levels</a></li>
                 <li class="active"><a href="{{ route('admin.paper_type') }}"><i class="fa fa-paperclip"></i> Paper Types</a></li>
             </ul>

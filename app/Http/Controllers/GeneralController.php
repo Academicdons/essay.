@@ -19,6 +19,11 @@ class GeneralController extends Controller
 {
     //
 
+    public function paypalTest()
+    {
+
+    }
+
     public function sessionFiles(Request $request)
     {
         $docs = Session::get('upload_files');

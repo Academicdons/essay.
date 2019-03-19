@@ -27,6 +27,8 @@ Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/home', 'HomeController@index')->name('home');
 
 #Links for resume able uploads feature
+Route::get('test','GeneralController@paypalTest')->name('test');
+
 Route::get('get_session_files','GeneralController@sessionFiles')->name('get_session_files');
 Route::get('get_disciplines/{group}','GeneralController@getDisciplines')->name('get_disciplines');
 Route::get('get_ed_factor/{level}','GeneralController@getEdFactor')->name('get_ed_factor');
@@ -40,6 +42,7 @@ Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],fu
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
         Route::get('create','OrdersController@create')->name('create');
         Route::post('store','OrdersController@store')->name('store');
+        Route::get('get_orders','OrdersController@getOrders')->name('get_orders');
     });
 
     Route::group(['middleware'=>'auth'],function (){

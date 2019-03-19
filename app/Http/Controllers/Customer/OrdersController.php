@@ -32,6 +32,16 @@ class OrdersController extends Controller
 
     }
 
+
+    public function getOrders(Request $request)
+    {
+        $orders = Order::where('created_by',Auth::id())->orderBy('created_at','desc')->get();
+
+        return response()->json([
+            'orders'=>$orders
+        ]);
+    }
+
     public function store(Request $request)
     {
 
@@ -91,6 +101,8 @@ class OrdersController extends Controller
         }
 
         Session::put('upload_files',null);
+
+        return redirect()->route('customer.orders.list');
 
     }
 

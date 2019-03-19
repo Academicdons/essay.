@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateDisciplineTable extends Migration
+class UpdateTheEducationLevelsWithPriceFactor extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,9 @@ class UpdateDisciplineTable extends Migration
     public function up()
     {
         //
-        Schema::table('disciplines',function (Blueprint $table){
-            $table->unsignedBigInteger('group_id');
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
+
+        Schema::table('education_levels',function (Blueprint $table){
+           $table->float('price_factor')->default(1.0);
         });
     }
 
@@ -28,7 +28,5 @@ class UpdateDisciplineTable extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('disciplines');
-
     }
 }

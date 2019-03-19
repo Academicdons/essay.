@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Log;
 
 class AfricasTalking
 {
-    private $username="find_it_web_app";
-    private $api_key="5cf75ba4ce1f0b591241d3a972c14b79752ccf355a47bf54ff6560b86667031c";
+    private $username="ondieki";
+    private $api_key="c130de5ec6f237f8efe42e533cc23751aa94e5bb95a425f76f7c777c925a587c";
 //    private $sand_box_api_key="1755e87866a2f42b81b3db26017775988b4e86918dcd42ea1b64f88b3eb0f26b";
     private $gateway=null;
     private $should_send_sms=true;

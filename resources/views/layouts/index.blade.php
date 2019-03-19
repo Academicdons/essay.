@@ -217,10 +217,9 @@
                     <a class="nav-link" href="#" tabindex="-1">Recent orders</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa fa-user"></i> Register</button>
-                <button class="btn btn-warning my-2 my-sm-0 ml-3" type="submit"><i class="fa fa-key"></i> Login</button>
-            </form>
+                <a href="{{route('register')}}" class="btn btn-success my-2 my-sm-0" ><i class="fa fa-user"></i> Register</a>
+            <a href="{{route('login')}}" class="btn btn-warning my-2 my-sm-0 ml-3" ><i class="fa fa-key"></i> Login</a>
+
         </div>
     </nav>
 

@@ -75,8 +75,13 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
         Route::get('/messages/{order}', 'OrdersController@getMessages')->name('messages');
         Route::post('/save_messages/{order}', 'OrdersController@saveMessage')->name('save_messages');
         Route::post('/upload_file/{order}', 'OrdersController@saveFile')->name('upload_file');
+
     });
 
+    //profile routes
+    Route::get('profile','ProfileController')->name('profile');
+    Route::post('update_profile','ProfileController@updateUser')->name('update_profile');
+    Route::post('update_user_profile','ProfileController@updateUserProfile')->name('update_user_profile');
 });
 
 

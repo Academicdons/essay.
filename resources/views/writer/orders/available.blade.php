@@ -46,87 +46,28 @@
 
 @section('content')
 
-    <div class="container">
-        <div class="order box box-solid">
+    <div class="container" id="available_container">
+        <div class="order box box-solid" v-for="order in orders">
             <div class="box-body">
                 <div class="row">
-                    <div class="col-sm-4"><h4 class="text-light-blue">The order title goes here</h4></div>
+                    <div class="col-sm-4"><h4 class="text-light-blue">@{{ order.title }}</h4></div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4"><h4>ID: <span>345232312141</span></h4></div>
-                    <div class="col-sm-4"><h4>Deadline: <span>24/56/2018</span></h4></div>
-                    <div class="col-sm-4"><h4>Time remaining: <span class="text-danger">3h 56min 34s</span></h4></div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <table class="table table-sm table-striped">
-                            <tr>
-                                <td>Order type</td><th>ASSI</th>
-                            </tr>
-                            <tr>
-                                <td>Order type</td><th></th>
-                            </tr>
-                            <tr>
-                                <td>Order type</td><th></th>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-sm-4">
-                        <table class="table table-sm table-striped">
-                            <tr>
-                                <td>Order type</td><th></th>
-                            </tr>
-                            <tr>
-                                <td>Order type</td><th></th>
-                            </tr>
-                            <tr>
-                                <td>Order type</td><th></th>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-sm-4">
-                        <table class="table table-sm table-striped">
-                            <tr>
-                                <td>Order type</td><th></th>
-                            </tr>
-                            <tr>
-                                <td>Order type</td><th></th>
-                            </tr>
-                            <tr>
-                                <td>Order type</td><th></th>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <a href="" class="btn btn-default pull-right btn-sm"><i class="fa text-primary fa-file"></i> view</a> &nbsp;
-                        <a href="" class="btn btn-default pull-right btn-sm" style="margin-right: 10px"><i class="fa text-primary fa-file"></i> files</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="order box box-solid">
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-sm-4"><h4 class="text-light-blue">The order title goes here</h4></div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4"><h4>ID: <span>345232312141</span></h4></div>
-                    <div class="col-sm-4"><h4>Deadline: <span>24/56/2018</span></h4></div>
-                    <div class="col-sm-4"><h4>Time remaining: <span class="text-danger">3h 56min 34s</span></h4></div>
+                    <div class="col-sm-4"><h5>ID: <span>@{{ order.order_no }}</span></h5></div>
+                    <div class="col-sm-4"><h5>Deadline: <span class="text-green">@{{ dateConverter(order.deadline) }}</span></h5></div>
+                    <div class="col-sm-4"><h5>Time remaining: <span class="text-danger">3h 56min 34s</span></h5></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
                         <table class="table table-sm table-striped">
                             <tr>
-                                <td>Order type</td><th>ASSI</th>
+                                <td>No. of Pages</td><th>@{{ order.no_pages }}</th>
                             </tr>
                             <tr>
-                                <td>Order type</td><th></th>
+                                <td>Amount</td><th>@{{ order.amount }}</th>
                             </tr>
                             <tr>
-                                <td>Order type</td><th></th>
+                                <td>Bid Expiry</td><th>@{{  dateConverter( order.bid_expiry) }}</th>
                             </tr>
                         </table>
                     </div>
@@ -167,4 +108,33 @@
         </div>
     </div>
 
+    @endsection
+
+@section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+    <script>
+
+        let hehe=new Vue({
+            el:'#available_container',
+            data:{
+                'orders':[]
+            },
+            created:function () {
+                let url='{{url('writer/orders/available_orders_json')}}';
+                let me=this;
+                axios.get(url)
+                    .then(res=>{
+                        me.orders=res.data.orders;
+                    })
+                    .catch(err=>{
+
+                    });
+            },
+            methods:{
+                dateConverter:function (date) {
+                  return  moment(date).format("dddd, MMMM Do YYYY, h:mm a")
+                }
+            }
+        })
+    </script>
     @endsection

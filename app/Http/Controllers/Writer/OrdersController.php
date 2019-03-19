@@ -72,4 +72,10 @@ class OrdersController extends Controller
     {
 
     }
+
+    public function availableOrdersJson()
+    {
+        $orders=Order::where('status',0)->get();
+        return response()->json(['orders'=>$orders]);
+    }
 }

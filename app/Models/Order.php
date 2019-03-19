@@ -42,4 +42,26 @@ class Order extends Model
         return $this->hasOne(User::class,'id','created_by');
     }
 
+    public function Discipline()
+    {
+        return $this->hasOne(Discipline::class,'id','discipline');
+    }
+
+    public function Education()
+    {
+        return $this->hasOne(EducationLevel::class,'id','education_level');
+    }
+
+    public function Paper()
+    {
+        return $this->hasOne(PaperType::class,'id','paper_type');
+
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class,'order_id','id');
+
+    }
+
 }

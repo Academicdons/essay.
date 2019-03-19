@@ -35,7 +35,7 @@ class OrdersController extends Controller
 
     public function getOrders(Request $request)
     {
-        $orders = Order::where('created_by',Auth::id())->orderBy('created_at','desc')->get();
+        $orders = Order::where('created_by',Auth::id())->with(['Discipline','Education','Paper'])->withCount('attachments')->orderBy('created_at','desc')->get();
 
         return response()->json([
             'orders'=>$orders

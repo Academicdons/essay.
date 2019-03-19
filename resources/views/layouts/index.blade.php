@@ -1,6 +1,13 @@
 <html>
     <head>
 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+        <meta name="generator" content="Jekyll v3.8.5">
+        <title>Homework pro writers</title>
+
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700" rel="stylesheet">
 
@@ -152,6 +159,12 @@
 
             .deadline-danger{
                 color: red;
+                animation: blinker 1s linear infinite;
+            }
+            @keyframes blinker {
+                50% {
+                    opacity: 0;
+                }
             }
 
             .deadline-warning{
@@ -179,7 +192,7 @@
                 <div class="col-sm-6 float-left">
                     <ul class="list-inline pt-2 top-bar-text float-right">
                         <li class="list-inline-item">&copy; Homework pro writers</li>
-                        <li class="list-inline-item">| 0723123231</a></li>
+                        <li class="list-inline-item">| 0723123231</li>
                         <li class="list-inline-item">| info@homeworkprowriters.com</li>
                     </ul>
                 </div>

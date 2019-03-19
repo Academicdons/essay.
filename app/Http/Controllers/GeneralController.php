@@ -88,4 +88,10 @@ class GeneralController extends Controller
 
         return back();
     }
+    //TODO sms controller for Africa's talking
+    /*public function sendSms()
+        {
+           Log::warning((new \App\Plugins\AfricasTalking)->safeSend('0705850774',"Hello,David"));
+
+        }*/
 }

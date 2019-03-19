@@ -28,6 +28,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 #Links for resume able uploads feature
 Route::get('get_session_files','GeneralController@sessionFiles')->name('get_session_files');
+Route::get('get_disciplines/{group}','GeneralController@getDisciplines')->name('get_disciplines');
+Route::get('get_ed_factor/{level}','GeneralController@getEdFactor')->name('get_ed_factor');
 Route::post('upload_order_files','GeneralController@uploadOrderFiles')->name('upload_order_files');
 Route::post('upload_order_files_main','GeneralController@uploadOrderFilesMain')->name('upload_order_files_main');
 Route::get('delete_order_upload/{file}','GeneralController@deleteSessionFile')->name('delete_order_upload');
@@ -35,9 +37,9 @@ Route::get('delete_order_upload/{file}','GeneralController@deleteSessionFile')->
 
 Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],function(){
 
-    Route::group(['name'=>'orders.','prefix'=>'orders'],function(){
+    Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
         Route::get('create','OrdersController@create')->name('create');
-        Route::get('store','OrdersController@store')->name('store');
+        Route::post('store','OrdersController@store')->name('store');
     });
 
     Route::group(['middleware'=>'auth'],function (){

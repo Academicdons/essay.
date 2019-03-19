@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attachment;
+use App\Models\EducationLevel;
+use App\Models\Group;
 use Dilab\Network\SimpleRequest;
 use Dilab\Network\SimpleResponse;
 use Dilab\Resumable;
@@ -22,6 +24,19 @@ class GeneralController extends Controller
         $docs = Session::get('upload_files');
         $documents = Attachment::whereIn('id',$docs)->get();
         return response()->json($documents);
+    }
+
+    public function getDisciplines(Group $group)
+    {
+        return response()->json(
+            [   'disciplines'=>$group->disciplines,
+                'group'=>$group
+            ]);
+    }
+
+    public function getEdFactor(EducationLevel $level)
+    {
+        return $level->price_factor;
     }
 
     public function uploadOrderFiles()

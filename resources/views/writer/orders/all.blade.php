@@ -31,11 +31,11 @@
                     </div>
                     <div class="box-body no-padding">
                         <ul class="nav nav-pills nav-stacked">
-                            <li class="active"><a href="#"><i class="fa fa-inbox"></i> Inbox
+                            <li class="active"><a href="#"  @click="getUserOrders(1)"><i class="fa fa-inbox"></i> Inbox
                                     <span class="label label-primary pull-right">12</span></a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
-                            <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
-                            <li><a href="#"><i class="fa fa-filter"></i> Junk <span class="label label-warning pull-right">65</span></a>
+                            <li><a href="#" @click="getUserOrders(2)"><i class="fa fa-envelope-o" ></i> Sent</a></li>
+                            <li><a href="#" @click="getUserOrders(3)"><i class="fa fa-file-text-o" ></i> Drafts</a></li>
+                            <li><a href="#" @click="getUserOrders(4)"><i class="fa fa-filter" ></i> Junk <span class="label label-warning pull-right">65</span></a>
                             </li>
                             <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
                         </ul>
@@ -174,7 +174,7 @@
             },
             methods:{
                 getUserOrders:function(status){
-                    let url = '{{route('writer.orders.user_orders')}}'+"?status="+status
+                    let url = '{{route('writer.orders.user_orders')}}'+"?status="+status;
                     let me = this;
                     axios.get(url)
                         .then(function (res) {

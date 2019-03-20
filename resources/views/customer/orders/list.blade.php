@@ -144,7 +144,7 @@
                     return x.fromNow();
                 },
                 getDeadlineClass:function (order_date) {
-                    let x = moment.utc(order_date).local()
+                    let x = moment.utc(order_date).local();
                     let y = moment.now()
                     let duration = moment.duration(x.diff(y)).asHours();
                     if(duration<0){

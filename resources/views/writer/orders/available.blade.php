@@ -54,8 +54,8 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-4"><h5>ID: <span>@{{ order.order_no }}</span></h5></div>
-                    <div class="col-sm-4"><h5>Deadline: <span class="text-green">@{{ dateConverter(order.deadline) }}</span></h5></div>
-                    <div class="col-sm-4"><h5>Time remaining: <span class="text-danger">3h 56min 34s</span></h5></div>
+                    <div class="col-sm-4"><h5>Deadline: <span class="text-green">@{{ moment.utc(order.deadline).local().format("dddd, MMMM Do YYYY, h:mm a") }}</span></h5></div>
+                    <div class="col-sm-4"><h5>Time remaining: <span v-bind:class="getDeadlineClass(order.deadline)">@{{ getTimedifference(order.deadline) }}</span></h5></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
@@ -67,17 +67,17 @@
                                 <td>Amount</td><th>@{{ order.amount }}</th>
                             </tr>
                             <tr>
-                                <td>Bid Expiry</td><th>@{{  dateConverter( order.bid_expiry) }}</th>
+                                <td>Bid Expiry</td><th>@{{  moment.utc(order.bid_expiry).local().format("dddd, MMMM Do YYYY, h:mm a") }}</th>
                             </tr>
                         </table>
                     </div>
                     <div class="col-sm-4">
                         <table class="table table-sm table-striped">
                             <tr>
-                                <td>Order type</td><th></th>
+                                <td>Creation Date</td><th>@{{ moment.utc(order.created_at).local().format("dddd, MMMM Do YYYY") }}</th>
                             </tr>
                             <tr>
-                                <td>Order type</td><th></th>
+                                <td>Notes</td><th ></th>
                             </tr>
                             <tr>
                                 <td>Order type</td><th></th>
@@ -133,6 +133,26 @@
             methods:{
                 dateConverter:function (date) {
                   return  moment(date).format("dddd, MMMM Do YYYY, h:mm a")
+                },
+
+                getTimedifference:function (order_date) {
+                    let x = moment.utc(order_date).local()
+                    return x.fromNow();
+                },
+                getDeadlineClass:function (order_date) {
+                    let x = moment.utc(order_date).local();
+                    let y = moment.now()
+                    let duration = moment.duration(x.diff(y)).asHours();
+                    if(duration<0){
+                        return "deadline-default"
+                    }else if(duration<20){
+                        return "deadline-danger"
+                    }else if(duration<72){
+                        return "deadline-warning"
+                    }else{
+                        return "deadline-success"
+                    }
+
                 }
             }
         })

@@ -210,7 +210,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{url('/')}}">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About us</a>
@@ -227,11 +227,16 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" tabindex="-1">Recent orders</a>
+                    <a class="nav-link" href="{{route('customer.orders.list')}}" tabindex="-1">My orders</a>
                 </li>
             </ul>
+                @if(!Auth::check())
                 <a href="{{route('register')}}" class="btn btn-success my-2 my-sm-0" ><i class="fa fa-user"></i> Register</a>
-            <a href="{{route('login')}}" class="btn btn-warning my-2 my-sm-0 ml-3" ><i class="fa fa-key"></i> Login</a>
+                <a href="{{route('login')}}" class="btn btn-warning my-2 my-sm-0 ml-3" ><i class="fa fa-key"></i> Login</a>
+                    @else
+                <a href="{{url('logout')}}" class="btn btn-default my-2 my-sm-0 ml-3" ><i class="fa fa-power-off"></i> Logout</a>
+
+            @endif
 
         </div>
     </nav>
@@ -247,9 +252,8 @@
                 <div class="col-sm-6">
 
 
-                    <img src="https://www.academia-research.com/wp-content/themes/academia-ux/images/svg/fl.svg" alt="">
+                    <img src="{{asset('images/logo.png')}}" class="" width="180px" alt="">
 
-                    <h4>Homework pro writers</h4>
 
                     <ul class="bottom-list">
                         <li><a href=""><i class="fa fa-facebook-square"></i> Facebook</a></li>

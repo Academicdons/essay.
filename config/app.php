@@ -54,6 +54,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
     'folder' => env('APP_FOLDER', '/var/www/public_html/writer/public/uploads'),
+    'admin' => env('APP_ADMIN', '1'),
 
 
     'asset_url' => env('ASSET_URL', null),

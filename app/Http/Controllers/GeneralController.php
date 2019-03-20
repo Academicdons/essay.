@@ -44,7 +44,7 @@ class GeneralController extends Controller
         return $level->price_factor;
     }
 
-    public function uploadOrderFiles()
+    public function uploadOrderFiles(Request $lrequest)
     {
         $request = new SimpleRequest();
         $response = new SimpleResponse();
@@ -77,13 +77,22 @@ class GeneralController extends Controller
             $document->id = Uuid::generate();
             $document->file_name = $filename;
             $document->display_name = $originalName;
-            $document->save();
 
-            if (Session::get('upload_files') == null) {
-                $docs = collect([$document->id]);
-                Session::put('upload_files', $docs);
-            } else {
-                Session::push('upload_files', $document->id);
+            if($lrequest->has('order')){
+
+                $document->order_id = $lrequest->input('order');
+                $document->save();
+
+            }else{
+                $document->save();
+
+
+                if (Session::get('upload_files') == null) {
+                    $docs = collect([$document->id]);
+                    Session::put('upload_files', $docs);
+                } else {
+                    Session::push('upload_files', $document->id);
+                }
             }
         }
     }

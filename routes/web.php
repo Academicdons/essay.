@@ -28,6 +28,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 #Links for resume able uploads feature
 Route::get('test','GeneralController@paypalTest')->name('test');
+Route::get('send_sms','GeneralController@sendSms')->name('sendSms');
 
 Route::get('get_session_files','GeneralController@sessionFiles')->name('get_session_files');
 Route::get('get_disciplines/{group}','GeneralController@getDisciplines')->name('get_disciplines');
@@ -88,6 +89,8 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
         Route::post('/save_messages/{order}', 'OrdersController@saveMessage')->name('save_messages');
         Route::post('/upload_file/{order}', 'OrdersController@saveFile')->name('upload_file');
         Route::get('/available_orders_json','OrdersController@availableOrdersJson');
+        Route::get('view/{order}','OrdersController@view')->name('view');
+
     });
 
     //profile routes

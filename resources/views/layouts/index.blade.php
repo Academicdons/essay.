@@ -222,11 +222,11 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                         @if(\Illuminate\Support\Facades\Auth::check())
-                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="{{route('profile')}}">Profile</a>
                         @endif
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        {{--<a class="dropdown-item" href="#">Another action</a>--}}
+                        {{--<div class="dropdown-divider"></div>--}}
+                        {{--<a class="dropdown-item" href="#">Something else here</a>--}}
                     </div>
                 </li>
                 <li class="nav-item">

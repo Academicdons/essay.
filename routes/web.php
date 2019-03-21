@@ -36,7 +36,12 @@ Route::post('upload_order_files','GeneralController@uploadOrderFiles')->name('up
 Route::post('upload_order_files_main','GeneralController@uploadOrderFilesMain')->name('upload_order_files_main');
 Route::get('delete_order_upload/{file}','GeneralController@deleteSessionFile')->name('delete_order_upload');
 
-
+//home profile routes
+Route::group(['middleware'=>'auth'],function (){
+    Route::get('profile','HomeController@profileView')->name('profile');
+    Route::post('save_profile','HomeController@saveProfile')->name('save_profile');
+    Route::post('update_picture','HomeController@updatePicture')->name('update_picture');
+});
 Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],function(){
 
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){

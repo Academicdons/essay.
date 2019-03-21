@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Writer;
 
 use App\User;
+use http\Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;

@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Webpatser\Uuid\Uuid;
 
@@ -118,9 +119,9 @@ class GeneralController extends Controller
         return back();
     }
     //TODO sms controller for Africa's talking
-    /*public function sendSms()
+    public function sendSms()
         {
            Log::warning((new \App\Plugins\AfricasTalking)->safeSend('0705850774',"Hello,David"));
 
-        }*/
+        }
 }

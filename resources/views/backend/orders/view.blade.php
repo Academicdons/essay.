@@ -378,8 +378,8 @@
                 $('#error_message').hide()
             }
 
-            let url = '{{route('admin.orders.manual_assign')}}'
-            let order_id = '{{$order->id}}'
+            let url = '{{route('admin.orders.manual_assign')}}';
+            let order_id = '{{$order->id}}';
             axios.post(url,{par1:order_id,par2:selected})
                 .then(function (res) {
                     $('#assignModal').modal('hide');

@@ -94,6 +94,8 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
+                              <div class="row"> <input class="checkbox" type="checkbox">   <h6>  By Clicking the here means you agree with the  </h6><a href="{{url('terms')}}">Terms and Conditions</a>
+                              </div>
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>

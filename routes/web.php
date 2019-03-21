@@ -41,8 +41,15 @@ Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],fu
 
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
         Route::get('create','OrdersController@create')->name('create');
+        Route::get('messages/{order}','OrdersController@messages')->name('messages');
+        Route::post('save_message/{order}','OrdersController@saveMessage')->name('save_message');
         Route::post('store','OrdersController@store')->name('store');
+        Route::post('revision/{order}','OrdersController@revision')->name('revision');
+        Route::post('review/{order}','OrdersController@review')->name('review');
+        Route::get('reviews/{order}','OrdersController@reviews')->name('reviews');
         Route::get('get_orders','OrdersController@getOrders')->name('get_orders');
+        Route::get('fetch_order/{order}','OrdersController@fetchOrder')->name('fetch_order');
+        Route::get('delete_file','OrdersController@deleteFile')->name('delete_file');
     });
 
     Route::group(['middleware'=>'auth'],function (){
@@ -50,7 +57,7 @@ Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],fu
         #Reoutes regarding to orders
         Route::group(['as'=>'orders.','prefix'=>'orders'],function () {
             Route::get('list','OrdersController@list')->name('list');
-            Route::get('view/{order]','OrdersController@view')->name('view');
+            Route::get('view/{order}','OrdersController@view')->name('view');
         });
 
     });

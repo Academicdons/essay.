@@ -3,15 +3,23 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Models\Attachment;
+use App\Models\Conversation;
 use App\Models\Discipline;
 use App\Models\EducationLevel;
 use App\Models\Group;
+use App\Models\Message;
 use App\Models\Order;
+use App\Models\OrderReview;
 use App\Models\PaperType;
+use App\Models\Revision;
+use App\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Webpatser\Uuid\Uuid;
@@ -35,11 +43,21 @@ class OrdersController extends Controller
 
     public function getOrders(Request $request)
     {
-        $orders = Order::where('created_by',Auth::id())->orderBy('created_at','desc')->get();
-
+        $orders = Order::where('created_by',Auth::id())->with(['Discipline','Education','Paper'])->withCount('attachments')->orderBy('created_at','desc')->get();
         return response()->json([
             'orders'=>$orders
         ]);
+    }
+
+    public function fetchOrder($order)
+    {
+        $orders = Order::where('id',$order)->with(['Discipline','Education','Paper'])->withCount('attachments')->orderBy('created_at','desc')->first();
+
+        return response()->json([
+            'order'=>$orders,
+            'files'=>Order::find($order)->attachments
+        ]);
+
     }
 
     public function store(Request $request)
@@ -115,4 +133,88 @@ class OrdersController extends Controller
             else
                 return 0.75;
         }
+
+    public function view(Order $order)
+    {
+        return View::make('customer.orders.view')->withOrder($order);
+    }
+
+    public function deleteFile()
+    {
+
+        $attachment = Attachment::find(\request('attachment'));
+
+        $path =  public_path('uploads/order_files/');
+        try{
+            File::Delete($path . $attachment->file);
+        }catch (Exception $h){
+
+        }
+
+        $attachment->delete();
+
+    }
+
+
+    public function messages(Order $order)
+    {
+
+        $conversation = Conversation::firstOrCreate(['user_id' => $order->created_by,'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $order->created_by,'order_id'=>$order->id]);
+        return \response()->json([
+            'conversation'=>$conversation,
+            'messages'=>$conversation->messages()->with('user')->get(),
+            'conversation_user'=>$conversation->user
+        ]);
+
+    }
+
+
+    public function saveMessage(Request $request)
+    {
+        $msg = $request->all();
+        $msg['user_id'] = Auth::id();
+        $msg['id'] = Uuid::generate()->string;
+        Message::create($msg);
+
+        return \response()->json([
+            'success'=>true
+        ]);
+    }
+
+    public function revision(Order $order,Request $request)
+    {
+        $data = $request->only('reason');
+        $data['id']=Uuid::generate()->string;
+        $data['order_id']=$order->id;
+        Revision::create($data);
+
+        $order->status=2;
+        $order->save();
+
+        return response()->json([
+            'success'=>true
+        ]);
+    }
+
+    public function review(Order $order,Request $request)
+    {
+        $data=$request->only(['review','rating']);
+        $data['id']=Uuid::generate()->string;
+        $data['order_id']=$order->id;
+        $data['user_id']=Auth::id();
+
+        OrderReview::create($data);
+
+        return response()->json([
+            'success'=>true
+        ]);
+    }
+
+    public function reviews(Order $order)
+    {
+        return response()->json([
+            'client_review'=>$order->reviews()->orderBy('created_at','desc')->where('user_id',Auth::id())->first(),
+            'other_review'=>$order->reviews()->orderBy('created_at','desc')->where('user_id','!=',Auth::id())->first()
+        ]);
+    }
 }

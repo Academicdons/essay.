@@ -88,6 +88,8 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
         Route::post('/save_messages/{order}', 'OrdersController@saveMessage')->name('save_messages');
         Route::post('/upload_file/{order}', 'OrdersController@saveFile')->name('upload_file');
         Route::get('/available_orders_json','OrdersController@availableOrdersJson');
+        Route::get('view/{order}','OrdersController@view')->name('view');
+
     });
 
     //profile routes

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Jobs\ThunderPushAsync;
 use App\Mail\AssignMail;
 use App\Mail\EssyMail;
 use App\Models\Conversation;
@@ -194,6 +195,10 @@ class OrdersController extends Controller
         $msg['user_id'] = Auth::id();
         $msg['id'] = Uuid::generate()->string;
         Message::create($msg);
+
+        dispatch(new ThunderPushAsync($msg['conversation_id'],$event = ["event"=>"conversation",
+            "data"=>null
+        ]));
 
         return \response()->json([
             'success'=>true

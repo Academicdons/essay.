@@ -15,6 +15,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
@@ -76,9 +77,17 @@ class OrdersController extends Controller
 
         $userToSendEmail=User::find(request('par2'));
         Mail::to($userToSendEmail)->send(new AssignMail($userToSendEmail,$userToSendEmail->email));
+
+        //send sms
+        $message='You have been assigned an order. Please log in to view the order';
+        Log::warning((new \App\Plugins\AfricasTalking)->safeSend($userToSendEmail->phone_number,$message));
+
         return response()->json([
             'success'=>true
         ]);
+
+
+
     }
 
     public function store(Request $request)

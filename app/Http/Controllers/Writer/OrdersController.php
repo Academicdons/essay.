@@ -88,4 +88,8 @@ class OrdersController extends Controller
         return View::make('writer.orders.view')->withOrder($order);
     }
 
+    public function review(Request $request)
+    {
+        //TODO add the review data here from the writer
+    }
 }

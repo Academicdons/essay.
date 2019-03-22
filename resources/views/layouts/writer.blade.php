@@ -271,6 +271,10 @@
 <script src="{{asset('axios.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
+<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+<script src="{{asset('js/thunder.js')}}"></script>
+
+
 @yield('script')
 
 </body>

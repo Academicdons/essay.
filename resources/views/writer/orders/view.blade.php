@@ -42,13 +42,18 @@
         .chat-foot{
             margin-bottom: 3px;
         }
+
+        .rating{
+            font-size: 30px;
+            color: orange;
+        }
     </style>
     @endsection
 
 @section('content')
 
 
-    <section class="container content">
+    <section class="container">
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
@@ -56,6 +61,7 @@
                         <h3 class="box-title">Order No. {{ $order->order_no }}</h3>
                         <div class="box-tools">
                             <a href="{{ route('admin.orders.index') }}" class="btn btn-xs btn-info">Back To Orders</a>
+                            <a href="#" class="btn btn-xs btn-success" data-toggle="modal" data-target="#rateModal">Mark as done</a>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -65,11 +71,9 @@
                             <span class="username">
                           <a href="#">{{ $order->title }}</a>
                           <div class="pull-right btn-box-tool">
-                                {{--<a href="" class="btn btn-xs bg-aqua"><i class="fa fa-check"></i>Done</a>--}}
                         </div>
                         </span>
                             <span class="description">To be completed - {{ \Carbon\Carbon::parse($order->deadline)->diffForHumans() }} &nbsp <b>-</b> &nbsp;Bid Expiry Time - <span class="text-orange">{{ \Carbon\Carbon::parse($order->bid_expiry)->diffForHumans() }}</span> &nbsp;
-                                {{--Added by -  <span class="text-aqua">Admin</span> &nbsp;--}}
                             </span>
                         </div>
 
@@ -112,21 +116,33 @@
                                             <td> Number of words </td>
                                             <th>{{ $order->no_words }}</th>
                                             <td>Education level</td>
-                                            <th>{{ $order->no_pages }}</th>
-                                            <td> Salary </td>
-                                            <th>{{ $order->no_words }}</th>
+                                            <th>{{ $order->Education->name }}</th>
+                                            <td> Paper type </td>
+                                            <th>{{ $order->Paper->name }}</th>
                                         </tr>
 
                                         <tr>
                                             <td>Bonus</td>
                                             <th>{{ $order->no_pages }}</th>
-                                            <td> Writer quality </td>
-                                            <th>{{ $order->no_words }}</th>
+                                            <td> Discipline </td>
+                                            <th>{{ $order->Discipline->name }}</th>
 
-                                            <td>Bonus</td>
-                                            <th>{{ $order->no_pages }}</th>
+                                            <td>Salary</td>
+                                            <th>{{ $order->amount    }}</th>
                                             <td> Writer quality </td>
-                                            <th>{{ $order->no_words }}</th>
+                                            <th>
+
+                                                @if($order->writer_quality==1)
+                                                    standard
+                                                @elseif($order->writer_quality==2)
+                                                    premium
+                                                @elseif($order->writer_quality==3)
+                                                    platinum
+                                                @else
+                                                    standard
+                                                @endif
+
+                                            </th>
                                         </tr>
                                     </table>
                                 </div>
@@ -285,11 +301,57 @@
             </div>
         </div>
     </section>
+
+    <div class="modal" id="rateModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Rate the quality of service</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Help us improve the quality of our service by providing a review</p>
+                    <p class="text-ceter">Rate the quality of work:</p>
+                    <div class="rating mx-auto"></div>
+                    <p class="text-cener">Review the quality of work:</p>
+                    <form action="{{route('writer.order.review')}}" method="post" >
+                        <input type="hidden" name="order_id" value="{{$order->id}}">
+                        <input type="hidden" name="rating" id="rating_value" value="9">
+                        <textarea v-model="review.review" class="form-control" placeholder="The writer understood the task and delivered as instruc..."></textarea>
+                        <br>
+                        <p class="text-center">
+                            <button type="submit" class="btn btn-success mt-3">Submit review</button>
+                        </p>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 @stop
 
 
 @section('script')
+    <script src="{{asset('plugins/rater/rater.min.js')}}"></script>
+
     <script>
+
+        $(function () {
+            var options = {
+                max_value: 10,
+                step_size: 1,
+                initial_value: 9,
+
+            };
+            $(".rating").rate(options);
+            $(".rating").on("change", function(ev, data){
+                $('#rating_value').val(data.to)
+            });
+        })
+
         var reviewArea = new Vue({
             el:'#review_area',
             data:{

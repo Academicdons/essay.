@@ -488,6 +488,8 @@
         });
 
 
+
+
         window.order_area = new Vue({
             el:'#order_area',
             data:{
@@ -633,6 +635,7 @@
                     axios.post(url,this.message)
                         .then(function(res){
                             me.message={}
+                            me.getConversations()
                         })
                 },
                 getMessageClass:function (id) {
@@ -644,6 +647,9 @@
                 }
             }
         })
+
+        Thunder.connect("157.230.213.22:8080", "MhPN3ItPqy", ["{{$order->id}}","homepro_user_{{Auth::id()}}"], {log: true});
+        Thunder.listen(function(message) { alert(message); });
     </script>
 
     @endsection

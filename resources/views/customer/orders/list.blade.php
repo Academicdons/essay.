@@ -175,8 +175,13 @@
                     }
                 }
             }
-        })
+        });
+        Thunder.connect("157.230.213.22:8080", "MhPN3ItPqy", ["{{$order->id}}","homepro_user_{{Auth::id()}}"], {log: true});
+        Thunder.listen(function(message) {
+            this.getClientOrders();
+            // alert(message);
 
+        });
     </script>
 
     @endsection

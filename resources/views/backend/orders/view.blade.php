@@ -424,7 +424,7 @@
             $('#assignModal').modal('show');
         }
 
-        let chatVue = new Vue({
+       let chatVue = new Vue({
             'el':'#chat_area',
             data:{
                 assignments:[],
@@ -455,6 +455,7 @@
                             me.conversation_user  = res.data.conversation_user;
                             me.messages  = res.data.messages;
                             me.message.conversation_id  = res.data.conversation.id;
+                            thunderListen(res.data.conversation.id)
                         })
 
                 },
@@ -501,7 +502,15 @@
                         })
                 }
             }
-        })
+        });
+
+        function thunderListen(conv_id){
+            console.log(conv_id)
+            Thunder.connect("157.230.213.22:8080", "MhPN3ItPqy", [conv_id,"homepro_user_{{Auth::id()}}"], {log: true});
+            Thunder.listen(function(message) {
+                // chatVue.getConversations();
+            });
+        }
 
     </script>
 

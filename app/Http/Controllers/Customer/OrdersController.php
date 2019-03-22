@@ -30,6 +30,7 @@ class OrdersController extends Controller
 
     public function create()
     {
+
         return View::make('customer.orders.create')->withGroups(Group::all())->withDisciplines(Discipline::all())->withEducation(EducationLevel::all())->withPapers(PaperType::all());
     }
 
@@ -98,10 +99,16 @@ class OrdersController extends Controller
         $order->education_level = $request->education_level;
         $order->type_of_service = $request->type_of_service;
         $order->writer_quality = $request->writer_quality;
-        $order->created_by = Auth::id();
+        if (Auth::check()){
+            $order->created_by = Auth::id();
+
+        }else{
+            Session::put('order_id',$order->id);
+
+        }
         $order->Save();
 
-        Session::put('order_id',$order->id);
+
 
         /*
          * collect the files
@@ -120,7 +127,14 @@ class OrdersController extends Controller
 
         Session::put('upload_files',null);
 
-        return redirect()->route('customer.orders.list');
+        if (Auth::check()){
+
+            return redirect()->route('customer.orders.list');
+
+        }else{
+            //redirect to login
+            return redirect()->route('login');
+        }
 
     }
 

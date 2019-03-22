@@ -225,5 +225,9 @@ class OrdersController extends Controller
         $email='admin@admin.com.';
         Mail::to(Auth::user())->send(new EssyMail(Auth::user(),$email));
     }
+
+    public function saveFile(Request $request){
+
+    }
 }
 

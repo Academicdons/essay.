@@ -31,11 +31,12 @@
                     </div>
                     <div class="box-body no-padding">
                         <ul class="nav nav-pills nav-stacked">
-                            <li><a href="#"  @click="getUserOrders(1)"><i class="fa fa-inbox"></i> Available
+                            <li><a href="#"  @click="getUserOrders(0)"><i class="fa fa-inbox"></i> Available
                                     <span class="label label-primary pull-right"></span></a></li>
-                            <li><a href="#" @click="getUserOrders(2)"><i class="fa fa-envelope-o" ></i> In Progress</a></li>
-                            <li><a href="#" @click="getUserOrders(3)"><i class="fa fa-file-text-o" ></i> Revision</a></li>
-                            <li><a href="#" @click="getUserOrders(4)"><i class="fa fa-filter" ></i> Complete </a>
+                            <li><a href="#" @click="getUserOrders(1)"><i class="fa fa-envelope-o" ></i> In Progress</a></li>
+                            <li><a href="#" @click="getUserOrders(2)"><i class="fa fa-file-text-o" ></i> Revision</a></li>
+                            <li><a href="#" @click="getUserOrders(3)"><i class="fa fa-filter" ></i> Complete </a>
+                            <li><a href="#" @click="getUserOrders(4)"><i class="fa fa-filter" ></i> Finished </a>
                             </li>
                             {{--<li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>--}}
                         </ul>
@@ -111,7 +112,7 @@
                                     <td class="mailbox-subject"><b>@{{ order.title }}</b> - Trying to find a solution to this problem...
                                     </td>
                                     <td class="mailbox-attachment"></td>
-                                    <td class="mailbox-date">5 mins ago</td>
+                                    <td class="mailbox-date" v-if="order.status==2"><button class="btn btn-primary btn-sm" data-target="#edit_modal" data-toggle="modal" @click="getRevisions(order.revision)">View Comments</button> </td>
                                     <td class="mailbox-date">
                                         <a :href="'{{url('/writer/orders/view')}}/' + order.id" class="btn btn-xs btn-default">Read more</a>
                                     </td>
@@ -154,6 +155,36 @@
             <!-- /.col -->
         </div>
         <!-- /.row -->
+        <div class="modal " tabindex="-1" role="dialog" id="edit_modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Revision Reasons</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="form-group">
+
+                                <ul>
+                                <li v-for="revision in revisions">
+                                   @{{ revision.reason }}
+
+                                </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </section>
 
     @endsection
@@ -166,20 +197,26 @@
         var orders_vue=new Vue({
             el:'#orders_area',
             data:{
-                orders:[]
+                orders:[],
+                revisions:[],
             },
             created:function(){
                 console.log("the orders vue created");
-                this.getUserOrders(1)
+                this.getUserOrders(0)
             },
             methods:{
                 getUserOrders:function(status){
+                    // alert(status);
                     let url = '{{route('writer.orders.user_orders')}}'+"?status="+status;
                     let me = this;
                     axios.get(url)
                         .then(function (res) {
+                            console.log(res.data.orders);
                             me.orders = res.data.orders
                         })
+                },
+                getRevisions:function (orderRevisions) {
+                    this.revisions=orderRevisions;
                 }
             }
 

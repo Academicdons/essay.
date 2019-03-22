@@ -64,4 +64,8 @@ class Order extends Model
 
     }
 
+    public function revision()
+    {
+        return $this->hasMany(Revision::class,'order_id','id');
+    }
 }

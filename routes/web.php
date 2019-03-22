@@ -97,8 +97,11 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
         Route::get('view/{order}','OrdersController@view')->name('view');
         Route::post('review','OrdersController@review')->name('review');
 
-    });
 
+    });
+    //announcement routes
+    Route::get('check_announcements','AnnouncementController@getAnnouncementsJson')->name('check_announcements');
+    Route::get('change_announcement','AnnouncementController@toggleAnnouncement')->name('change_announcement');
     //profile routes
     Route::get('profile','ProfileController')->name('profile');
     Route::post('update_profile','ProfileController@updateUser')->name('update_profile');
@@ -121,6 +124,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/', 'AnnouncementController@index')->name('index');
         Route::get('/new', 'AnnouncementController@newAnnouncement')->name('new');
         Route::post('/store', 'AnnouncementController@store')->name('store');
+        Route::get('/mark_as_inactive/{id}', 'AnnouncementController@markAsInActive')->name('mark_as_inactive');
     });
     
     Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
@@ -129,6 +133,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/new', 'OrdersController@newOrder')->name('new');
         Route::post('/store', 'OrdersController@store')->name('store');
         Route::post('/manual_assign', 'OrdersController@manualAssign')->name('manual_assign');
+        Route::post('/save_file', 'OrdersController@saveFile')->name('save_file');
         Route::get('/delete/{order}', 'OrdersController@deleteOrder')->name('delete');
         Route::get('/edit/{order}', 'OrdersController@editOrder')->name('edit');
         Route::get('/view/{order}', 'OrdersController@viewOrder')->name('view');

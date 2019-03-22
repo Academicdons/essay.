@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Attachment;
 use App\Models\EducationLevel;
 use App\Models\Group;
+use App\Plugins\Thunderpush;
 use Dilab\Network\SimpleRequest;
 use Dilab\Network\SimpleResponse;
 use Dilab\Resumable;
 use Exception;
+use GuzzleHttp\RequestOptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Webpatser\Uuid\Uuid;
+use GuzzleHttp\Client;
 
 class GeneralController extends Controller
 {
@@ -21,6 +25,17 @@ class GeneralController extends Controller
 
     public function paypalTest()
     {
+
+        $thunder=new Thunderpush();
+        $response = $thunder->notifyChannel("some chanel",$event = ["event"=>"order_file",
+            "data"=>null
+        ]);
+        print_r($response);
+
+//        dispatch(new ThunderPushAsync("some chanel",$event = ["event"=>"order_file",
+//            "data"=>null
+//        ]));
+
 
     }
 
@@ -118,9 +133,14 @@ class GeneralController extends Controller
         return back();
     }
     //TODO sms controller for Africa's talking
-    /*public function sendSms()
+    public function sendSms()
         {
            Log::warning((new \App\Plugins\AfricasTalking)->safeSend('0705850774',"Hello,David"));
 
-        }*/
+        }
+
+    public function testThunder($key,$secretkey)
+    {
+        
+        }
 }

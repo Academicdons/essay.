@@ -212,6 +212,8 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{{url('/')}}">Home <span class="sr-only">(current)</span></a>
                 </li>
+                @if(\Illuminate\Support\Facades\Auth::check())
+
                 <li class="nav-item">
                     <a class="nav-link" href="#">About us</a>
                 </li>
@@ -221,19 +223,23 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                        @if(\Illuminate\Support\Facades\Auth::check())
-                        <a class="dropdown-item" href="#">Profile</a>
-                        @endif
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="{{route('profile')}}">Profile</a>
+                        {{--<a class="dropdown-item" href="#">Another action</a>--}}
+                        {{--<div class="dropdown-divider"></div>--}}
+                        {{--<a class="dropdown-item" href="#">Something else here</a>--}}
                     </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('customer.orders.list')}}" tabindex="-1">My orders</a>
                 </li>
+
+                @endif
+
             </ul>
-                @if(!Auth::check())
+
+            <a href="{{url('/customer/orders/create')}}" class="btn btn-success my-2 my-sm-0 mr-3" ><i class="fa fa-first-order"></i> Make An Order</a>
+
+        @if(!Auth::check())
                 <a href="{{route('register')}}" class="btn btn-success my-2 my-sm-0" ><i class="fa fa-user"></i> Register</a>
                 <a href="{{route('login')}}" class="btn btn-warning my-2 my-sm-0 ml-3" ><i class="fa fa-key"></i> Login</a>
                     @else

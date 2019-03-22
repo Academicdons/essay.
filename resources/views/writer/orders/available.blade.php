@@ -46,54 +46,58 @@
 
 @section('content')
 
-    <div class="container" id="available_container">
+    <div class="container pb-5" id="available_container">
         <div class="order box box-solid" v-for="order in orders">
             <div class="box-body">
                 <div class="row">
-                    <div class="col-sm-4"><h4 class="text-light-blue">@{{ order.title }}</h4></div>
+                    <div class="col-sm-12 col-md-12 col-lg-12"><h4 class="text-light-blue">@{{ order.title }}</h4></div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4"><h5>ID: <span>@{{ order.order_no }}</span></h5></div>
-                    <div class="col-sm-4"><h5>Deadline: <span class="text-green">@{{ moment.utc(order.deadline).local().format("dddd, MMMM Do YYYY, h:mm a") }}</span></h5></div>
-                    <div class="col-sm-4"><h5>Time remaining: <span v-bind:class="getDeadlineClass(order.deadline)">@{{ getTimedifference(order.deadline) }}</span></h5></div>
+                    <div class="col-sm-12 col-md-12 col-lg-12"><h4>ID: <span>@{{ order.order_no }}</span></h4></div>
+                    <div class="col-sm-12 col-md-12 col-lg-12"><h4>Deadline: <span>@{{ moment.utc(order.deadline).local().format("dddd,Do M-YYYY, h:mm:ss a")  }}</span></h4></div>
+                    <div class="col-sm-12 col-md-12 col-lg-12"><h4 style="">Duration: <span v-bind:class="getDeadlineClass(order.deadline)">@{{ getTimedifference(order.deadline) }}</span></h4></div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-12 col-md-4 col-lg-4">
                         <table class="table table-sm table-striped">
                             <tr>
-                                <td>No. of Pages</td><th>@{{ order.no_pages }}</th>
+                                <td>Discipline</td><th>@{{ order.discipline.name }}</th>
                             </tr>
+                            <tr>
+                                <td>Education level</td><th>@{{ order.education.name }}</th>
+                            </tr>
+                            <tr>
+                                <td>Paper type</td><th>@{{ order.paper.name }}</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-lg-4">
+                        {{--<div class="row">--}}
+                            {{--<div class="col-sm-12">--}}
+                                <table class="table table-sm table-striped">
+                                    <tr>
+                                        <td>No of words</td><th>@{{ order.no_words }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Pages</td><th>@{{ order.no_pages }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>CPP</td><th>@{{ order.cpp }}</th>
+                                    </tr>
+                                </table>
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-lg-4">
+                        <table class="table table-sm table-striped">
                             <tr>
                                 <td>Amount</td><th>@{{ order.amount }}</th>
                             </tr>
                             <tr>
-                                <td>Bid Expiry</td><th>@{{  moment.utc(order.bid_expiry).local().format("dddd, MMMM Do YYYY, h:mm a") }}</th>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-sm-4">
-                        <table class="table table-sm table-striped">
-                            <tr>
-                                <td>Creation Date</td><th>@{{ moment.utc(order.created_at).local().format("dddd, MMMM Do YYYY") }}</th>
+                                <td>Created at</td><th>@{{ moment.utc(order.created_at).local().format("D-M-YYYY, h:mm:ss a") }}</th>
                             </tr>
                             <tr>
-                                <td>Notes</td><th ></th>
-                            </tr>
-                            <tr>
-                                <td>Order type</td><th></th>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-sm-4">
-                        <table class="table table-sm table-striped">
-                            <tr>
-                                <td>Order type</td><th></th>
-                            </tr>
-                            <tr>
-                                <td>Order type</td><th></th>
-                            </tr>
-                            <tr>
-                                <td>Order type</td><th></th>
+                                <td>Status</td><th>@{{ getStatusString(order.status) }}</th>
                             </tr>
                         </table>
                     </div>
@@ -101,12 +105,104 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <a :href="'{{url('/writer/orders/view')}}/' + order.id" class="btn btn-default pull-right btn-sm"><i class="fa text-primary fa-file"></i> view</a> &nbsp;
-                        <a :href="'{{url('/writer/orders/view')}}/' + order.id" class="btn btn-default pull-right btn-sm" style="margin-right: 10px"><i class="fa text-primary fa-file"></i> files</a>
+
+                        <a :href="'{{url('/writer/orders/view')}}/' + order.id" class="btn btn-default pull-right btn-sm" style="margin-right: 10px"><i class="fa text-primary fa-paperclip"></i> @{{ order.attachments_count }} files</a>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {{--<div class="container" id="available_container">--}}
+        {{--<div class="order box box-solid" v-for="order in orders">--}}
+            {{--<div class="box-body">--}}
+                {{--<div class="row">--}}
+                    {{--<div class="col-sm-4"><h4 class="text-light-blue">@{{ order.title }}</h4></div>--}}
+                {{--</div>--}}
+                {{--<div class="row">--}}
+                    {{--<div class="col-sm-4"><h5>ID: <span>@{{ order.order_no }}</span></h5></div>--}}
+                    {{--<div class="col-sm-4"><h5>Deadline: <span class="text-green">@{{ moment.utc(order.deadline).local().format("dddd, MMMM Do YYYY, h:mm a") }}</span></h5></div>--}}
+                    {{--<div class="col-sm-4"><h5>Time remaining: <span v-bind:class="getDeadlineClass(order.deadline)">@{{ getTimedifference(order.deadline) }}</span></h5></div>--}}
+                {{--</div>--}}
+                {{--<div class="row">--}}
+                    {{--<div class="col-sm-4">--}}
+                        {{--<table class="table table-sm table-striped">--}}
+                            {{--<tr>--}}
+                                {{--<td>No. of Pages</td><th>@{{ order.no_pages }}</th>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                                {{--<td>Amount</td><th>@{{ order.amount }}</th>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                                {{--<td>Bid Expiry</td><th>@{{  moment.utc(order.bid_expiry).local().format("dddd, MMMM Do YYYY, h:mm a") }}</th>--}}
+                            {{--</tr>--}}
+                        {{--</table>--}}
+                    {{--</div>--}}
+                    {{--<div class="col-sm-4">--}}
+                        {{--<table class="table table-sm table-striped">--}}
+                            {{--<tr>--}}
+                                {{--<td>Discipline</td><th>@{{ order.discipline.name }}</th>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                                {{--<td>Education level</td><th>@{{ order.education.name }}</th>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                                {{--<td>Paper type</td><th>@{{ order.paper.name }}</th>--}}
+                            {{--</tr>--}}
+                        {{--</table>--}}
+
+                        {{--<table class="table table-sm table-striped">--}}
+                            {{--<tr>--}}
+                                {{--<td>Creation Date</td><th>@{{ moment.utc(order.created_at).local().format("dddd, MMMM Do YYYY") }}</th>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                                {{--<td>Notes</td><th ></th>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                                {{--<td>Order type</td><th></th>--}}
+                            {{--</tr>--}}
+                        {{--</table>--}}
+                    {{--</div>--}}
+                    {{--<div class="col-sm-4">--}}
+
+                        {{--<div class="row">--}}
+                            {{--<div class="col-sm-12">--}}
+                                {{--<table class="table table-sm table-striped">--}}
+                                    {{--<tr>--}}
+                                        {{--<td>No of words</td><th>@{{ order.no_words }}</th>--}}
+                                    {{--</tr>--}}
+                                    {{--<tr>--}}
+                                        {{--<td>Pages</td><th>@{{ order.no_pages }}</th>--}}
+                                    {{--</tr>--}}
+                                    {{--<tr>--}}
+                                        {{--<td>CPP</td><th>@{{ order.cpp }}</th>--}}
+                                    {{--</tr>--}}
+                                {{--</table>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<table class="table table-sm table-striped">--}}
+                            {{--<tr>--}}
+                                {{--<td>N</td><th></th>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                                {{--<td>Order type</td><th></th>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                                {{--<td>Order type</td><th></th>--}}
+                            {{--</tr>--}}
+                        {{--</table>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="row">--}}
+                    {{--<div class="col-sm-12">--}}
+                        {{--<a href="" class="btn btn-default pull-right btn-sm"><i class="fa text-primary fa-file"></i> view</a> &nbsp;--}}
+                        {{--<a href="" class="btn btn-default pull-right btn-sm" style="margin-right: 10px"><i class="fa text-primary fa-file"></i> files</a>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 
     @endsection
 
@@ -131,6 +227,29 @@
                     });
             },
             methods:{
+                getClientOrders:function () {
+                    let url = '{{route('customer.orders.get_orders')}}'
+                    let me = this
+                    axios.get(url)
+                        .then(function (res) {
+                            me.orders = res.data.orders
+                        })
+                },
+
+                getStatusString:function(status){
+                    if(status==1){
+                        return "in-progress"
+                    }else if(status==2){
+                        return "revision"
+                    }else if(status==3){
+                        return "completing"
+                    }else{
+                        return "processing"
+                    }
+                },
+
+
+
                 dateConverter:function (date) {
                   return  moment(date).format("dddd, MMMM Do YYYY, h:mm a")
                 },

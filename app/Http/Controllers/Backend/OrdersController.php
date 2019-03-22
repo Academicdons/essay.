@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Jobs\ThunderPushAsync;
+use App\Mail\AssignMail;
 use App\Mail\EssyMail;
 use App\Models\Conversation;
 use App\Models\Discipline;
@@ -9,6 +11,7 @@ use App\Models\EducationLevel;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\PaperType;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -68,7 +71,11 @@ class OrdersController extends Controller
             $order->save();
 
         }
+            //send the user an email
+//        Mail::to($request->user())->send(new OrderShipped($order));
 
+        $userToSendEmail=User::find(request('par2'));
+        Mail::to($userToSendEmail)->send(new AssignMail($userToSendEmail,$userToSendEmail->email));
         return response()->json([
             'success'=>true
         ]);
@@ -188,6 +195,10 @@ class OrdersController extends Controller
         $msg['user_id'] = Auth::id();
         $msg['id'] = Uuid::generate()->string;
         Message::create($msg);
+
+        dispatch(new ThunderPushAsync($msg['conversation_id'],$event = ["event"=>"conversation",
+            "data"=>null
+        ]));
 
         return \response()->json([
             'success'=>true

@@ -28,6 +28,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 #Links for resume able uploads feature
 Route::get('test','GeneralController@paypalTest')->name('test');
+Route::get('send_sms','GeneralController@sendSms')->name('sendSms');
+//Route::get('test_thunder/{key}/{secretkey}','GeneralController@testThunder');
 
 Route::get('get_session_files','GeneralController@sessionFiles')->name('get_session_files');
 Route::get('get_disciplines/{group}','GeneralController@getDisciplines')->name('get_disciplines');
@@ -35,6 +37,9 @@ Route::get('get_ed_factor/{level}','GeneralController@getEdFactor')->name('get_e
 Route::post('upload_order_files','GeneralController@uploadOrderFiles')->name('upload_order_files');
 Route::post('upload_order_files_main','GeneralController@uploadOrderFilesMain')->name('upload_order_files_main');
 Route::get('delete_order_upload/{file}','GeneralController@deleteSessionFile')->name('delete_order_upload');
+
+Route::get('customer/orders/create','Customer\OrdersController@create')->name('customer.orders.create');
+Route::post('customer/orders/store','Customer\OrdersController@store')->name('customer.orders.store');
 
 //home profile routes
 Route::group(['middleware'=>'auth'],function (){
@@ -45,11 +50,11 @@ Route::group(['middleware'=>'auth'],function (){
 Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],function(){
 
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
-        Route::get('create','OrdersController@create')->name('create');
         Route::get('messages/{order}','OrdersController@messages')->name('messages');
         Route::post('save_message/{order}','OrdersController@saveMessage')->name('save_message');
-        Route::post('store','OrdersController@store')->name('store');
+
         Route::post('review','OrdersController@review')->name('review');
+
         Route::post('revision/{order}','OrdersController@revision')->name('revision');
         Route::post('review/{order}','OrdersController@review')->name('review');
         Route::get('reviews/{order}','OrdersController@reviews')->name('reviews');
@@ -89,6 +94,8 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
         Route::post('/save_messages/{order}', 'OrdersController@saveMessage')->name('save_messages');
         Route::post('/upload_file/{order}', 'OrdersController@saveFile')->name('upload_file');
         Route::get('/available_orders_json','OrdersController@availableOrdersJson');
+        Route::get('view/{order}','OrdersController@view')->name('view');
+
     });
 
     //profile routes

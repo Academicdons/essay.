@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Jobs\ThunderPushAsync;
 use App\Models\Attachment;
 use App\Models\Conversation;
 use App\Models\Discipline;
@@ -102,6 +103,7 @@ class OrdersController extends Controller
         if (Auth::check()){
             $order->created_by = Auth::id();
 
+
         }else{
             Session::put('order_id',$order->id);
 
@@ -109,6 +111,12 @@ class OrdersController extends Controller
         $order->Save();
 
 
+        //send a notification of the new order that has been created if the user is authed
+        if (Auth::check()){
+            dispatch(new ThunderPushAsync($order->id,$event = ["event"=>"order",
+                "data"=>null
+            ]));
+        }
 
         /*
          * collect the files

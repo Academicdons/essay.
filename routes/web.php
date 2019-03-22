@@ -37,6 +37,9 @@ Route::post('upload_order_files','GeneralController@uploadOrderFiles')->name('up
 Route::post('upload_order_files_main','GeneralController@uploadOrderFilesMain')->name('upload_order_files_main');
 Route::get('delete_order_upload/{file}','GeneralController@deleteSessionFile')->name('delete_order_upload');
 
+Route::get('customer/orders/create','Customer\OrdersController@create')->name('customer.orders.create');
+Route::post('customer/orders/store','Customer\OrdersController@store')->name('customer.orders.store');
+
 //home profile routes
 Route::group(['middleware'=>'auth'],function (){
     Route::get('profile','HomeController@profileView')->name('profile');
@@ -46,10 +49,8 @@ Route::group(['middleware'=>'auth'],function (){
 Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],function(){
 
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
-        Route::get('create','OrdersController@create')->name('create');
         Route::get('messages/{order}','OrdersController@messages')->name('messages');
         Route::post('save_message/{order}','OrdersController@saveMessage')->name('save_message');
-        Route::post('store','OrdersController@store')->name('store');
         Route::post('revision/{order}','OrdersController@revision')->name('revision');
         Route::post('review/{order}','OrdersController@review')->name('review');
         Route::get('reviews/{order}','OrdersController@reviews')->name('reviews');

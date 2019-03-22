@@ -178,6 +178,7 @@
                     let me = this;
                     axios.get(url)
                         .then(function (res) {
+                            console.log(res.data.orders);
                             me.orders = res.data.orders
                         })
                 }

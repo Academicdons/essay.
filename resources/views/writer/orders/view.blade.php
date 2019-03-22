@@ -316,7 +316,7 @@
                     <p class="text-ceter">Rate the quality of work:</p>
                     <div class="rating mx-auto"></div>
                     <p class="text-cener">Review the quality of work:</p>
-                    <form action="{{route('writer.order.review')}}" method="post" >
+                    <form action="{{route('writer.orders.review')}}" method="post" >
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="rating" id="rating_value" value="9">
                         <textarea v-model="review.review" class="form-control" placeholder="The writer understood the task and delivered as instruc..."></textarea>

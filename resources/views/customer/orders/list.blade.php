@@ -127,7 +127,7 @@
                 orders:[]
             },
             created:function () {
-                console.log("created orders vue")
+                console.log("created orders vue");
                 this.getClientOrders()
             },
             mounted: function () {
@@ -136,7 +136,7 @@
             methods:{
                 getClientOrders:function () {
                     let url = '{{route('customer.orders.get_orders')}}'
-                    let me = this
+                    let me = this;
                     axios.get(url)
                         .then(function (res) {
                             me.orders = res.data.orders

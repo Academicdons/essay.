@@ -42,9 +42,21 @@
                                                             <div class="comment-text" style="margin-left: 0" >
                                                           <span class="username">
                                                             {{ $announce->title }}
-                                                            <span class="text-muted pull-right">{{ $announce->created_at }}</span>
+                                                            <span class="text-muted pull-right">
+                                                                @if(!$announce->status)
+                                                                    <span class="badge badge-primary">InActive</span>
+                                                                    @else
+
+                                                                    <a href="{{route('admin.announce.mark_as_inactive',['id'=>$announce->id])}}" class="btn btn-primary">Mark As InActive</a>
+
+                                                                @endif
+
+                                                                {{ $announce->created_at }}</span>
                       </span><!-- /.username -->
                                                                 {{ $announce->news_article }}
+
+
+
                                                             </div>
                                                         </div>
                                                     </div>

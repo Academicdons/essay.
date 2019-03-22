@@ -33,4 +33,12 @@ class AnnouncementController extends Controller
 
         return Redirect::route('admin.announce.index');
     }
+
+    public function markAsInActive(Announcement $id)
+    {
+        $id->status=false;
+        $id->save();
+
+        return \redirect()->back();
+    }
 }

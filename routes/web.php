@@ -52,6 +52,9 @@ Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],fu
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
         Route::get('messages/{order}','OrdersController@messages')->name('messages');
         Route::post('save_message/{order}','OrdersController@saveMessage')->name('save_message');
+
+        Route::post('review','OrdersController@review')->name('review');
+
         Route::post('revision/{order}','OrdersController@revision')->name('revision');
         Route::post('review/{order}','OrdersController@review')->name('review');
         Route::get('reviews/{order}','OrdersController@reviews')->name('reviews');

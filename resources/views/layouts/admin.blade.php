@@ -373,5 +373,6 @@
 <script src="{{asset('js/thunder.js')}}"></script>
 
 @yield('script')
+
 </body>
 </html>

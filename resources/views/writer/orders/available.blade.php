@@ -53,9 +53,9 @@
                     <div class="col-sm-12 col-md-12 col-lg-12"><h4 class="text-light-blue">@{{ order.title }}</h4></div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12"><h4>ID: <span>@{{ order.order_no }}</span></h4></div>
-                    <div class="col-sm-12 col-md-12 col-lg-12"><h4>Deadline: <span>@{{ moment.utc(order.deadline).local().format("dddd,Do M-YYYY, h:mm:ss a")  }}</span></h4></div>
-                    <div class="col-sm-12 col-md-12 col-lg-12"><h4 style="">Duration: <span v-bind:class="getDeadlineClass(order.deadline)">@{{ getTimedifference(order.deadline) }}</span></h4></div>
+                    <div class="col-sm-4"><h4>ID: <span>@{{ order.order_no }}</span></h4></div>
+                    <div class="col-sm-4"><h4>Deadline: <span>@{{ moment.utc(order.deadline).local().format("dddd,Do M-YYYY, h:mm:ss a")  }}</span></h4></div>
+                    <div class="col-sm-4"><h4 style="">Duration: <span v-bind:class="getDeadlineClass(order.deadline)">@{{ getTimedifference(order.deadline) }}</span></h4></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-lg-4">

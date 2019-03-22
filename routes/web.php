@@ -29,6 +29,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 #Links for resume able uploads feature
 Route::get('test','GeneralController@paypalTest')->name('test');
 Route::get('send_sms','GeneralController@sendSms')->name('sendSms');
+//Route::get('test_thunder/{key}/{secretkey}','GeneralController@testThunder');
 
 Route::get('get_session_files','GeneralController@sessionFiles')->name('get_session_files');
 Route::get('get_disciplines/{group}','GeneralController@getDisciplines')->name('get_disciplines');

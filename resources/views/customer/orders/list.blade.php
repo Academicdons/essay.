@@ -127,7 +127,7 @@
                 orders:[]
             },
             created:function () {
-                console.log("created orders vue")
+                console.log("created orders vue");
                 this.getClientOrders()
             },
             mounted: function () {
@@ -136,7 +136,7 @@
             methods:{
                 getClientOrders:function () {
                     let url = '{{route('customer.orders.get_orders')}}'
-                    let me = this
+                    let me = this;
                     axios.get(url)
                         .then(function (res) {
                             me.orders = res.data.orders
@@ -176,12 +176,12 @@
                 }
             }
         });
-        Thunder.connect("157.230.213.22:8080", "MhPN3ItPqy", ["{{$order->id}}","homepro_user_{{Auth::id()}}"], {log: true});
-        Thunder.listen(function(message) {
-            this.getClientOrders();
-            // alert(message);
+        {{--Thunder.connect("157.230.213.22:8080", "MhPN3ItPqy", ["{{$order->id}}","homepro_user_{{Auth::id()}}"], {log: true});--}}
+        {{--Thunder.listen(function(message) {--}}
+            {{--this.getClientOrders();--}}
+            {{--// alert(message);--}}
 
-        });
+        {{--});--}}
     </script>
 
     @endsection

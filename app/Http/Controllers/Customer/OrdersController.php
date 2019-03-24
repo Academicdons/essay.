@@ -37,9 +37,7 @@ class OrdersController extends Controller
 
     public function list()
     {
-
           return View::make('customer.orders.list');
-
     }
 
 
@@ -184,7 +182,7 @@ class OrdersController extends Controller
         $conversation = Conversation::firstOrCreate(['user_id' => $order->created_by,'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $order->created_by,'order_id'=>$order->id]);
         return \response()->json([
             'conversation'=>$conversation,
-            'messages'=>$conversation->messages()->with('user')->get(),
+            'messages'=>$conversation->messages()->orderBy('created_at','asc')->with('user')->get(),
             'conversation_user'=>$conversation->user
         ]);
 
@@ -197,6 +195,10 @@ class OrdersController extends Controller
         $msg['user_id'] = Auth::id();
         $msg['id'] = Uuid::generate()->string;
         Message::create($msg);
+
+        dispatch(new ThunderPushAsync($msg['conversation_id'],$event = ["event"=>"conversation",
+            "data"=>null
+        ]));
 
         return \response()->json([
             'success'=>true

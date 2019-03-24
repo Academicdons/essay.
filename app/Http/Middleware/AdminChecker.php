@@ -17,10 +17,12 @@ class AdminChecker
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->user_type != 0){
+        if (Auth::user()->user_type == 1){
             return Redirect::home();
+        }else if(Auth::user()->user_type == 2){
+            return \redirect()->route('customer.orders.list');
+        }else{
+            return $next($request);
         }
-
-        return $next($request);
     }
 }

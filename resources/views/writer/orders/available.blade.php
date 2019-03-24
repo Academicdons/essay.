@@ -210,7 +210,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
     <script>
 
-        let hehe=new Vue({
+        window.av_orders=new Vue({
             el:'#available_container',
             data:{
                 'orders':[]
@@ -276,11 +276,10 @@
             }
         });
 
-        {{--Thunder.connect("157.230.213.22:8080", "MhPN3ItPqy", ["{{$order->id}}","homepro_user_{{Auth::id()}}"], {log: true});--}}
-        {{--Thunder.listen(function(message) {--}}
-            {{--this.getClientOrders();--}}
-            {{--// alert(message);--}}
+        Thunder.connect("157.230.213.22:8080", "MhPN3ItPqy", ["orders","homepro_user_{{Auth::id()}}"], {log: true});
+        Thunder.listen(function(message) {
+            window.av_orders.getClientOrders();
 
-        {{--});--}}
+        });
     </script>
     @endsection

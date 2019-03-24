@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Jobs\AssignOrderMail;
 use App\Jobs\ThunderPushAsync;
 use App\Mail\AssignMail;
 use App\Mail\EssyMail;
@@ -75,11 +76,12 @@ class OrdersController extends Controller
             //send the user an email
 //        Mail::to($request->user())->send(new OrderShipped($order));
 
+        $message='Order '.$order->order_no.  ' has been assigned to you. Please log in to your account as soon as possible. Regards Admin';
+
         $userToSendEmail=User::find(request('par2'));
-        Mail::to($userToSendEmail)->send(new AssignMail($userToSendEmail,$userToSendEmail->email));
+        $this->dispatch(new AssignOrderMail($userToSendEmail,$message));
 
         //send sms
-        $message='You have been assigned an order. Please log in to view the order';
         Log::warning((new \App\Plugins\AfricasTalking)->safeSend($userToSendEmail->phone_number,$message));
 
         return response()->json([
@@ -224,6 +226,10 @@ class OrdersController extends Controller
     {
         $email='admin@admin.com.';
         Mail::to(Auth::user())->send(new EssyMail(Auth::user(),$email));
+    }
+
+    public function saveFile(Request $request){
+
     }
 }
 

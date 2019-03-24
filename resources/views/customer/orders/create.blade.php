@@ -257,7 +257,7 @@
 
                                     </span>
                                     <br>
-                                    <button type="submit" style="border: none !important;" onclick="evaluateCost()" class="btn btn-primary mx-auto academic-button elevate">Proceed to bidding</button>
+                                    <button type="submit" style="border: none !important;" onclick="evaluateCost()" class="btn btn-primary mx-auto academic-button elevate">Order Now</button>
 
                                 </p>
                             </div>

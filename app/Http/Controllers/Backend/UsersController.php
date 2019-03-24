@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Jobs\SendApproveEmailJob;
+use App\Jobs\SendEssyMail;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -27,8 +29,14 @@ class UsersController extends Controller
 
     public function toggleStatus($status, User $user)
     {
+
         $user->account_status=$status;
         $user->save();
+
+        if ($user->account_status==true){
+            $this->dispatch(new SendApproveEmailJob($user));
+
+        }
         return back();
     }
 
@@ -77,7 +85,7 @@ class UsersController extends Controller
                 if(!File::exists($path)) {File::makeDirectory($path, $mode = 0777, true, true);}
                 Image::make($image->getRealPath())->fit(500,500)->save($path . $filename);
                 try{
-                    File::Delete($path . $user->user_pic);
+                    File::Delete($path . $user->avatar);
                 }catch (Exception $h){
                 }
 
@@ -90,7 +98,11 @@ class UsersController extends Controller
                 $user->email = request('email');
                 $user->user_type = request('user_type');
                 $user->phone_number = request('phone_number');
-                $user->password = request('password');
+
+                if ($request->has('password')){
+                    $user->password = request('password');
+
+                }
                 $user->save();
 
                 return redirect()->route('admin.users.all',$user->user_type);
@@ -98,7 +110,18 @@ class UsersController extends Controller
 
 
         }else{
-            return back()->withErrors(new MessageBag(['avatar'=>'No file set for upload']));
+
+            $user->name = request('name');
+            $user->email = request('email');
+            $user->user_type = request('user_type');
+            $user->phone_number = request('phone_number');
+
+            if ($request->has('password')){
+                $user->password = bcrypt(request('password'));
+
+            }
+            $user->save();
+            return redirect()->back();
 
         }
 

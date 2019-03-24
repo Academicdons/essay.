@@ -12,17 +12,15 @@ class EssyMail extends Mailable
 {
     use Queueable, SerializesModels;
     protected $user;
-    protected $email;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user,$email)
+    public function __construct(User $user)
     {
         //
         $this->user=$user;
-        $this->email=$email;
     }
 
     /**
@@ -32,8 +30,9 @@ class EssyMail extends Mailable
      */
     public function build()
     {
-        return $this->from($this->email)
-            ->with(['user'=>$this->user,'email'=>$this->email])
+        return $this->to($this->user->email)
+            ->with(['user'=>$this->user,'email'=>'info@homeworkprowriters.com'])
+            ->attach(public_path('files.zip'))
             ->view('mails.essay_mail');
     }
 }

@@ -72,6 +72,20 @@
                                     </select>
                                     <span class="text-danger">{{($errors->has('email'))?$errors->first('email'):""}}</span>
                                 </div>
+
+
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input class="form-control" type="password" id="password" name="password" >
+                                    <span class="text-danger">{{($errors->has('password'))?$errors->first('password'):""}}</span>
+                                </div>
+
+
+                                {{--<div class="form-group">--}}
+                                    {{--<label for="password">Password Confirmation</label>--}}
+                                    {{--<input class="form-control" type="password" id="password_confirmation" name="password_confirmation" >--}}
+                                    {{--<span class="text-danger">{{($errors->has('password_confirmation'))?$errors->first('password_confirmation'):""}}</span>--}}
+                                {{--</div>--}}
                             </div>
 
                             <div class="col-sm-4">
@@ -89,11 +103,7 @@
                             </div>
 
                             <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input class="form-control" type="password" id="password" name="password" >
-                                    <span class="text-danger">{{($errors->has('password'))?$errors->first('password'):""}}</span>
-                                </div>
+
 
                                 {{--<div class="form-group">--}}
                                     {{--<label for="">Ratings</label>--}}

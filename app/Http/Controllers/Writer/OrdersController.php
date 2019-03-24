@@ -25,12 +25,13 @@ class OrdersController extends Controller
         return View::make('writer.orders.all');
     }
 
-    public function getUsersOrders()
+    public function getUsersOrders(Request $request)
     {
 
+        $orders=Order::where('status',$request->status)->with(['client','revision'])->get();
 
         return response()->json([
-            'orders'=>Order::with(['client'])->get()
+            'orders'=>$orders
         ]);
     }
 

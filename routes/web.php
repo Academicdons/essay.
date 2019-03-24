@@ -42,7 +42,7 @@ Route::get('customer/orders/create','Customer\OrdersController@create')->name('c
 Route::post('customer/orders/store','Customer\OrdersController@store')->name('customer.orders.store');
 
 //home profile routes
-Route::group(['middleware'=>'auth'],function (){
+Route::group(['middleware'=>['auth','account_status']],function (){
     Route::get('profile','HomeController@profileView')->name('profile');
     Route::post('save_profile','HomeController@saveProfile')->name('save_profile');
     Route::post('update_picture','HomeController@updatePicture')->name('update_picture');
@@ -63,7 +63,7 @@ Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],fu
         Route::get('delete_file','OrdersController@deleteFile')->name('delete_file');
     });
 
-    Route::group(['middleware'=>'auth'],function (){
+    Route::group(['middleware'=>['auth','account_status']],function (){
 
         #Reoutes regarding to orders
         Route::group(['as'=>'orders.','prefix'=>'orders'],function () {
@@ -81,7 +81,7 @@ Route::get('/testing', function (){
 
 
 #Routes controlling writers workspace
-Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 'middleware' => ['auth']],function(){
+Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 'middleware' => ['auth','account_status']],function(){
 
     #Orders routes
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
@@ -97,8 +97,11 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
         Route::get('view/{order}','OrdersController@view')->name('view');
         Route::post('review','OrdersController@review')->name('review');
 
-    });
 
+    });
+    //announcement routes
+    Route::get('check_announcements','AnnouncementController@getAnnouncementsJson')->name('check_announcements');
+    Route::get('change_announcement','AnnouncementController@toggleAnnouncement')->name('change_announcement');
     //profile routes
     Route::get('profile','ProfileController')->name('profile');
     Route::post('update_profile','ProfileController@updateUser')->name('update_profile');
@@ -107,7 +110,7 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
 
 
 //Backend Routes:
-Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', 'middleware' => ['admin', 'auth']], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', 'middleware' => ['admin', 'auth','account_status']], function () {
     Route::get('/', 'DashboardController@index')->name('index');
     Route::get('/discipline/index', 'DashboardController@discipline')->name('discipline');
     Route::get('/education_level/index', 'DashboardController@educationLevel')->name('education_level');
@@ -121,6 +124,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/', 'AnnouncementController@index')->name('index');
         Route::get('/new', 'AnnouncementController@newAnnouncement')->name('new');
         Route::post('/store', 'AnnouncementController@store')->name('store');
+        Route::get('/mark_as_inactive/{id}', 'AnnouncementController@markAsInActive')->name('mark_as_inactive');
     });
     
     Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
@@ -129,6 +133,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/new', 'OrdersController@newOrder')->name('new');
         Route::post('/store', 'OrdersController@store')->name('store');
         Route::post('/manual_assign', 'OrdersController@manualAssign')->name('manual_assign');
+        Route::post('/save_file', 'OrdersController@saveFile')->name('save_file');
         Route::get('/delete/{order}', 'OrdersController@deleteOrder')->name('delete');
         Route::get('/edit/{order}', 'OrdersController@editOrder')->name('edit');
         Route::get('/view/{order}', 'OrdersController@viewOrder')->name('view');

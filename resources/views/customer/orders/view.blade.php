@@ -650,7 +650,7 @@
         });
 
         function thunderListen(conv_id){
-            console.log(conv_id)
+            console.log(conv_id);
             Thunder.connect("157.230.213.22:8080", "MhPN3ItPqy", [conv_id,"homepro_user_{{Auth::id()}}"], {log: true});
             Thunder.listen(function(message) {
                 window.message_area.getConversations();

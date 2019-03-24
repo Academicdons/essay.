@@ -248,6 +248,46 @@
     </div>
     <!-- /.container -->
   </div>
+
+  <div class="modal " tabindex="-1" role="dialog" id="announcement_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Picture</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="box-body">
+            <table class="table table-responsive">
+           <thead>
+             <tr>
+               <th>Title</th>
+               <th>New Article</th>
+             </tr>
+           </thead>
+              <tbody>
+              <tr v-for="announcement in announcements">
+                <td>   @{{ announcement.title }}</td>
+                <td>   @{{ announcement.news_article }}</td>
+              </tr>
+              </tbody>
+            </table>
+
+
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <a href="{{route('writer.change_announcement')}}"  class="btn btn-primary" >Mark As Read</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="container">
@@ -276,6 +316,40 @@
 
 
 @yield('script')
+{{--handle the announcements here--}}
+<script type="application/javascript">
 
+  let modal_content=new Vue({
+    el:'#announcement_modal',
+    data:{
+      announcements:[],
+    },
+    created:function(){
+      let url='{{route('writer.check_announcements')}}';
+      let me=this;
+      axios.get(url)
+              .then(res=>{
+              me.announcements=res.data.announcements;
+          console.log('{{session()->get('markedRead')}}');
+                if (res.data.announcements.length===0  ){
+
+              }else{
+                  if ('{{session()->get('markedRead')}}'==='yes'){
+
+                  } else{
+                    //show the modal
+                    $('#announcement_modal').modal('show');
+
+                  }
+              }
+              })
+    },
+    methods:{
+
+
+    }
+  });
+
+</script>
 </body>
 </html>

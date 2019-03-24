@@ -79,7 +79,47 @@
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">Order No. {{ $order->order_no }}</h3>
-                        <div class="box-tools">
+                        <div class="box-tools" id="bid_area">
+                            @if($order->status==0)
+                            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#rateModal"  @click="getBids('{{$order->id}}')">View Placed Bids</button>
+                            @endif
+                            <div class="modal" id="rateModal" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Rate the quality of service</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                    <table class="table table-responsive table-striped">
+                                        <thead>
+                                        <tr>
+                                         <td>   User Name</td>
+                                        <td>Order Id</td>
+                                        <td>Action</td>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <tr v-for="bid in bids">
+                                        <td>@{{ bid.user_id }}</td>
+                                        <td>@{{ bid.order_id }}</td>
+                                        <td><a :href="{{url('admin/order/assign_user_bid/'}}' . '/'. bid->order_id .'/'.  bid->user_id"  class="btn btn-primary">Assign Order</a></td>
+
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <a href="{{ route('admin.orders.index') }}" class="btn btn-xs btn-info">Back To Orders</a>
                             <a href="javascript:;" class="btn btn-xs btn-warning" onclick="manualAssign()">Manual assign</a>
                         </div>
@@ -370,6 +410,26 @@
 
     <script type="text/javascript">
 
+        let bid_area=new Vue({
+
+            el:'#bid_area',
+            data:{
+                bids:[]
+            },
+            methods:{
+                getBids:function (order_id) {
+                    // alert(order_id);
+                    let url='{{url('admin/orders/get_order_bids')}}'+'/'+order_id;
+                    let me=this;
+                    axios.get(url)
+                        .then(res=>{
+                            me.bids=res.data.bids;
+                        })
+
+                }
+
+            }
+        });
         function assignOrder() {
 
             if(window.selected==null){

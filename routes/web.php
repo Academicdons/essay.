@@ -96,6 +96,7 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
         Route::get('/available_orders_json','OrdersController@availableOrdersJson');
         Route::get('view/{order}','OrdersController@view')->name('view');
         Route::post('review','OrdersController@review')->name('review');
+        Route::get('place_bid/{order_id}','OrdersController@placeBid')->name('place_bid');
 
 
     });
@@ -141,6 +142,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/chat_data/{order}', 'OrdersController@getChatData')->name('chat_data');
         Route::get('/messages/{order}', 'OrdersController@getChatMessages')->name('messages');
         Route::post('/save_messages/{order}', 'OrdersController@saveChatMessage')->name('save_messages');
+        Route::get('/get_order_bids/{order}', 'OrdersController@getOrderBids')->name('get_order_bids');
+        Route::get('/assign_user_bid/{order_id}/{user_id}', 'OrdersController@assignUserBid')->name('assign_user_bid');
         //send email
         Route::post('send_email_','OrdersController@sendEmail');
     });
@@ -178,5 +181,15 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/delete/{paperType}', 'PaperTypeController@deletePaperType')->name('delete');
         Route::get('/', 'DashboardController@paperType')->name('index');
         Route::get('/edit/{paperType}', 'PaperTypeController@editPaperType');
+
+    });
+
+
+    //blog routes
+    Route::group(['prefix'=>'blog','as'=>'blog.'],function (){
+       Route::get('new','BlogController@newBlogView')->name('new');
+       Route::get('all_blogs','BlogController')->name('all_blogs');
+       Route::post('new_blog','BlogController@newBlog')->name('new_blog');
+
     });
 });

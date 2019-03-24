@@ -113,6 +113,7 @@
                 </li>
                 <li class="active"><a href="{{ route('admin.announce.index') }}"><i class="fa fa-microphone"></i> Announcements</a></li>
                 <li class="active"><a href="{{ route('admin.orders.index') }}"><i class="fa fa-list"></i> Orders</a></li>
+                <li class="active"><a href="{{ route('admin.blog.all_blogs') }}"><i class="fa fa-list"></i> Blogs</a></li>
 
 
                 <li class="active treeview menu-open">

@@ -3,7 +3,8 @@
 @section('content')
     <p>Dear {{$user->name}},</p>
     <p>
-        {!!  $message_to_user!!}
+        Your account has been approved. Please login.
+
     </p>
 
-    @endsection
+@endsection

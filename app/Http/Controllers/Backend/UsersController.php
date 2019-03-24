@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Jobs\SendApproveEmailJob;
+use App\Jobs\SendEssyMail;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -27,8 +29,14 @@ class UsersController extends Controller
 
     public function toggleStatus($status, User $user)
     {
+
         $user->account_status=$status;
         $user->save();
+
+        if ($user->account_status==true){
+            $this->dispatch(new SendApproveEmailJob($user));
+
+        }
         return back();
     }
 

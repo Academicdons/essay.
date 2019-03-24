@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attachment;
+use App\Models\Blog;
 use App\Models\EducationLevel;
 use App\Models\Group;
 use App\Plugins\Thunderpush;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 use Webpatser\Uuid\Uuid;
 use GuzzleHttp\Client;
 
@@ -36,6 +38,21 @@ class GeneralController extends Controller
 //            "data"=>null
 //        ]));
 
+
+    }
+
+    public function articles()
+    {
+        $order = Blog::orderBy('id','desc')->get();
+        return View::make('customer.articles.all')->withArticles($order);
+
+    }
+
+
+    public function readArticle($title)
+    {
+        $article = Blog::where('title',$title)->first();
+        return View::make('customer.articles.read')->withArticle($article);
 
     }
 

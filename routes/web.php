@@ -41,12 +41,19 @@ Route::get('delete_order_upload/{file}','GeneralController@deleteSessionFile')->
 Route::get('customer/orders/create','Customer\OrdersController@create')->name('customer.orders.create');
 Route::post('customer/orders/store','Customer\OrdersController@store')->name('customer.orders.store');
 
+Route::group([],function () {
+    Route::get('articles','GeneralController@articles')->name('articles');
+    Route::get('read_article/{title}','GeneralController@readArticle')->name('read_article');
+
+});
+
 //home profile routes
 Route::group(['middleware'=>['auth','account_status']],function (){
     Route::get('profile','HomeController@profileView')->name('profile');
     Route::post('save_profile','HomeController@saveProfile')->name('save_profile');
     Route::post('update_picture','HomeController@updatePicture')->name('update_picture');
 });
+
 Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],function(){
 
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){

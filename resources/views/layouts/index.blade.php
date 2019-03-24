@@ -212,6 +212,11 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{{url('/')}}">Home <span class="sr-only">(current)</span></a>
                 </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{route('articles')}}">Articles <span class="sr-only">(current)</span></a>
+                </li>
+
                 @if(\Illuminate\Support\Facades\Auth::check())
 
                 <li class="nav-item">

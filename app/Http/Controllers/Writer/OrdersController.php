@@ -120,7 +120,6 @@ class OrdersController extends Controller
         //dispatch the job
         $this->dispatch(new AssignOrderMail($client,$message));
 
-
         return redirect()->back();
     }
 }

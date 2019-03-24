@@ -247,6 +247,7 @@ class OrdersController extends Controller
     {
         //create the assignment
         $assignment=new Assignment();
+        $assignment->id=Uuid::generate()->string;
         $assignment->order_id=$order_id;
         $assignment->user_id=$user_id;
         $assignment->save();

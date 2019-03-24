@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Writer;
 
+use App\Models\Bid;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Order;
@@ -92,5 +93,18 @@ class OrdersController extends Controller
     public function review(Request $request)
     {
         //TODO add the review data here from the writer
+    }
+
+    public function placeBid($order_id)
+    {
+        $bid=Bid::where('order_id',$order_id)->where('user_id',Auth::id())->first();
+        if ($bid==null){
+            $bid=new Bid();
+            $bid->order_id=$order_id;
+            $bid->user_id=Auth::id();
+            $bid->save();
+        }
+
+        return redirect()->back();
     }
 }

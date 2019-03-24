@@ -4,12 +4,12 @@
 
     <section class="content-header">
         <h1>
-            Announcement
-            <small>Control panel</small>
+            Blog
+            <small>New Blog</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Announcement</li>
+            <li class="active">Blog</li>
         </ol>
     </section>
 
@@ -18,13 +18,13 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Create/Edit Announcement</h3>
+                        <h3 class="box-title">Create/Edit Blog</h3>
                         <div class="box-tools">
-                            <a href="{{ route('admin.announce.index') }}" class="btn btn-sm btn-primary">Back to Announcement</a>
+                            <a href="{{ route('admin.blog.all_blogs') }}" class="btn btn-sm btn-primary">Back to Blogs</a>
                         </div>
                     </div>
                     <div class="box-body">
-                        <form role="form" method="post" action="{{ route('admin.announce.store') }}" enctype="multipart/form-data">
+                        <form role="form" method="post" action="{{ route('admin.blog.new_blog') }}" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="id" value="{{old('id')}}">
 
@@ -37,9 +37,9 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="notes">News Article</label>
-                                        <textarea rows="12" id="notes" class="form-control" name="news_article">{{old('news_article')}}</textarea>
-                                        <span class="form-control-feedback text-danger text-sm">{{($errors->has('news_article')?$errors->first('news_article'):"")}}</span>
+                                        <label for="description">Description</label>
+                                        <textarea rows="12" id="description" class="form-control" name="description">{{old('description')}}</textarea>
+                                        <span class="form-control-feedback text-danger text-sm">{{($errors->has('description')?$errors->first('description'):"")}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
 
 @section('script')
     <script src="{{ asset('bower_components/ckeditor/ckeditor.js') }}"></script>
-    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/wysihtml5/0.3.0/wysihtml5.min.js"></script>--}}
+
     <script>
         $(function () {
             CKEDITOR.replace('notes')

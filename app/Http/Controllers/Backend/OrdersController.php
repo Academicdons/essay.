@@ -6,6 +6,7 @@ use App\Jobs\AssignOrderMail;
 use App\Jobs\ThunderPushAsync;
 use App\Mail\AssignMail;
 use App\Mail\EssyMail;
+use App\Models\Bid;
 use App\Models\Conversation;
 use App\Models\Discipline;
 use App\Models\EducationLevel;
@@ -230,6 +231,32 @@ class OrdersController extends Controller
 
     public function saveFile(Request $request){
 
+    }
+
+    public function getOrderBids($order)
+    {
+        $bids=Bid::where('order_id',$order)->get();
+//        $bids=Bid::all();
+
+        return \response()->json([
+            'bids'=>$bids
+        ]);
+    }
+
+    public function assignUserBid($order_id,$user_id)
+    {
+        //create the assignment
+        $assignment=new Assignment();
+        $assignment->order_id=$order_id;
+        $assignment->user_id=$user_id;
+        $assignment->save();
+
+        //assign the order the assignment id
+        $order=Order::find($order_id);
+        $order->active_assignment=$assignment->id;
+        $order->save();
+
+        return \redirect()->back();
     }
 }
 

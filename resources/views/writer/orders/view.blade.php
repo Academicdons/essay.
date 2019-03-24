@@ -61,7 +61,16 @@
                         <h3 class="box-title">Order No. {{ $order->order_no }}</h3>
                         <div class="box-tools">
                             <a href="{{ route('admin.orders.index') }}" class="btn btn-xs btn-info">Back To Orders</a>
+
+                            @if($order->status==1)
                             <a href="#" class="btn btn-xs btn-success" data-toggle="modal" data-target="#rateModal">Mark as done</a>
+                            @elseif($order->status==0)
+                                @if(\App\Models\Bid::where('order_id',$order->id)->where('user_id',\Illuminate\Support\Facades\Auth::id())->first()==null)
+                                <a href="{{url('writer/orders/place_bid/'.$order->id)}}" class="btn btn-xs btn-success" >Bid</a>
+                                @else
+                                    <span class="badge badge-success">Already Bid</span>
+                                    @endif
+                            @endif
                         </div>
                     </div>
                     <!-- /.box-header -->

@@ -68,4 +68,9 @@ class Order extends Model
     {
         return $this->hasMany(Revision::class,'order_id','id');
     }
+
+    public function Bid()
+    {
+        return $this->hasMany(Bid::class,'order_id','id');
+    }
 }

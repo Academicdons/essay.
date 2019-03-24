@@ -20,7 +20,6 @@ class CheckWriterAccountStatus
         if ( $request->user()->account_status==false ){
             Auth::logout();
             return redirect('/');
-//            return redirect('dashboard');
         }else{
             return $next($request);
 

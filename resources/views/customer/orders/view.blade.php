@@ -400,7 +400,7 @@
                         </div>
                         <div class="title">Order Chat</div>
                     </div>
-                    <ul class="messages">
+                    <ul class="messages" id="messages">
                         <li v-bind:class="getMessageClass(msg.user_id)" v-for="msg in messages">
                             <div class="avatar">
                             </div>
@@ -626,7 +626,10 @@
                             me.conversation_user  = res.data.conversation_user;
                             me.messages  = res.data.messages;
                             me.message.conversation_id  = res.data.conversation.id;
+                            console.log(res.data.conversation.id)
                             thunderListen(res.data.conversation.id)
+                            var elem = document.getElementById('messages');
+                            elem.scrollTop = elem.scrollHeight;
                         })
 
                 },
@@ -654,7 +657,6 @@
             Thunder.connect("157.230.213.22:8080", "MhPN3ItPqy", [conv_id,"homepro_user_{{Auth::id()}}"], {log: true});
             Thunder.listen(function(message) {
                 window.message_area.getConversations();
-                // alert(message);
 
             });
         }

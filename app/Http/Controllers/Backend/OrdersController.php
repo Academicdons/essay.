@@ -163,7 +163,7 @@ class OrdersController extends Controller
                 $conversation = Conversation::firstOrCreate(['user_id' => $assignment->user_id,'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $assignment->user_id,'order_id'=>$order->id]);
                 return \response()->json([
                     'conversation'=>$conversation,
-                    'messages'=>$conversation->messages()->with('user')->get(),
+                    'messages'=>$conversation->messages()->orderBy('created_at','asc')->with('user')->get(),
                     'conversation_user'=>$conversation->user
                 ]);
 
@@ -178,7 +178,7 @@ class OrdersController extends Controller
                 $conversation = Conversation::firstOrCreate(['user_id' => $order->created_by,'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $order->created_by,'order_id'=>$order->id]);
                 return \response()->json([
                     'conversation'=>$conversation,
-                    'messages'=>$conversation->messages()->with('user')->get(),
+                    'messages'=>$conversation->messages()->orderBy('created_at','asc')->with('user')->get(),
                     'conversation_user'=>$conversation->user
                 ]);
 
@@ -189,7 +189,7 @@ class OrdersController extends Controller
             $conversation = Conversation::firstOrCreate(['user_id' => $request->input('user'),'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $request->input('user'),'order_id'=>$order->id]);
             return \response()->json([
                 'conversation'=>$conversation,
-                'messages'=>$conversation->messages()->with('user')->get(),
+                'messages'=>$conversation->messages()->orderBy('created_at','asc')->with('user')->get(),
                 'conversation_user'=>$conversation->user
             ]);
 

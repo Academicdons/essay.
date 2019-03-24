@@ -484,7 +484,9 @@
             $('#assignModal').modal('show');
         }
 
-       let chatVue = new Vue({
+
+        let load_mode = 1;
+       window.chatVue = new Vue({
             'el':'#chat_area',
             data:{
                 assignments:[],
@@ -508,6 +510,7 @@
                         })
                 },
                 getMessages(mode){
+                    load_mode = mode;
                     let url = '{{route('admin.orders.messages',$order->id)}}'+"?mode="+mode;
                     let me = this;
                     axios.get(url)
@@ -568,7 +571,7 @@
             console.log(conv_id)
             Thunder.connect("157.230.213.22:8080", "MhPN3ItPqy", [conv_id,"homepro_user_{{Auth::id()}}"], {log: true});
             Thunder.listen(function(message) {
-                // chatVue.getConversations();
+                window.chatVue.getMessages(load_mode)
             });
         }
 

@@ -8,21 +8,18 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class AssignMail extends Mailable
+class ApproveMail extends Mailable
 {
     use Queueable, SerializesModels;
     protected $user;
-    protected $message;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user,$message)
+    public function __construct(User $user)
     {
-        //
         $this->user=$user;
-        $this->message=$message;
     }
 
     /**
@@ -33,7 +30,7 @@ class AssignMail extends Mailable
     public function build()
     {
         return $this->to($this->user->email)
-            ->with(['user'=>$this->user,'message_to_user'=>$this->message])
-            ->view('mails.assignment_mail');
+            ->with(['user'=>$this->user])
+            ->view('mails.approve');
     }
 }

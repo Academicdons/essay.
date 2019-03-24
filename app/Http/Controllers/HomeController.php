@@ -29,7 +29,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('writer.orders.available');
+//        return view('home');
     }
 
     public function profileView()

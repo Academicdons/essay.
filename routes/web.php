@@ -42,7 +42,7 @@ Route::get('customer/orders/create','Customer\OrdersController@create')->name('c
 Route::post('customer/orders/store','Customer\OrdersController@store')->name('customer.orders.store');
 
 //home profile routes
-Route::group(['middleware'=>'auth'],function (){
+Route::group(['middleware'=>['auth','account_status']],function (){
     Route::get('profile','HomeController@profileView')->name('profile');
     Route::post('save_profile','HomeController@saveProfile')->name('save_profile');
     Route::post('update_picture','HomeController@updatePicture')->name('update_picture');
@@ -63,7 +63,7 @@ Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],fu
         Route::get('delete_file','OrdersController@deleteFile')->name('delete_file');
     });
 
-    Route::group(['middleware'=>'auth'],function (){
+    Route::group(['middleware'=>['auth','account_status']],function (){
 
         #Reoutes regarding to orders
         Route::group(['as'=>'orders.','prefix'=>'orders'],function () {
@@ -81,7 +81,7 @@ Route::get('/testing', function (){
 
 
 #Routes controlling writers workspace
-Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 'middleware' => ['auth']],function(){
+Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 'middleware' => ['auth','account_status']],function(){
 
     #Orders routes
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
@@ -110,7 +110,7 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
 
 
 //Backend Routes:
-Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', 'middleware' => ['admin', 'auth']], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', 'middleware' => ['admin', 'auth','account_status']], function () {
     Route::get('/', 'DashboardController@index')->name('index');
     Route::get('/discipline/index', 'DashboardController@discipline')->name('discipline');
     Route::get('/education_level/index', 'DashboardController@educationLevel')->name('education_level');

@@ -34,9 +34,10 @@ class GeneralController extends Controller
         /*
          * check subdomain
          */
-        $subdomain = Route::input('subdomain');
-        Log::warning($subdomain);
-        if($subdomain == "writers"){
+        $domain = explode('.', \Request::getHost())[0];
+
+        Log::warning($domain);
+        if($domain == "writers"){
             return View::make('welcome_writer')->withOrders($latest);
         }
 

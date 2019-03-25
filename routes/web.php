@@ -103,6 +103,7 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
         Route::get('view/{order}','OrdersController@view')->name('view');
         Route::post('review','OrdersController@review')->name('review');
         Route::get('place_bid/{order_id}','OrdersController@placeBid')->name('place_bid');
+        Route::get('mark_as_complete/{order}','OrdersController@markAsComplete')->name('mark_as_complete');
 
 
     });

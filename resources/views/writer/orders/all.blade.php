@@ -18,7 +18,7 @@
     <section class="col-sm-10 col-lg-offset-1" id="orders_area">
         <div class="row">
             <div class="col-md-3">
-                <a href="compose.html" class="btn btn-primary btn-block margin-bottom">Compose</a>
+                {{--<a href="compose.html" class="btn btn-primary btn-block margin-bottom">Compose</a>--}}
 
                 <div class="box box-solid">
                     <div class="box-header with-border">
@@ -36,7 +36,7 @@
                             <li><a href="#" @click="getUserOrders(1)"><i class="fa fa-envelope-o" ></i> In Progress</a></li>
                             <li><a href="#" @click="getUserOrders(2)"><i class="fa fa-file-text-o" ></i> Revision</a></li>
                             <li><a href="#" @click="getUserOrders(3)"><i class="fa fa-filter" ></i> Complete </a>
-                            <li><a href="#" @click="getUserOrders(4)"><i class="fa fa-filter" ></i> Finished </a>
+                            <li><a href="#" @click="getUserOrders(4)"><i class="fa fa-address-book-o" ></i> Finished </a>
                             </li>
                             {{--<li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>--}}
                         </ul>
@@ -72,7 +72,7 @@
 
                         <div class="box-tools pull-right">
                             <div class="has-feedback">
-                                <input type="text" class="form-control input-sm" placeholder="Search Mail">
+                                <input type="text" class="form-control input-sm" placeholder="Search Orders">
                                 <span class="glyphicon glyphicon-search form-control-feedback"></span>
                             </div>
                         </div>
@@ -108,11 +108,12 @@
                                 <tr v-for="(order,index) in orders">
                                     <td>@{{ index+1 }}<div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
                                     <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">@{{ order.client.name }}</a></td>
+                                    <td class="mailbox-name"><a href="#">@{{ order.client.name }}</a></td>
                                     <td class="mailbox-subject"><b>@{{ order.title }}</b> - Trying to find a solution to this problem...
                                     </td>
                                     <td class="mailbox-attachment"></td>
                                     <td class="mailbox-date" v-if="order.status==2"><button class="btn btn-primary btn-sm" data-target="#edit_modal" data-toggle="modal" @click="getRevisions(order.revision)">View Comments</button> </td>
+                                    <td class="mailbox-date" v-if="order.status==1"><a :href="'{{url('/writer/orders/mark_as_complete')}}/' + order.id" class="btn btn-primary btn-sm" >Mark As Complete</a> </td>
                                     <td class="mailbox-date">
                                         <a :href="'{{url('/writer/orders/view')}}/' + order.id" class="btn btn-xs btn-default">Read more</a>
                                     </td>

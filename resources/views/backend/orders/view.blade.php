@@ -81,14 +81,16 @@
                         <h3 class="box-title">Order No. {{ $order->order_no }}</h3>
                         <div class="box-tools" id="bid_area">
                             <a href="{{ route('admin.orders.index') }}" class="btn btn-xs btn-info">Back To Orders</a>
-                            @if($order->status==0)
+                         
+                            @if($order->status==0 && $order->active_assignment=='')
+
                             <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#rateModal"  @click="getBids('{{$order->id}}')">View Placed Bids</button>
                             @endif
                             <div class="modal" id="rateModal" tabindex="-1" role="dialog">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Rate the quality of service</h5>
+                                            <h5 class="modal-title">Assign Writer an Order</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>

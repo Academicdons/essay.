@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Writer;
 
+use App\Jobs\AssignOrderMail;
 use App\Models\Bid;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Order;
+use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -104,6 +106,19 @@ class OrdersController extends Controller
             $bid->user_id=Auth::id();
             $bid->save();
         }
+
+        return redirect()->back();
+    }
+
+    public function markAsComplete(Order $order)
+    {
+        $order->status=3;
+        $order->save();
+
+        $client=User::where('created_by',$order->created_by)->first();
+        $message='The order' . $order->order_no. ' has been completed';
+        //dispatch the job
+        $this->dispatch(new AssignOrderMail($client,$message));
 
         return redirect()->back();
     }

@@ -154,6 +154,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::post('/create_bargain/{order}', 'OrdersController@saveBargain')->name('create_bargain');
         Route::get('/get_order_bids/{order}', 'OrdersController@getOrderBids')->name('get_order_bids');
         Route::get('/assign_user_bid/{order_id}/{user_id}', 'OrdersController@assignUserBid')->name('assign_user_bid');
+        Route::post('/upload_file/{order}', 'OrdersController@saveFile')->name('upload_file');
+
+
         //send email
         Route::post('send_email_','OrdersController@sendEmail');
     });

@@ -253,9 +253,9 @@
                                         Any topic (writer's choice)
                                     </p>
                                 </div>
-                                {{--<div class="col-sm-12">--}}
-                                    {{--<div class="pull-right">--}}
-                                        {{--<form action="https://academicdons.com/admin/save_file" method="post" enctype="multipart/form-data">--}}
+                                <div class="col-sm-12">
+                                    <div class="pull-right">
+                                        {{--<form action="{{route('writer.orders.upload_file',$order->id)}}" method="post" enctype="multipart/form-data">--}}
                                             {{--<input type="hidden" name="_token" value="zKZlLTxABOWHmdOl56Lz1RHrXQilvvfC7IlAsxTF">--}}
                                             {{--<input type="hidden" name="task_id" value="639">--}}
                                             {{--<input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name">--}}
@@ -263,10 +263,16 @@
                                             {{--<input type="file" name="file" id="file" style="display: none">--}}
                                             {{--<button class="btn btn-primary btn-xs" type="submit"><i class="fa fa-upload"></i></button>--}}
                                         {{--</form>--}}
+                                        <form action="{{route('admin.orders.upload_file',$order->id)}}" method="post" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name" required>
+                                            <label for="file" class="btn btn-xs btn-warning">Choose file</label>
+                                            <input type="file" name="file" id="file" style="display: none" required>
+                                            <button class="btn btn-primary btn-xs" type="submit"><i class="fa fa-upload"></i></button>
+                                        </form>
+                                    </div>
 
-                                    {{--</div>--}}
-
-                                {{--</div>--}}
+                                </div>
                                 <div class="col-sm-12">
 
 

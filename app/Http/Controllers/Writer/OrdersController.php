@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Writer;
 
 use App\Jobs\AssignOrderMail;
+use App\Models\Attachment;
 use App\Models\Bid;
 use App\Models\Conversation;
 use App\Models\Message;
@@ -11,9 +12,12 @@ use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 use Webpatser\Uuid\Uuid;
-
+use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 class OrdersController extends Controller
 {
     //
@@ -74,6 +78,37 @@ class OrdersController extends Controller
 
     public function saveFile(Request $request,Order $order)
     {
+
+        if($request->hasFile('file')) {
+            if (!$request->file('file')->isValid()) {
+                return redirect()->back()->withErrors(['error'=>'The picture is invalid']);
+            } else {
+
+                //save picture
+                $image=Input::file('file');
+                $filename=time() . '.' . $image->getClientOriginalExtension();
+                $path = public_path('uploads/files/order_files/');
+                if(!File::exists($path)) {File::makeDirectory($path, $mode = 0777, true, true);}
+
+
+
+                $image->move($path,$filename);
+
+
+
+            $attachment=new Attachment();
+            $attachment->file_name=$filename;
+            $attachment->display_name=$request->display_name;
+            $attachment->order_id=$order->id;
+            $attachment->save();
+
+                return redirect()->back();
+            }
+        }else{
+            return redirect()->back()->withErrors(['error'=>'The picture is absent']);
+
+        }
+
 
     }
 

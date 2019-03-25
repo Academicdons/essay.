@@ -31,6 +31,9 @@ class GeneralController extends Controller
     {
         $latest = Order::orderBy('created_at','desc')->has('Education')->limit(5)->get();
 
+        /*
+         * check subdomain
+         */
         $subdomain = Route::input('subdomain');
         if($subdomain == "writers"){
             return View::make('welcome_writer')->withOrders($latest);

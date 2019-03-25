@@ -253,20 +253,20 @@
                                         Any topic (writer's choice)
                                     </p>
                                 </div>
-                                <div class="col-sm-12">
-                                    <div class="pull-right">
-                                        <form action="https://academicdons.com/admin/save_file" method="post" enctype="multipart/form-data">
-                                            <input type="hidden" name="_token" value="zKZlLTxABOWHmdOl56Lz1RHrXQilvvfC7IlAsxTF">
-                                            <input type="hidden" name="task_id" value="639">
-                                            <input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name">
-                                            <label for="file" class="btn btn-xs btn-warning">Choose file</label>
-                                            <input type="file" name="file" id="file" style="display: none">
-                                            <button class="btn btn-primary btn-xs" type="submit"><i class="fa fa-upload"></i></button>
-                                        </form>
+                                {{--<div class="col-sm-12">--}}
+                                    {{--<div class="pull-right">--}}
+                                        {{--<form action="https://academicdons.com/admin/save_file" method="post" enctype="multipart/form-data">--}}
+                                            {{--<input type="hidden" name="_token" value="zKZlLTxABOWHmdOl56Lz1RHrXQilvvfC7IlAsxTF">--}}
+                                            {{--<input type="hidden" name="task_id" value="639">--}}
+                                            {{--<input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name">--}}
+                                            {{--<label for="file" class="btn btn-xs btn-warning">Choose file</label>--}}
+                                            {{--<input type="file" name="file" id="file" style="display: none">--}}
+                                            {{--<button class="btn btn-primary btn-xs" type="submit"><i class="fa fa-upload"></i></button>--}}
+                                        {{--</form>--}}
 
-                                    </div>
+                                    {{--</div>--}}
 
-                                </div>
+                                {{--</div>--}}
                                 <div class="col-sm-12">
 
 
@@ -289,8 +289,9 @@
                                                     <td>-</td>
                                                     <td>-</td>
                                                     <td>{{$attachment->created_at->diffForHumans()}}</td>
-                                                    <td>docx</td>
-                                                    <td><a href="https://academicdons.com/download/1258" class="btn btn-warning btn-xs">
+                                                    <td>{{current(array_reverse(explode('.',$attachment->file_name)))}}</td>
+
+                                                    <td><a href="{{asset('uploads/files/order_files/'. $attachment->file_name)}}" class="btn btn-warning btn-xs" download>
                                                             <i class="fa fa-cloud-download"></i>
                                                         </a></td>
                                                 </tr>

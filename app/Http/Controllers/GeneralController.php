@@ -29,8 +29,13 @@ class GeneralController extends Controller
     public function index()
     {
         $latest = Order::orderBy('created_at','desc')->has('Education')->limit(5)->get();
+
+        $subdomain = Route::input('subdomain');
+        if($subdomain == "writers"){
+            return View::make('welcome_writer')->withOrders($latest);
+        }
+
         return View::make('welcome')->withOrders($latest);
-        return View::make('welcome_writer')->withOrders($latest);
     }
 
     public function registerWriter()

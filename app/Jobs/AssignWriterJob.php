@@ -35,8 +35,6 @@ class AssignWriterJob implements ShouldQueue
      */
     public function handle()
     {
-        //
-        //order users according to their ratings
         $writers=User::where('user_type',1)->orderBy('ratings','desc')->get();
         //loop through the writers assigning them the orders
         foreach($writers as $writer){
@@ -54,15 +52,13 @@ class AssignWriterJob implements ShouldQueue
             if ($order==null){
                 return;
             }else{
-
-//      //create the assignment
                 $assignment=new Assignment();
                 $assignment->id=Uuid::generate()->string;
                 $assignment->order_id=$order->id;
                 $assignment->user_id=$writer->id;
                 $assignment->save();
 
-                //        //assign the order the assignment id
+                //assign the order the assignment id
                 $order=Order::find($order->id);
                 $order->active_assignment=$assignment->id;
                 $order->save();

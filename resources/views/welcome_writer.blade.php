@@ -1,4 +1,4 @@
-@extends('layouts.index')
+@extends('layouts.index_writer')
 
 @section('style')
 

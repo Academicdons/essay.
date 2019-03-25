@@ -82,7 +82,7 @@
                         <div class="box-tools" id="bid_area">
                             <a href="{{ route('admin.orders.index') }}" class="btn btn-xs btn-info">Back To Orders</a>
                          
-                            @if($order->status==0 && $order->active_assignment=='')
+                            @if($order->status==0 )
 
                             <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#rateModal"  @click="getBids('{{$order->id}}')">View Placed Bids</button>
                             @endif

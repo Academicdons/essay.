@@ -11,9 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'GeneralController@index');
+Route::get('/register_writer', 'GeneralController@registerWriter');
 //terms and conditions
 Route::get('terms',function (){
    return view('terms_and_condition');
@@ -41,12 +40,19 @@ Route::get('delete_order_upload/{file}','GeneralController@deleteSessionFile')->
 Route::get('customer/orders/create','Customer\OrdersController@create')->name('customer.orders.create');
 Route::post('customer/orders/store','Customer\OrdersController@store')->name('customer.orders.store');
 
+Route::group([],function () {
+    Route::get('articles','GeneralController@articles')->name('articles');
+    Route::get('read_article/{title}','GeneralController@readArticle')->name('read_article');
+
+});
+
 //home profile routes
 Route::group(['middleware'=>['auth','account_status']],function (){
     Route::get('profile','HomeController@profileView')->name('profile');
     Route::post('save_profile','HomeController@saveProfile')->name('save_profile');
     Route::post('update_picture','HomeController@updatePicture')->name('update_picture');
 });
+
 Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],function(){
 
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
@@ -142,7 +148,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/reviews/{order}', 'OrdersController@orderReviews')->name('reviews');
         Route::get('/chat_data/{order}', 'OrdersController@getChatData')->name('chat_data');
         Route::get('/messages/{order}', 'OrdersController@getChatMessages')->name('messages');
+        Route::get('/bargains/{order}', 'OrdersController@bargains')->name('bargains');
+        Route::get('/delete_bargain/{bargain}', 'OrdersController@deleteBargains')->name('delete_bargain');
         Route::post('/save_messages/{order}', 'OrdersController@saveChatMessage')->name('save_messages');
+        Route::post('/create_bargain/{order}', 'OrdersController@saveBargain')->name('create_bargain');
         Route::get('/get_order_bids/{order}', 'OrdersController@getOrderBids')->name('get_order_bids');
         Route::get('/assign_user_bid/{order_id}/{user_id}', 'OrdersController@assignUserBid')->name('assign_user_bid');
         //send email

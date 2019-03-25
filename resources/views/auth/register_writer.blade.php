@@ -9,8 +9,7 @@
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
-                        <input type="hidden" name="user_type" value="2">
-
+                        <input type="hidden" name="user_type" value="1">
                         @csrf
                 <div class="row">
                     <div class="form-group col-md-6 col-lg-6 col-sm-12">
@@ -57,6 +56,7 @@
                         </div>
 
                         <div class="form-group col-md-6 col-lg-6 col-sm-12">
+
                             <label for="password" class=" col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
@@ -66,6 +66,7 @@
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                             @endif
+
                         </div>
 
 
@@ -75,6 +76,7 @@
                         <div class="row ">
 
                             <div class="form-group col-md-6 col-lg-6 col-sm-12">
+
                                 <label for="password-confirm" class=" col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
@@ -82,13 +84,16 @@
 
                             <div class="form-group col-md-6 col-lg-6 col-sm-12">
 
+                                <p class="small">
+                                    A writers account allows you to bif for orders and earn money from writing
+                                </p>
                             </div>
 
                         </div>
 
                         <div class="form-group row mb-0">
 
-                              <div class="col-md-6"> <input class="checkbox" type="checkbox">   <h6>  By Clicking the here means you agree with the  </h6><a href="{{url('terms')}}">Terms and Conditions</a>
+                              <div class="col-md-6"> <input class="checkbox" type="checkbox">   <h6>  By registering you agree with the  </h6><a href="{{url('terms')}}">Terms and Conditions</a>
                               </div>
                             <div class="col-md-6 ">
                                 <button type="submit" class="btn btn-primary">

@@ -129,12 +129,6 @@
             border: none;
             background: #888;
         }
-
-        .whyus li{
-
-            margin-top: 15px;
-            font-size: 18px;
-        }
     </style>
 
     @endsection
@@ -149,9 +143,9 @@
             <div class="row mt-5 mb-5">
                 <div class="col-sm-6">
 
-                    <h1 class="heading heading-light">Get Your Paper Done</h1>
+                    <h1 class="heading heading-light">Are you a passionate writer?</h1>
                     <div class="separator"></div>
-                    <h3 class="mt-5">Let professional writers handle your academic paper work
+                    <h3 class="mt-5">Join our network and earn from writing.
                     </h3>
 
 
@@ -168,10 +162,10 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="stats">
-                                <div class="stats__amount">3641</div>
-                                <div class="stats__caption">Loyal customers</div>
+                                <div class="stats__amount">846</div>
+                                <div class="stats__caption">Active writers</div>
                                 <div class="stats__change">
-                                    <div class="stats__value stats__value--positive">+21%</div>
+                                    <div class="stats__value stats__value--positive">+6%</div>
                                     <div class="stats__period">this week</div>
                                 </div>
                             </div>
@@ -179,8 +173,7 @@
                     </div>
 
                     <p class="text-center mt-3">
-                        <a href="{{url('/customer/orders/create')}}" class="button" > Make An Order</a>
-
+                        <a href="{{url('register_writer')}}" class="button" > Become a writer</a>
                     </p>
 
                 </div>
@@ -211,7 +204,8 @@
                     <div class="mt-2">
 
                         <p>
-                            A paper giving you headaches? No need to worry, we are all you need. Register here (insert an arrow pointing the registration tab) and get your paper done by our fast, reliable and experienced writers
+                            Are you a skilled and passionate writer?  want to earn while staying at home? Do you have what it takes? Sign up here and join our team of experienced writers and get paid conveniently through Mpesa or PayPal
+                            Our writing services include:
                         </p>
 
                         <div class="row">
@@ -238,7 +232,7 @@
 
                     </div>
                     <p class="text-center">
-                        <a href="{{url('/customer/orders/create')}}" class="button" > Make An Order</a>
+                        <a href="{{url('/register_writer')}}" class="button" >Become a writer</a>
 
                     </p>
 
@@ -276,7 +270,7 @@
                     <h1 class="heading">About us?</h1>
                 </div>
                 <div class="col-sm-12">
-                    <p>Homework pro writers is an online academic writing and consulting company. Since 2013, we have worked to ensure the highest quality standards of service and offer a stable income for aspiring academic writers. We value our employees, ensure career growth, provide various rewards programs, and 24/7 support.</p>
+                    <p>Homework pro writers is an online academic writing and consulting company. Since 2004, we have worked to ensure the highest quality standards of service and offer a stable income for aspiring academic writers. We value our employees, ensure career growth, provide various rewards programs, and 24/7 support.</p>
                 </div>
             </div>
             <div class="row">
@@ -284,29 +278,29 @@
                     <p class="icon"><i class="fa fa-edit"></i></p>
                     <h5 class="about-title mt-2">Zero plagiarism</h5>
                     <p class="mt-2">
-                        Our writers come up with original work that is verified by our quality control team to ensure originality
+                        Our customers expect nothing less than your original work. Any plagiarism is penalised.
                     </p>
                 </div>
                 <div class="col-sm-3">
                     <p class="icon"><i class="fa fa-briefcase"></i></p>
                     <h5 class="about-title mt-2">Professional work</h5>
                     <p class="mt-2">
-                        At any level; univesity, masters, college, the work our writers give is upto standards
+                        Work submitted should conform to instructions and any formats of writing given
                     </p>
                 </div>
                 <div class="col-sm-3">
                     <p class="icon"><i class="fa fa-comment"></i></p>
                     <h5 class="about-title mt-2">Realtime chat</h5>
                     <p class="mt-2">
-                        Ensure constant communication with the writer via live chat and ensure all your needs are met
+                        Ensure constant communication with the client via live chat and ensure all needs are met
                     </p>
 
                 </div>
                 <div class="col-sm-3">
                     <p class="icon"><i class="fa fa-google-wallet"></i></p>
-                    <h5 class="about-title mt-2">Pay Easy</h5>
+                    <h5 class="about-title mt-2">Get paid</h5>
                     <p class="mt-2">
-                        Use your favorite means of payment to pay for your order
+                        Get conveniently paid through bank, paypal or M-Pesa
                     </p>
 
                 </div>
@@ -326,27 +320,27 @@
                 <div class="col-sm-3 text-center">
                     <img src="{{asset('images/signup.png')}}" class="img-fluid" alt="">
                     <h4 class="mt-3">Sign up</h4>
-                    <p class="mt-3">Get started by submitting a form in less than a minutes.
+                    <p class="mt-3">Get started by submitting a form in less than 5 minutes.
                     </p>
                 </div>
 
                 <div class="col-sm-3 text-center">
                     <img src="{{asset('images/start-career.png')}}" class="img-fluid" alt="">
-                    <h4 class="mt-3">Place your order</h4>
-                    <p class="mt-3">Use our interactive system to request your order.
+                    <h4 class="mt-3">Start career</h4>
+                    <p class="mt-3">Your road to earning begins with receiving a starter kit from.
                     </p>
                 </div>
                 <div class="col-sm-3 text-center">
                     <img src="{{asset('images/show-skill.png')}}" class="img-fluid" alt="">
-                    <h4 class="mt-3">Follow up</h4>
-                    <p class="mt-3">Follow on the progress of your order.
+                    <h4 class="mt-3">Show skills</h4>
+                    <p class="mt-3">Carry out the task in the starter kit and submit it for evaluation.
                     </p>
                 </div>
 
                 <div class="col-sm-3 text-center">
                     <img src="{{asset('images/get-paid.png')}}" class="img-fluid" alt="">
-                    <h4 class="mt-3">Get value</h4>
-                    <p class="mt-3">Our professional strive to give you value for your money.
+                    <h4 class="mt-3">Earn money</h4>
+                    <p class="mt-3">Receive orders, bid for more and get paid
                     </p>
                 </div>
             </div>
@@ -360,19 +354,17 @@
                 <div class="col-sm-6 border-right">
                     <h3>Why choose us</h3>
                     <div class="separator"></div>
-                    <ul class="pr-4 whyus">
-                        <li>We give you quality and original papers at reasonable costs</li>
-                        <li>We have the best writers in the industry.</li>
-                        <li>We are keen to detail</li>
-                        <li>We offer Uncommon work completion qualities maintaining both the superiority of the text as well as the specified deadlines</li>
-                        <li>Have any questions? Live chart</li>
+                    <ul class="pr-4">
+                        <li>we only academic knowledge and experience are needed. No entrance fees</li>
+                        <li>we offer Flexibility - You can work from anywhere during your free time as long as you can access internet.</li>
+                        <li>Very flexible system that shows you the status of your orders and the total amount you have made at any given time.</li>
+                        <li>Guaranteed payments for the quality work via Mpesa and Airtel Money</li>
+                        <li>Initial training and training materials</li>
+                        <li>Round the clock support</li>
+                        <li>A wide variety of orders</li>
+                        <li>No earnings limit</li>
+                        <li>Bonuses for best writers</li>
                     </ul>
-
-
-
-
-
-
 
                 </div>
                 <div class="col-sm-6">
@@ -451,10 +443,6 @@
 
                     <p>
                         Wondering if this job covers your intellectual ambitions? Working with us, you can choose orders of different subjects, deadlines, and levels of complexity. Here is a small portion of what we've offered earlier today.
-                    </p>
-                    <p class="text-center">
-                        <a href="{{url('/customer/orders/create')}}" class="button" > Make An Order</a>
-
                     </p>
 
                 </div>

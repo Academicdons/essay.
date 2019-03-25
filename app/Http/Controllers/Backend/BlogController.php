@@ -23,7 +23,7 @@ class BlogController extends Controller
     public function newBlog(Request $request)
     {
         $this->validate($request,[
-            'title'=>'required',
+            'title'=>'required|unique:blogs',
             'description'=>'required'
         ]);
 

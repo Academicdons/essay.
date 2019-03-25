@@ -33,13 +33,13 @@
                                     <div class="form-group">
                                         <label for="title">Title</label>
                                         <input type="text" name="title" id="title" value="{{ old('title') }}" class="form-control">
-                                        <span class="form-control-feedback text-danger text-sm">{{($errors->has('title')?$errors->first('title'):"")}}</span>
+                                        <p class="text-danger text-sm">{{($errors->has('title')?$errors->first('title'):"")}}</p>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="description">Description</label>
                                         <textarea rows="12" id="description" class="form-control" name="description">{{old('description')}}</textarea>
-                                        <span class="form-control-feedback text-danger text-sm">{{($errors->has('description')?$errors->first('description'):"")}}</span>
+                                        <p class="text-danger text-sm">{{($errors->has('description')?$errors->first('description'):"")}}</p>
                                     </div>
                                 </div>
                             </div>

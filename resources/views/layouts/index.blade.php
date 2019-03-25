@@ -13,6 +13,7 @@
 
 
         <link rel="stylesheet" href="{{asset('bs4/dist/css/bootstrap.css')}}">
+        <link rel="stylesheet" href="{{asset('css/style.css')}}">
         <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
         <style type="text/css">
@@ -202,7 +203,10 @@
     </div>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand brnd" href="#">Homework pro writers</a>
+
+        <a class="navbar-brand brnd" href="#">
+            <img src="{{asset('images/logo2.png')}}" width="30" height="30" alt=""> Homework pro writers
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -212,6 +216,11 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{{url('/')}}">Home <span class="sr-only">(current)</span></a>
                 </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{route('articles')}}">Articles <span class="sr-only">(current)</span></a>
+                </li>
+
                 @if(\Illuminate\Support\Facades\Auth::check())
 
                 <li class="nav-item">
@@ -237,7 +246,6 @@
 
             </ul>
 
-            <a href="{{url('/customer/orders/create')}}" class="btn btn-success my-2 my-sm-0 mr-3" ><i class="fa fa-first-order"></i> Make An Order</a>
 
         @if(!Auth::check())
                 <a href="{{route('register')}}" class="btn btn-success my-2 my-sm-0" ><i class="fa fa-user"></i> Register</a>
@@ -253,60 +261,52 @@
 
     @yield('content')
 
-
-    <section class="footer">
-
+    <footer id="myFooter" class="pt-5">
         <div class="container">
-            <div class="row mt-5 mb-5">
-                <div class="col-sm-6">
-
-
-                    <img src="{{asset('images/logo.png')}}" class="" width="180px" alt="">
-
-
-                    <ul class="bottom-list">
-                        <li><a href=""><i class="fa fa-facebook-square"></i> Facebook</a></li>
-                        <li><a href=""><i class="fa fa-twitter-square"></i> Twitter</a></li>
-                        <li><a href=""><i class="fa fa-reddit-square"></i> Reddit</a></li>
-                    </ul>
-
-                </div>
-                <div class="col-sm-6">
-
-                    <div class="row">
-                        <div class="col-sm-6">
-
-                            <h4>Quick links</h4>
-                            <ul class="bottom-list">
-                                <li><a href=""><i class="fa fa-link"></i> About</a></li>
-                                <li><a href=""><i class="fa fa-link"></i> How it works</a></li>
-                                <li><a href=""><i class="fa fa-link"></i> Register</a></li>
-                                <li><a href=""><i class="fa fa-link"></i> Login</a></li>
-                            </ul>
-
-                        </div>
-                        <div class="col-sm-6">
-
-                            <h4>Contact us</h4>
-                            <ul class="bottom-list">
-                                <li><a href=""><i class="fa fa-envelope"></i> info@gmail.com</a></li>
-                                <li><a href=""><i class="fa fa-phone"></i> +4567029839</a></li>
-                                <li><a href=""><i class="fa fa-money"></i> P.O.BOX 34</a></li>
-                                <li><a href=""><i class="fa fa-globe"></i> www.homeworkpros.com</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
             <div class="row">
-                <div class="col-sm-12">
-                    <p class="text-center mb-3 mt-3" style="color: gray;font-size: 13px">Copyright &copy; Homework pro writers. All right reserved. Designed and maintained by Homework pro</p>
+                <div class="col-sm-3">
+                    <h2 class="logo"><a href="#"><img src="{{asset('images/logo.png')}}" class="img-fluid" alt=""></a></h2>
+                </div>
+                <div class="col-sm-2">
+                    <h5>Get started</h5>
+                    <ul>
+                        <li><a href="{{url('/')}}">Home</a></li>
+                        <li><a href="{{url('/register')}}">Sign up</a></li>
+                        <li><a href="{{route('articles')}}">Articles</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h5>About us</h5>
+                    <ul>
+                        <li><a href="#">Company Information</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h5>Support</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help desk</a></li>
+                        <li><a href="#">Forums</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <div class="social-networks">
+                        <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                        <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                        <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
+                    </div>
+                    <button type="button" class="btn btn-default">Contact us</button>
                 </div>
             </div>
         </div>
+        <div class="footer-copyright">
+            <p>© 2016 Copyright Text </p>
+        </div>
+    </footer>
 
-    </section>
+
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

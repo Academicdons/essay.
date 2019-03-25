@@ -9,6 +9,7 @@ class Order extends Model
 {
     //
     public $incrementing = false;
+    protected $dates = ['deadline'];
 
 
     public function conversations()
@@ -72,5 +73,10 @@ class Order extends Model
     public function Bid()
     {
         return $this->hasMany(Bid::class,'order_id','id');
+    }
+
+    public function bargains()
+    {
+        return $this->hasMany(Bargain::class,'order_id','id');
     }
 }

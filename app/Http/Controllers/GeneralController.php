@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Webpatser\Uuid\Uuid;
@@ -29,8 +30,18 @@ class GeneralController extends Controller
     public function index()
     {
         $latest = Order::orderBy('created_at','desc')->has('Education')->limit(5)->get();
+
+        /*
+         * check subdomain
+         */
+        $domain = explode('.', \Request::getHost())[0];
+
+        Log::warning($domain);
+        if($domain == "writers"){
+            return View::make('welcome_writer')->withOrders($latest);
+        }
+
         return View::make('welcome')->withOrders($latest);
-        return View::make('welcome_writer')->withOrders($latest);
     }
 
     public function registerWriter()

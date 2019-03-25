@@ -53,7 +53,7 @@
 
                                                                 {{ $announce->created_at }}</span>
                       </span><!-- /.username -->
-                                                                {{ $announce->news_article }}
+                                                                {!! $announce->news_article !!}
 
 
 

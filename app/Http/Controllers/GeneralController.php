@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Webpatser\Uuid\Uuid;
@@ -30,6 +31,9 @@ class GeneralController extends Controller
     {
         $latest = Order::orderBy('created_at','desc')->has('Education')->limit(5)->get();
 
+        /*
+         * check subdomain
+         */
         $subdomain = Route::input('subdomain');
         if($subdomain == "writers"){
             return View::make('welcome_writer')->withOrders($latest);

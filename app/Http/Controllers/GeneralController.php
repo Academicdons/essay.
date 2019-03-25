@@ -6,6 +6,7 @@ use App\Models\Attachment;
 use App\Models\Blog;
 use App\Models\EducationLevel;
 use App\Models\Group;
+use App\Models\Order;
 use App\Plugins\Thunderpush;
 use Dilab\Network\SimpleRequest;
 use Dilab\Network\SimpleResponse;
@@ -24,6 +25,19 @@ use GuzzleHttp\Client;
 class GeneralController extends Controller
 {
     //
+
+    public function index()
+    {
+        $latest = Order::orderBy('created_at','desc')->has('Education')->limit(5)->get();
+        return View::make('welcome')->withOrders($latest);
+        return View::make('welcome_writer')->withOrders($latest);
+    }
+
+    public function registerWriter()
+    {
+        return View::make('auth.register_writer');
+
+    }
 
     public function paypalTest()
     {

@@ -80,7 +80,9 @@ class OrdersController extends Controller
         $ed_factor = EducationLevel::find(request('education_level'))->price_factor;
         $cpp = $base_price*$ed_factor*$this->getAmountInTime($date->diffInHours(Carbon::now()));
 
-        ;
+        $base_salary = Group::find($discipline->group_id)->writer_price;
+        $wcpp = $base_salary*$ed_factor*$this->getAmountInTime($date->diffInHours(Carbon::now()));
+
 
 
         $order->notes = $request->instructions;
@@ -89,7 +91,8 @@ class OrdersController extends Controller
         $order->order_no = mt_rand(100000, 999999);
         $order->no_pages = $request->number_of_pages;
         $order->no_words = $request->number_of_pages*275;
-        $order->amount = $request->$cpp*$request->number_of_pages;
+        $order->amount = $cpp*$request->number_of_pages;
+        $order->salary = $wcpp*$request->number_of_pages;
         $order->order_assign_type = 1;
         $order->deadline = $date;
         $order->bid_expiry = Carbon::now()->addMinute(5);

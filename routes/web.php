@@ -11,9 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'GeneralController@index');
+Route::get('/register_writer', 'GeneralController@registerWriter');
 //terms and conditions
 Route::get('terms',function (){
    return view('terms_and_condition');
@@ -148,7 +147,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/reviews/{order}', 'OrdersController@orderReviews')->name('reviews');
         Route::get('/chat_data/{order}', 'OrdersController@getChatData')->name('chat_data');
         Route::get('/messages/{order}', 'OrdersController@getChatMessages')->name('messages');
+        Route::get('/bargains/{order}', 'OrdersController@bargains')->name('bargains');
+        Route::get('/delete_bargain/{bargain}', 'OrdersController@deleteBargains')->name('delete_bargain');
         Route::post('/save_messages/{order}', 'OrdersController@saveChatMessage')->name('save_messages');
+        Route::post('/create_bargain/{order}', 'OrdersController@saveBargain')->name('create_bargain');
         Route::get('/get_order_bids/{order}', 'OrdersController@getOrderBids')->name('get_order_bids');
         Route::get('/assign_user_bid/{order_id}/{user_id}', 'OrdersController@assignUserBid')->name('assign_user_bid');
         //send email

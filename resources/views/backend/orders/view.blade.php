@@ -80,6 +80,7 @@
                     <div class="box-header">
                         <h3 class="box-title">Order No. {{ $order->order_no }}</h3>
                         <div class="box-tools" id="bid_area">
+                            <a href="{{ route('admin.orders.index') }}" class="btn btn-xs btn-info">Back To Orders</a>
                             @if($order->status==0)
                             <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#rateModal"  @click="getBids('{{$order->id}}')">View Placed Bids</button>
                             @endif
@@ -123,8 +124,8 @@
                                 </div>
                             </div>
 
-                            <a href="{{ route('admin.orders.index') }}" class="btn btn-xs btn-info">Back To Orders</a>
                             <a href="javascript:;" class="btn btn-xs btn-warning" onclick="manualAssign()">Manual assign</a>
+                            <a href="javascript:;" class="btn btn-xs btn-success" onclick="getAdditionalTransactions()">Fine.Bonus</a>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -160,42 +161,66 @@
                                             </th>
                                             <td>Academic level</td>
                                             <th>
-                                                @if($order->order_assign_type == 1)
-                                                    writers to bid
-                                                @elseif($order->order_assign_type == 2)
-                                                    First come take
-                                                @else
-                                                    Manual assignment
-                                                @endif
+                                                {{$order->Education->name}}
                                             </th>
 
-                                            <td>Bonus</td>
+                                            <td>Pages</td>
                                             <th>{{ $order->no_pages }}</th>
-                                            <td> Writer quality </td>
+                                            <td> Words </td>
                                             <th>{{ $order->no_words }}</th>
                                         </tr>
 
                                         <tr>
-                                            <td>Number of pages</td>
-                                            <th>{{ $order->no_pages }}</th>
-                                            <td> Number of words </td>
-                                            <th>{{ $order->no_words }}</th>
-                                            <td>Education level</td>
-                                            <th>{{ $order->no_pages }}</th>
-                                            <td> Salary </td>
-                                            <th>{{ $order->no_words }}</th>
+                                            <td>Salary</td>
+                                            <th>{{ $order->salary }}</th>
+                                            <td>Amount </td>
+                                            <th>{{ $order->amount }}</th>
+                                            <td>Paper type</td>
+                                            <th>{{ $order->Paper->name }}</th>
+                                            <td> Discipline </td>
+                                            <th>{{ $order->Discipline->name }}</th>
                                         </tr>
 
                                         <tr>
-                                            <td>Bonus</td>
-                                            <th>{{ $order->no_pages }}</th>
-                                            <td> Writer quality </td>
-                                            <th>{{ $order->no_words }}</th>
+                                            <td>Status</td>
+                                            <th>
+                                                @if($order->status==0)
+                                                    Un assigned
+                                                @elseif($order->status==1)
+                                                    In progress
+                                                @elseif($order->status==2)
+                                                    Revision
+                                                @elseif($order->status==3)
+                                                    Complete
+                                                @else
+                                                    Post client
+                                                @endif
+                                            </th>
+                                            <td>Type of service</td>
+                                            <th>
+                                                @if($order->type_of_service==1)
+                                                    From scratch
+                                                @elseif($order->type_of_service==2)
+                                                    Rewriting
+                                                @else
+                                                    Editing
+                                                @endif
 
-                                            <td>Bonus</td>
-                                            <th>{{ $order->no_pages }}</th>
+                                            </th>
+
+                                            <td>Bonus/fines</td>
+                                            <th>{{ $order->bargains()->sum('amount') }}</th>
                                             <td> Writer quality </td>
-                                            <th>{{ $order->no_words }}</th>
+                                            <th>
+                                                @if($order->writer_quality==1)
+                                                    standard
+                                                @elseif($order->writer_quality==2)
+                                                    premium
+                                                @else
+                                                    platinum
+                                                @endif
+
+                                            </th>
                                         </tr>
                                     </table>
                                 </div>
@@ -255,28 +280,20 @@
                                                 <th style="width: 40px"></th>
                                             </tr>
 
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Final Paper Rubric (1).docx</td>
-                                                <td>Admin</td>
-                                                <td></td>
-                                                <td>2 months ago</td>
-                                                <td>docx</td>
-                                                <td><a href="https://academicdons.com/download/1258" class="btn btn-warning btn-xs">
-                                                        <i class="fa fa-cloud-download"></i>
-                                                    </a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Final Paper Instructions (5).docx</td>
-                                                <td>Admin</td>
-                                                <td></td>
-                                                <td>2 months ago</td>
-                                                <td>docx</td>
-                                                <td><a href="https://academicdons.com/download/1259" class="btn btn-warning btn-xs">
-                                                        <i class="fa fa-cloud-download"></i>
-                                                    </a></td>
-                                            </tr>
+                                            @foreach($order->attachments as $attachment)
+                                                <tr>
+                                                    <td>{{$loop->iteration}}</td>
+                                                    <td>{{$attachment->display_name}}</td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                    <td>{{$attachment->created_at->diffForHumans()}}</td>
+                                                    <td>docx</td>
+                                                    <td><a href="https://academicdons.com/download/1258" class="btn btn-warning btn-xs">
+                                                            <i class="fa fa-cloud-download"></i>
+                                                        </a></td>
+                                                </tr>
+                                                @endforeach
+
 
                                             </tbody></table>
 
@@ -404,6 +421,55 @@
         </div>
     </div>
 
+    <!------------------ manual assign Modals----------------->
+    <div id="bargainsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="box">
+                <div class="box-header">
+                    <h3>Manage fines and bonuses</h3>
+                </div>
+                <div class="box-body" id="bargains_area">
+
+                    <form action="">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" v-model="bargain.amount">
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="button" @click="saveBargain()" class="btn btn-block btn-primary">Add bargain</button>
+                            </div>
+                        </div>
+                        
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(bar,index) in bargains">
+                                    <td>@{{ index+1 }}</td>
+                                    <td>
+                                        <span v-if="bar.amount>0" class="label label-success">bonus</span>
+                                        <span v-if="bar.amount<0"class="label label-danger">fine</span>
+                                    </td>
+                                    <td>@{{ bar.amount }}</td>
+                                    <td>
+                                        <button   class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 @stop
 
@@ -489,7 +555,7 @@
 
 
         let load_mode = 1;
-       window.chatVue = new Vue({
+        window.chatVue = new Vue({
             'el':'#chat_area',
             data:{
                 assignments:[],
@@ -576,6 +642,44 @@
             Thunder.listen(function(message) {
                 window.chatVue.getMessages(load_mode)
             });
+        }
+
+
+        window.bargains_area = new Vue({
+            el:'#bargains_area',
+            data:{
+                bargains:[],
+                bargain:{}
+            },
+            created:function(){
+                console.log("Bargain area created");
+                this.getBargains()
+            },
+            methods:{
+
+                getBargains:function () {
+                    let url = '{{route('admin.orders.bargains',$order->id)}}'
+                    let me = this;
+                    axios.get(url)
+                        .then(function(res){
+                            me.bargains = res.data
+                        })
+                },
+                saveBargain:function(){
+                    let url = '{{route('admin.orders.create_bargain',$order->id)}}'
+                    let me = this;
+                    axios.post(url,this.bargain)
+                        .then(function(res){
+                            me.getBargains()
+                        })
+
+                }
+
+            }
+        })
+        
+        function getAdditionalTransactions() {
+            $('#bargainsModal').modal('show')
         }
 
     </script>

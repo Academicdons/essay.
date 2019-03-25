@@ -6,6 +6,7 @@ use App\Jobs\AssignOrderMail;
 use App\Jobs\ThunderPushAsync;
 use App\Mail\AssignMail;
 use App\Mail\EssyMail;
+use App\Models\Bargain;
 use App\Models\Bid;
 use App\Models\Conversation;
 use App\Models\Discipline;
@@ -258,6 +259,29 @@ class OrdersController extends Controller
         $order->save();
 
         return \redirect()->back();
+    }
+
+
+    public function bargains(Order $order)
+    {
+        return \response()->json($order->bargains);
+    }
+
+    public function saveBargain(Request $request,Order $order)
+    {
+        $bargain = $request->all();
+        $bargain['order_id']=$order->id;
+        Bargain::create($bargain);
+
+        return \response()->json([
+            'success'=>true
+        ]);
+    }
+
+    public function deleteBargains(Bargain $bargain)
+    {
+        $bargain->delete();
+        return back();
     }
 }
 

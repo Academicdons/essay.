@@ -37,6 +37,7 @@
                             <li><a href="#" @click="getUserOrders(2)"><i class="fa fa-file-text-o" ></i> Revision</a></li>
                             <li><a href="#" @click="getUserOrders(3)"><i class="fa fa-filter" ></i> Complete </a>
                             <li><a href="#" @click="getUserOrders(4)"><i class="fa fa-address-book-o" ></i> Finished </a>
+                            <li><a href="#" @click="getUserOrders(5)"><i class="fa fa-times" ></i> Disputed </a>
                             </li>
                             {{--<li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>--}}
                         </ul>

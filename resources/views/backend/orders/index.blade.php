@@ -19,6 +19,7 @@
                 <div class="nav-tabs-custom" style="cursor: move;">
                     <!-- Tabs within a box -->
                     <ul class="nav nav-tabs pull-right ui-sortable-handle">
+                        <li class=""><a href="#sales-chart" data-toggle="tab" aria-expanded="false" status="5"><i class="fa fa-times"></i> Disputed</a></li>
                         <li class=""><a href="#sales-chart" data-toggle="tab" aria-expanded="false" status="4"><i class="fa fa-plus"></i> Finished</a></li>
                         <li class=""><a href="#sales-chart" data-toggle="tab" aria-expanded="false" status="3"><i class="fa fa-check"></i> Complete</a></li>
                         <li class=""><a href="#sales-chart" data-toggle="tab" aria-expanded="false" status="2"><i class="fa fa-refresh"></i> Revision</a></li>

@@ -271,6 +271,7 @@
                     <div class="col-sm-12">
                         <button class="btn-success btn-sm float-right" data-toggle="modal" data-target="#rateModal">Complete order</button>
                         <button class="btn-danger btn-sm float-right mr-3" data-toggle="modal" data-target="#revisionModal">Request a revision</button>
+                        <button class="btn-danger btn-sm float-right mr-3" data-toggle="modal" data-target="#disputedModal">Mark Order as Disputed</button>
                     </div>
                 </div>
 
@@ -389,6 +390,41 @@
                         </div>
                     </div>
                 </div>
+      <div class="modal" id="disputedModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Mark Order as Disputed</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card " v-if="existing_disputes!=''">
+                                <div class="card-header">
+                                    <h6 >Existing Disputes</h6>
+
+                                </div>
+                                    <div class="card-body">
+                                        <li v-for="existing_dispute in existing_disputes">@{{ existing_dispute.reason }}</li>
+
+                                    </div>
+                                </div>
+
+
+                                <p><b>Provide a reason why you need to mark the order as disputed below</b></p>
+
+                                <textarea v-model="dispute_reason" style="min-height: 200px" class="form-control" placeholder=""></textarea>
+
+                                {{--@{{ order.id }}--}}
+                                <p class="text-center">
+                                    <button @click="requestDispute()" class="btn btn-success mt-3">Submit Dispute request</button>
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
             </div>
@@ -500,22 +536,36 @@
                 revision:{},
                 review:{},
                 client_review:null,
-                other_review:null
+                other_review:null,
+                dispute_reason:'',
+                dispute:{},
+                existing_disputes:[]
             },
             created:function () {
-                console.log("Order vue created")
-                this.getOrder()
-                this.getOrderReviews()
+                console.log("Order vue created");
+                this.getOrder();
+                this.getOrderReviews();
+                this.getDisputes();
             },
             methods:{
                 getOrder:function(){
                     console.log(1   )
-                    let url='{{route('customer.orders.fetch_order',$order->id)}}'
+                    let url='{{route('customer.orders.fetch_order',$order->id)}}';
                     let me = this
                     axios.get(url)
                         .then(function (res) {
                             me.order=res.data.order
                             me.files=res.data.files
+                        })
+                },
+                getDisputes(){
+                    let url='{{route('customer.orders.fetch_disputes',$order->id)}}';
+                    let me = this
+                    axios.get(url)
+                        .then(function (res) {
+                            me.getDisputes();
+                            me.existing_disputes=res.data.disputes;
+
                         })
                 },
                 getTimedifference:function (order_date) {
@@ -581,6 +631,17 @@
                             $('#revisionModal').modal('hide')
                         })
 
+                },
+                requestDispute:function(){
+                    let url = '{{route('customer.orders.dispute_order',$order->id)}}';
+                    // let order_id=
+                    let me = this;
+                    axios.post(url,{'dispute_reason':this.dispute_reason,'order_id':this.order.id})
+                        .then(function (res) {
+                            me.dispute=res.data.dispute;
+                            me.getOrder();
+                            $('#disputedModal').modal('hide')
+                        })
                 },
                 updateRating:function (rate) {
                     this.review.rating=rate

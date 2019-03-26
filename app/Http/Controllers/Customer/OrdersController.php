@@ -6,6 +6,7 @@ use App\Jobs\ThunderPushAsync;
 use App\Models\Attachment;
 use App\Models\Conversation;
 use App\Models\Discipline;
+use App\Models\DisputedOrder;
 use App\Models\EducationLevel;
 use App\Models\Group;
 use App\Models\Message;
@@ -243,5 +244,40 @@ class OrdersController extends Controller
             'client_review'=>$order->reviews()->orderBy('created_at','desc')->where('user_id',Auth::id())->first(),
             'other_review'=>$order->reviews()->orderBy('created_at','desc')->where('user_id','!=',Auth::id())->first()
         ]);
+    }
+
+    public function disputeOrder(Request $request)
+    {
+        $this->validate($request,[
+            'dispute_reason'=>'required',
+            'order_id'=>'required'
+        ]);
+
+        //create the dispute record
+        $dispute=new DisputedOrder();
+        $dispute->id=Uuid::generate()->string;
+        $dispute->reason=$request->dispute_reason;
+        $dispute->order_id=$request->order_id;
+        $dispute->save();
+
+        //change the status value of the order to disputed
+        $order=Order::find($request->order_id);
+        $order->status=5;
+        $order->save();
+
+
+        return response()->json([
+            'dispute'=>$dispute
+        ]);
+    }
+
+    public function fetchDisputes($order_id)
+    {
+
+       $disputes= DisputedOrder::where('order_id',$order_id)->get();
+
+       return response()->json([
+           'disputes'=>$disputes
+       ]);
     }
 }

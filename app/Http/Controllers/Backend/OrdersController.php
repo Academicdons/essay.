@@ -240,7 +240,7 @@ class OrdersController extends Controller
 
     public function getOrderBids($order)
     {
-        $bids=Bid::where('order_id',$order)->get();
+        $bids=Bid::where('order_id',$order)->with(['order','user'])->get();
 //        $bids=Bid::all();
 
         return \response()->json([

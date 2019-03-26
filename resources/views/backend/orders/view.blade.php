@@ -108,8 +108,8 @@
 
                                         <tbody>
                                         <tr v-for="bid in bids">
-                                        <td>@{{ bid.user_id }}</td>
-                                        <td>@{{ bid.order_id }}</td>
+                                        <td>@{{ bid.user.email  }}</td>
+                                        <td>@{{ bid.order.order_no }}</td>
                                         <td>
 
                                             <a :href="'{{url('/admin/orders/assign_user_bid')}}/' +  bid.order_id +'/'+ bid.user_id"  class="btn btn-primary">Assign Order</a>

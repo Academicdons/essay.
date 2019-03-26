@@ -82,7 +82,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'phone_number' => $data['phone_number'],
             'user_type' => $data['user_type'],
-            'account_status'=>$account_status,
+            'account_status'=>0,
         ]);
     }
 
@@ -104,6 +104,7 @@ class RegisterController extends Controller
         }
 
 
+//
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
     }

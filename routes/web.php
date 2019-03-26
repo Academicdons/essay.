@@ -67,6 +67,8 @@ Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],fu
         Route::get('get_orders','OrdersController@getOrders')->name('get_orders');
         Route::get('fetch_order/{order}','OrdersController@fetchOrder')->name('fetch_order');
         Route::get('delete_file','OrdersController@deleteFile')->name('delete_file');
+        Route::post('dispute_order','OrdersController@disputeOrder')->name('dispute_order');
+        Route::get('fetch_disputes/{order_id}','OrdersController@fetchDisputes')->name('fetch_disputes');
     });
 
     Route::group(['middleware'=>['auth','account_status']],function (){

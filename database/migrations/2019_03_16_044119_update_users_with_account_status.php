@@ -15,7 +15,7 @@ class UpdateUsersWithAccountStatus extends Migration
     {
         //
         Schema::table('users',function (Blueprint $table){
-            $table->integer('account_status')->default(1); //active
+            $table->integer('account_status')->default(0); //in-active
         });
     }
 

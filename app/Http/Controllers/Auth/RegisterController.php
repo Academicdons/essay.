@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Jobs\AssignOrderMail;
 use App\Jobs\SendApproveEmailJob;
 use App\Jobs\SendEssyMail;
 use App\Mail\SuccessRegistrationMail;
@@ -99,7 +100,7 @@ class RegisterController extends Controller
         }elseif ($user->user_type==2){
 
             $message='Your account has successfully been created.';
-        $this->dispatch(new SuccessRegistrationMail($user,$message));
+        $this->dispatch(new AssignOrderMail($user,$message));
         }
 
 

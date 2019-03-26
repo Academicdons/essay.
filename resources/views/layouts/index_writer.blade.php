@@ -188,12 +188,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <p class="top-bar-text p-2  mb-0">Get a professional service</p>
+                    <p class="top-bar-text p-2  mb-0"> Join our network and earn from writing</p>
                 </div>
                 <div class="col-sm-6 float-left">
                     <ul class="list-inline pt-2 top-bar-text float-right">
                         <li class="list-inline-item">&copy; Homework pro writers</li>
-                        <li class="list-inline-item">| info@homeworkprowriters.com</li>
+                        <li class="list-inline-item">| administrator@homeworkprowriters.com</li>
                     </ul>
                 </div>
             </div>
@@ -291,7 +291,6 @@
                     </ul>
                 </div>
                 <div class="col-sm-3">
-
                     <button type="button" class="btn btn-default">Contact us</button>
                 </div>
             </div>

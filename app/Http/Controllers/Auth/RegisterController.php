@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Jobs\SendApproveEmailJob;
 use App\Jobs\SendEssyMail;
+use App\Mail\SuccessRegistrationMail;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
@@ -91,8 +92,16 @@ class RegisterController extends Controller
         event(new Registered($user = $this->create($request->all())));
 
         $this->guard()->login($user);
+        //send email notification here  to the writer only
+        if($user->user_type==1){
+            $this->dispatch(new SendEssyMail($user));
 
-        $this->dispatch(new SendEssyMail($user));
+        }elseif ($user->user_type==2){
+
+            $message='Your account has successfully been created.';
+        $this->dispatch(new SuccessRegistrationMail($user,$message));
+        }
+
 
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());

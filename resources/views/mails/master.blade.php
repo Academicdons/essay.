@@ -144,9 +144,8 @@
                         <p>Sent by <a href="#">HomeWork</a>,
 
                         </p>
-                        <p><b>Tel</b>: +254 700000000
-                            <b>Fax</b>: N/A</p>
-                        <p><a href="mailto:">homemework@gmail.com</a> | <a href="#"></a></p>
+                        <p>
+                        <p><a href="mailto:">info@homeworkprowriters.com</a> | <a href="#"></a></p>
                     </td>
                 </tr>
             </table>

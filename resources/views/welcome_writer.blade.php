@@ -1,4 +1,4 @@
-@extends('layouts.index')
+@extends('layouts.index_writer')
 
 @section('style')
 
@@ -152,7 +152,7 @@
                     <div class="row mt-5">
                         <div class="col-sm-6">
                             <div class="stats">
-                                <div class="stats__amount">281</div>
+                                <div class="stats__amount">{{rand(100,1000)}}</div>
                                 <div class="stats__caption">Current orders</div>
                                 <div class="stats__change">
                                     <div class="stats__value stats__value--positive">+7%</div>
@@ -162,7 +162,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="stats">
-                                <div class="stats__amount">846</div>
+                                <div class="stats__amount">{{rand(2000,10000)}}</div>
                                 <div class="stats__caption">Active writers</div>
                                 <div class="stats__change">
                                     <div class="stats__value stats__value--positive">+6%</div>

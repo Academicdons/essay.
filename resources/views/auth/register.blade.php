@@ -88,10 +88,10 @@
 
                         <div class="form-group row mb-0">
 
-                              <div class="col-md-6"> <input class="checkbox" type="checkbox">   <h6>  By Clicking the here means you agree with the  </h6><a href="{{url('terms')}}">Terms and Conditions</a>
+                              <div class="col-md-6"> <input class="checkbox" id="terms_conditions"  type="checkbox">   <h6>  By Clicking the here means you agree with the  </h6><a href="{{url('terms')}}">Terms and Conditions.</a> Ensure you confirm before registering
                               </div>
                             <div class="col-md-6 ">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit"  disabled  id="register_button" class="btn btn-primary" >
                                     {{ __('Register') }}
                                 </button>
                             </div>
@@ -103,3 +103,22 @@
     </div>
 </div>
 @endsection
+
+@section('script')
+
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('input[type="checkbox"]').click(function(){
+                if($(this).prop("checked") == true){
+
+                    $('#register_button').removeAttr("disabled");
+                }
+                else if($(this).prop("checked") == false){
+                    $('#register_button').attr("disabled", true);
+
+                }
+            });
+        });
+    </script>
+    @endsection

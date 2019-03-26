@@ -6,6 +6,7 @@ use App\Jobs\AssignOrderMail;
 use App\Jobs\ThunderPushAsync;
 use App\Mail\AssignMail;
 use App\Mail\EssyMail;
+use App\Models\Attachment;
 use App\Models\Bargain;
 use App\Models\Bid;
 use App\Models\Conversation;
@@ -18,12 +19,17 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\View;
+use Webpatser\Uuid\Uuid;
+use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
-use Webpatser\Uuid\Uuid;
 use App\Models\Assignment;
 
 class OrdersController extends Controller
@@ -230,13 +236,11 @@ class OrdersController extends Controller
         Mail::to(Auth::user())->send(new EssyMail(Auth::user(),$email));
     }
 
-    public function saveFile(Request $request){
 
-    }
 
     public function getOrderBids($order)
     {
-        $bids=Bid::where('order_id',$order)->get();
+        $bids=Bid::where('order_id',$order)->with(['order','user'])->get();
 //        $bids=Bid::all();
 
         return \response()->json([
@@ -283,5 +287,39 @@ class OrdersController extends Controller
         $bargain->delete();
         return back();
     }
+
+
+    public function saveFile(Request $request,Order $order)
+    {
+
+        if($request->hasFile('file')) {
+            if (!$request->file('file')->isValid()) {
+                return redirect()->back()->withErrors(['error'=>'The picture is invalid']);
+            } else {
+
+                //save picture
+                $image=Input::file('file');
+                $filename=time() . '.' . $image->getClientOriginalExtension();
+                $path = public_path('uploads/files/order_files/');
+                if(!File::exists($path)) {File::makeDirectory($path, $mode = 0777, true, true);}
+                $image->move($path,$filename);
+
+                $attachment=new Attachment();
+                $attachment->id=Uuid::generate()->string;
+                $attachment->file_name=$filename;
+                $attachment->display_name=$request->display_name;
+                $attachment->order_id=$order->id;
+                $attachment->save();
+
+                return redirect()->back();
+            }
+        }else{
+            return redirect()->back()->withErrors(['error'=>'The picture is absent']);
+
+        }
+
+
+    }
+
 }
 

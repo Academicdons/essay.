@@ -82,7 +82,7 @@
                         <div class="box-tools" id="bid_area">
                             <a href="{{ route('admin.orders.index') }}" class="btn btn-xs btn-info">Back To Orders</a>
                          
-                            @if($order->status==0 && $order->active_assignment=='')
+                            @if($order->status==0 )
 
                             <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#rateModal"  @click="getBids('{{$order->id}}')">View Placed Bids</button>
                             @endif
@@ -108,8 +108,8 @@
 
                                         <tbody>
                                         <tr v-for="bid in bids">
-                                        <td>@{{ bid.user_id }}</td>
-                                        <td>@{{ bid.order_id }}</td>
+                                        <td>@{{ bid.user.email  }}</td>
+                                        <td>@{{ bid.order.order_no }}</td>
                                         <td>
 
                                             <a :href="'{{url('/admin/orders/assign_user_bid')}}/' +  bid.order_id +'/'+ bid.user_id"  class="btn btn-primary">Assign Order</a>
@@ -255,15 +255,21 @@
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="pull-right">
-                                        <form action="https://academicdons.com/admin/save_file" method="post" enctype="multipart/form-data">
-                                            <input type="hidden" name="_token" value="zKZlLTxABOWHmdOl56Lz1RHrXQilvvfC7IlAsxTF">
-                                            <input type="hidden" name="task_id" value="639">
-                                            <input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name">
+                                        {{--<form action="{{route('writer.orders.upload_file',$order->id)}}" method="post" enctype="multipart/form-data">--}}
+                                            {{--<input type="hidden" name="_token" value="zKZlLTxABOWHmdOl56Lz1RHrXQilvvfC7IlAsxTF">--}}
+                                            {{--<input type="hidden" name="task_id" value="639">--}}
+                                            {{--<input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name">--}}
+                                            {{--<label for="file" class="btn btn-xs btn-warning">Choose file</label>--}}
+                                            {{--<input type="file" name="file" id="file" style="display: none">--}}
+                                            {{--<button class="btn btn-primary btn-xs" type="submit"><i class="fa fa-upload"></i></button>--}}
+                                        {{--</form>--}}
+                                        <form action="{{route('admin.orders.upload_file',$order->id)}}" method="post" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name" required>
                                             <label for="file" class="btn btn-xs btn-warning">Choose file</label>
-                                            <input type="file" name="file" id="file" style="display: none">
+                                            <input type="file" name="file" id="file" style="display: none" required>
                                             <button class="btn btn-primary btn-xs" type="submit"><i class="fa fa-upload"></i></button>
                                         </form>
-
                                     </div>
 
                                 </div>
@@ -289,8 +295,9 @@
                                                     <td>-</td>
                                                     <td>-</td>
                                                     <td>{{$attachment->created_at->diffForHumans()}}</td>
-                                                    <td>docx</td>
-                                                    <td><a href="https://academicdons.com/download/1258" class="btn btn-warning btn-xs">
+                                                    <td>{{current(array_reverse(explode('.',$attachment->file_name)))}}</td>
+
+                                                    <td><a href="{{asset('uploads/files/order_files/'. $attachment->file_name)}}" class="btn btn-warning btn-xs" download>
                                                             <i class="fa fa-cloud-download"></i>
                                                         </a></td>
                                                 </tr>

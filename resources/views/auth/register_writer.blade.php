@@ -85,7 +85,7 @@
                             <div class="form-group col-md-6 col-lg-6 col-sm-12">
 
                                 <p class="small">
-                                    A writers account allows you to bif for orders and earn money from writing
+                                    A writers account allows you to bid for orders and earn money from writing
                                 </p>
                             </div>
 
@@ -93,10 +93,10 @@
 
                         <div class="form-group row mb-0">
 
-                              <div class="col-md-6"> <input class="checkbox" type="checkbox">   <h6>  By registering you agree with the  </h6><a href="{{url('terms')}}">Terms and Conditions</a>
-                              </div>
+                            <div class="col-md-6"> <input class="checkbox" id="terms_conditions"  type="checkbox">   <h6>  By Clicking the here means you agree with the  </h6><a href="{{url('terms')}}">Terms and Conditions.</a> Ensure you confirm before registering
+                            </div>
                             <div class="col-md-6 ">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" disabled  id="register_button" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
                             </div>
@@ -107,4 +107,23 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('input[type="checkbox"]').click(function(){
+                if($(this).prop("checked") == true){
+
+                    $('#register_button').removeAttr("disabled");
+                }
+                else if($(this).prop("checked") == false){
+                    $('#register_button').attr("disabled", true);
+
+                }
+            });
+        });
+    </script>
 @endsection

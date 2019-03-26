@@ -185,9 +185,9 @@
                                     <div class="pull-right">
                                         <form action="{{route('writer.orders.upload_file',$order->id)}}" method="post" enctype="multipart/form-data">
                                             @csrf
-                                            <input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name">
+                                            <input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name" required>
                                             <label for="file" class="btn btn-xs btn-warning">Choose file</label>
-                                            <input type="file" name="file" id="file" style="display: none">
+                                            <input type="file" name="file" id="file" style="display: none" required>
                                             <button class="btn btn-primary btn-xs" type="submit"><i class="fa fa-upload"></i></button>
                                         </form>
 
@@ -202,37 +202,27 @@
                                             <tbody><tr>
                                                 <th style="width: 10px">#</th>
                                                 <th>File</th>
-                                                <th>Created by</th>
                                                 <th>Description</th>
                                                 <th>Date</th>
                                                 <th>Type</th>
                                                 <th style="width: 40px"></th>
                                             </tr>
 
+                                            @foreach($order->attachments as $attachment)
                                             <tr>
-                                                <td>1</td>
-                                                <td>Final Paper Rubric (1).docx</td>
-                                                <td>Admin</td>
-                                                <td></td>
-                                                <td>2 months ago</td>
-                                                <td>docx</td>
-                                                <td><a href="https://academicdons.com/download/1258" class="btn btn-warning btn-xs">
+                                                <td>{{$loop->iteration}}</td>
+                                                <td>{{$attachment->file_name}}</td>
+                                                <td>{{$attachment->display_name}}</td>
+                                                <td>{{$attachment->created_at->toDayDateTimeString()}}</td>
+                                                <td>{{current(array_reverse(explode('.',$attachment->file_name)))}}</td>
+                                                <td><a href="{{asset('uploads/files/order_files/'. $attachment->file_name)}}" class="btn btn-warning btn-xs" download>
                                                         <i class="fa fa-cloud-download"></i>
                                                     </a></td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Final Paper Instructions (5).docx</td>
-                                                <td>Admin</td>
-                                                <td></td>
-                                                <td>2 months ago</td>
-                                                <td>docx</td>
-                                                <td><a href="https://academicdons.com/download/1259" class="btn btn-warning btn-xs">
-                                                        <i class="fa fa-cloud-download"></i>
-                                                    </a></td>
-                                            </tr>
+                                          @endforeach
 
-                                            </tbody></table>
+                                            </tbody>
+                                        </table>
 
                                     </div>
                                 </div>

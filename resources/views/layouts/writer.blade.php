@@ -171,37 +171,26 @@
             <li class="dropdown user user-menu">
               <!-- Menu Toggle Button -->
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <!-- The user image in the navbar-->
-                <img src="{{asset('uploads/user_pictures/'. \Illuminate\Support\Facades\Auth::user()->avatar)}}" class="user-image" alt="User Image">
-                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+
                 <span class="hidden-xs">{{\Illuminate\Support\Facades\Auth::user()->name}}</span>
               </a>
               <ul class="dropdown-menu">
                 <!-- The user image in the menu -->
                 <li class="user-header">
+                  @if(\Illuminate\Support\Facades\Auth::user()->avatar!='')
                   <img src="{{asset('uploads/user_pictures/'. \Illuminate\Support\Facades\Auth::user()->avatar)}}" class="img-circle" alt="User Image">
 
+                  @else
+
+                    <img src="{{asset('uploads/default_pic.png')}}" class="img-circle" alt="User Image">
+
+                  @endif
                   <p>
                    {{\Illuminate\Support\Facades\Auth::user()->name}}
                     <small>Member since {{\Illuminate\Support\Facades\Auth::user()->created_at->toDayDateTimeString()}}</small>
                   </p>
                 </li>
-                <!-- Menu Body -->
-                {{--<li class="user-body">--}}
-                  {{--<div class="row">--}}
-                    {{--<div class="col-xs-4 text-center">--}}
-                      {{--<a href="#">Followers</a>--}}
-                    {{--</div>--}}
-                    {{--<div class="col-xs-4 text-center">--}}
-                      {{--<a href="#">Sales</a>--}}
-                    {{--</div>--}}
-                    {{--<div class="col-xs-4 text-center">--}}
-                      {{--<a href="#">Friends</a>--}}
-                    {{--</div>--}}
-                  {{--</div>--}}
-                  {{--<!-- /.row -->--}}
-                {{--</li>--}}
-                <!-- Menu Footer-->
+
                 <li class="user-footer">
                   <div class="pull-left">
                     <a href="{{route('writer.profile')}}" class="btn btn-default btn-flat">Profile</a>
@@ -253,7 +242,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Edit Picture</h5>
+          <h5 class="modal-title">Current Unread Announcements</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -271,7 +260,7 @@
               <tbody>
               <tr v-for="announcement in announcements">
                 <td>   @{{ announcement.title }}</td>
-                <td>   @{{ announcement.news_article }}</td>
+                <td v-html=" announcement.news_article ">   @{{ announcement.news_article }}</td>
               </tr>
               </tbody>
             </table>

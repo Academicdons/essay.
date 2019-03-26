@@ -271,7 +271,7 @@
               <tbody>
               <tr v-for="announcement in announcements">
                 <td>   @{{ announcement.title }}</td>
-                <td>   @{{ announcement.news_article }}</td>
+                <td v-html=" announcement.news_article ">   @{{ announcement.news_article }}</td>
               </tr>
               </tbody>
             </table>

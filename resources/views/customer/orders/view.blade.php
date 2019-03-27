@@ -271,7 +271,7 @@
                     <div class="col-sm-12">
                         <button class="btn-success btn-sm float-right" data-toggle="modal" data-target="#rateModal">Complete order</button>
                         <button class="btn-danger btn-sm float-right mr-3" data-toggle="modal" data-target="#revisionModal">Request a revision</button>
-                        <button class="btn-danger btn-sm float-right mr-3" data-toggle="modal" data-target="#disputedModal">Mark Order as Disputed</button>
+                        {{--<button class="btn-danger btn-sm float-right mr-3" data-toggle="modal" data-target="#disputedModal">Mark Order as Disputed</button>--}}
                     </div>
                 </div>
 

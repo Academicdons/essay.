@@ -130,6 +130,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/suggest_writer', 'GeneralController@suggestWriters')->name('suggest_writer');
     });
 
+    Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
+        Route::get('/domains', 'SettingsController@getAllDomains')->name('domains');
+        Route::get('/add_domain', 'SettingsController@saveDomain')->name('add_domain');
+        Route::get('/delete_domain/{domain}', 'SettingsController@deleteDomain')->name('delete_domain');
+        Route::get('/edit_domain/{domain}', 'SettingsController@editDomain')->name('edit_domain');
+        Route::get('/system', 'SettingsController@getSystemDomains')->name('system');
+    });
+
     Route::group(['prefix' => 'announcement', 'as' => 'announce.'], function () {
         Route::get('/', 'AnnouncementController@index')->name('index');
         Route::get('/new', 'AnnouncementController@newAnnouncement')->name('new');

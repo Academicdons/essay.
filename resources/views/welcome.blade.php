@@ -268,7 +268,7 @@
     </section>
 
 
-    <section class="about-us pt-5 pb-5">
+    <section class="about-us pt-5 pb-5" id="about-us">
 
         <div class="container">
             <div class="row">

@@ -184,16 +184,18 @@
 
     <body>
 
+    @php($domain = Saas::getDomain())
+
     <div class="top-bar bg-base">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <p class="top-bar-text p-2  mb-0">{{Saas::getDomain()}}</p>
+                    <p class="top-bar-text p-2  mb-0">{{$domain->tag_line}}</p>
                 </div>
                 <div class="col-sm-6 float-left">
                     <ul class="list-inline pt-2 top-bar-text float-right">
                         <li class="list-inline-item">&copy; Homework pro writers</li>
-                        <li class="list-inline-item">| info@homeworkprowriters.com</li>
+                        <li class="list-inline-item">| {{$domain->email}}</li>
                     </ul>
                 </div>
             </div>
@@ -219,22 +221,19 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{{route('articles')}}">Articles <span class="sr-only">(current)</span></a>
                 </li>
-
-                @if(\Illuminate\Support\Facades\Auth::check())
-
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About us</a>
+                    <a class="nav-link" href="{{url('/')}}#about-us">About us</a>
                 </li>
+
+                @if(Auth::check() && $domain->type==0)
+
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         My account
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
                         <a class="dropdown-item" href="{{route('profile')}}">Profile</a>
-                        {{--<a class="dropdown-item" href="#">Another action</a>--}}
-                        {{--<div class="dropdown-divider"></div>--}}
-                        {{--<a class="dropdown-item" href="#">Something else here</a>--}}
                     </div>
                 </li>
                 <li class="nav-item">

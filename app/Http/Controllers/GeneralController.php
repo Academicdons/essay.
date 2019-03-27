@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\Saas;
 use App\Models\Attachment;
 use App\Models\Blog;
 use App\Models\EducationLevel;
@@ -40,10 +41,9 @@ class GeneralController extends Controller
         /*
          * check subdomain
          */
-        $domain = explode('.', \Request::getHost())[0];
 
-        Log::warning($domain);
-        if($domain == "writers"){
+        $domain = Saas::getDomain();
+        if($domain->type == 1){
             return View::make('welcome_writer')->withOrders($latest);
         }
 

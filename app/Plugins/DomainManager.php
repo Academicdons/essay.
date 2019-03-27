@@ -9,6 +9,8 @@
 namespace App\Plugins;
 
 
+use App\Models\FqdnConfiguration;
+
 class DomainManager
 {
 
@@ -29,7 +31,11 @@ class DomainManager
     public static function getDomain()
     {
         $domain = parse_url(request()->root())['host'];
-        return $domain;
+        $dm = FqdnConfiguration::where('name',$domain)->first();
+        if($dm == null){
+            $dm = FqdnConfiguration::first();
+        }
+        return $dm;
     }
 
 }

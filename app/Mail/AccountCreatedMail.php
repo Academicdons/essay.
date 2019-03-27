@@ -37,6 +37,7 @@ class AccountCreatedMail extends Mailable
     public function build()
     {
         return $this->to($this->user->email)
+            ->subject('Account creation')
             ->with(['user'=>$this->user,'message_to_user'=>$this->message])
             ->view('mails.account_created');
     }

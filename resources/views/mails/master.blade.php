@@ -119,7 +119,7 @@
                 <tr>
                     <td align="center" class="masthead">
 
-                        <h1>HomeWork</h1>
+                        <h1>HomeWork Pro Writers</h1>
 
                     </td>
                 </tr>
@@ -141,7 +141,7 @@
             <table>
                 <tr>
                     <td class="content footer" align="center">
-                        <p>Sent by <a href="#">HomeWork</a>,
+                        <p>Sent by <a href="#">HomeWorkProWriters</a>,
 
                         </p>
                         <p>

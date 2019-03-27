@@ -75,9 +75,9 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-        $account_status=true;
+        $account_status=1;
         if ($data['user_type']==1){
-        $account_status=false;
+        $account_status=0;
         }
         return User::create([
             'name' => $data['name'],
@@ -85,7 +85,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'phone_number' => $data['phone_number'],
             'user_type' => $data['user_type'],
-            'account_status'=>0,
+            'account_status'=>$account_status,
         ]);
     }
 

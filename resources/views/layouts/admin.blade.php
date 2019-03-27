@@ -97,7 +97,7 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">MAIN NAVIGATION</li>
                 <li class="active"><a href="{{ route('admin.index') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                <li class="active treeview menu-open">
+                <li class="treeview">
                     <a href="#">
                         <i class="fa fa-users"></i> <span>Users</span>
                                 <span class="pull-right-container">
@@ -113,19 +113,19 @@
                 </li>
                 <li class="active"><a href="{{ route('admin.announce.index') }}"><i class="fa fa-microphone"></i> Announcements</a></li>
                 <li class="active"><a href="{{ route('admin.orders.index') }}"><i class="fa fa-list"></i> Orders</a></li>
-                <li class="active"><a href="{{ route('admin.blog.all_blogs') }}"><i class="fa fa-list"></i> Blogs</a></li>
+                <li class="active"><a href="{{ route('admin.blog.all_blogs') }}"><i class="fa fa-rss"></i> Blogs</a></li>
 
 
-                <li class="active treeview menu-open">
+                <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-users"></i> <span>Disciplines</span>
+                        <i class="fa fa-book"></i> <span>Disciplines</span>
                         <span class="pull-right-container">
                       <i class="fa fa-angle-left pull-right"></i>
                     </span>
                     </a>
                     <ul class="treeview-menu" style="">
-                        <li class="active"><a href="{{route('admin.discipline.group')}}"><i class="fa fa-circle-o"></i>Groups</a></li>
-                        <li class="active"><a href="{{route('admin.discipline')}}"><i class="fa fa-circle-o"></i>Disciplines</a></li>
+                        <li class="active"><a href="{{route('admin.discipline.group')}}"><i class="fa fa-bookmark"></i>Groups</a></li>
+                        <li class="active"><a href="{{route('admin.discipline')}}"><i class="fa fa-bookmark"></i>Disciplines</a></li>
                     </ul>
                 </li>
 
@@ -135,16 +135,16 @@
                 <li class="active"><a href="{{ route('admin.education_level') }}"><i class="fa fa-graduation-cap"></i> Education Levels</a></li>
                 <li class="active"><a href="{{ route('admin.paper_type') }}"><i class="fa fa-paperclip"></i> Paper Types</a></li>
 
-                <li class="active treeview menu-open">
+                <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-users"></i> <span>Settings</span>
+                        <i class="fa fa-cogs"></i> <span>Settings</span>
                         <span class="pull-right-container">
                       <i class="fa fa-angle-left pull-right"></i>
                     </span>
                     </a>
                     <ul class="treeview-menu" style="">
-                        <li class="active"><a href="{{route('admin.settings.domains')}}"><i class="fa fa-circle-o"></i>Domains</a></li>
-                        <li class="active"><a href="{{route('admin.settings.system')}}"><i class="fa fa-circle-o"></i>System settings</a></li>
+                        <li class="active"><a href="{{route('admin.settings.domains')}}"><i class="fa fa-cog"></i>Domains</a></li>
+                        <li class="active"><a href="{{route('admin.settings.system')}}"><i class="fa fa-cog"></i>System settings</a></li>
                     </ul>
                 </li>
             </ul>

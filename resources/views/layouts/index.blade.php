@@ -225,7 +225,7 @@
                     <a class="nav-link" href="{{url('/')}}#about-us">About us</a>
                 </li>
 
-                @if(Auth::check() && $domain->type==0)
+                @if(Auth::check() && $domain->domain_type==0)
 
 
                 <li class="nav-item dropdown">
@@ -246,7 +246,7 @@
 
 
         @if(!Auth::check())
-                <a href="{{($domain->type==0)?route('register'):url('register_writer')}}" class="btn btn-success my-2 my-sm-0" ><i class="fa fa-user"></i> Register</a>
+                <a href="{{($domain->domain_type==0)?route('register'):url('register_writer')}}" class="btn btn-success my-2 my-sm-0" ><i class="fa fa-user"></i> Register</a>
                 <a href="{{route('login')}}" class="btn btn-warning my-2 my-sm-0 ml-3" ><i class="fa fa-key"></i> Login</a>
                     @else
                 <a href="{{url('logout')}}" class="btn btn-default my-2 my-sm-0 ml-3" ><i class="fa fa-power-off"></i> Logout</a>

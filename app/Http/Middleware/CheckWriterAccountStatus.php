@@ -18,8 +18,7 @@ class CheckWriterAccountStatus
     {
 
         if ( $request->user()->account_status==false ){
-            Auth::logout();
-            return redirect('/');
+            return redirect('/account_pending');
         }else{
             return $next($request);
 

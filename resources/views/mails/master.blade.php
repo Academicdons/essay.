@@ -45,8 +45,8 @@
         .button {
             display: inline-block;
             color: white;
-            background: #FBC02D;
-            border: solid #FBC02D;
+            background: #71bc37;
+            border: solid #71bc37;
             border-width: 10px 20px 8px;
             font-weight: bold;
             border-radius: 4px; }
@@ -85,7 +85,7 @@
             border-collapse: collapse; }
         .container .masthead {
             padding: 80px 0;
-            background: #FBC02D;
+            background: #71bc37;
             color: white; }
         .container .masthead h1 {
             margin: 0 auto !important;
@@ -119,7 +119,7 @@
                 <tr>
                     <td align="center" class="masthead">
 
-                        <h1>HomeWork</h1>
+                        <h1>HomeWork Pro Writers</h1>
 
                     </td>
                 </tr>
@@ -141,7 +141,7 @@
             <table>
                 <tr>
                     <td class="content footer" align="center">
-                        <p>Sent by <a href="#">HomeWork</a>,
+                        <p>Sent by <a href="#">HomeWorkProWriters</a>,
 
                         </p>
                         <p>

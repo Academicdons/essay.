@@ -57,7 +57,7 @@
 
 @section('content')
 
-    <section class="place-order">
+    <section class="place-order mt-5 mb-5">
 
 
         <div class="container">

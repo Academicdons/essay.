@@ -1,4 +1,4 @@
-@extends('layouts.index_writer')
+@extends('layouts.index')
 
 @section('style')
 
@@ -185,7 +185,7 @@
 
     </section>
 
-    <section class="become-writer">
+    <section class="become-writer  bg-base">
 
         <div class="container pt-5 pb-1">
 
@@ -347,7 +347,7 @@
         </div>
     </section>
 
-    <section class="testimonials">
+    <section class="testimonials  bg-base">
 
         <div class="container pt-5 pb-5">
             <div class="row">

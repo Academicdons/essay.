@@ -32,7 +32,7 @@
 
 
             .bg-base{
-                background-color: #018021;
+                background-color: #018021 !important;
                 color: white !important;
             }
 
@@ -188,7 +188,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <p class="top-bar-text p-2  mb-0">Get a professional service</p>
+                    <p class="top-bar-text p-2  mb-0">{{Saas::getDomain()}}</p>
                 </div>
                 <div class="col-sm-6 float-left">
                     <ul class="list-inline pt-2 top-bar-text float-right">

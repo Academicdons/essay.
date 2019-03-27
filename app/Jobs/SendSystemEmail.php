@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\AssignMail;
+use App\Mail\AccountCreatedMail;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -11,21 +11,25 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
 
-class AssignOrderMail implements ShouldQueue
+class SendSystemEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $user;
-    protected $message;
+    /**
+     * @var User
+     */
+    private $email;
+    private $to;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user,$message)
+    public function __construct($to,$email)
     {
-        //
-        $this->message=$message;
-        $this->user=$user;
+
+        $this->email = $email;
+        $this->to = $to;
     }
 
     /**
@@ -35,6 +39,6 @@ class AssignOrderMail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->user)->send(new AssignMail($this->user,$this->message));
+        Mail::to($this->to)->send($this->email);
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Jobs\AssignOrderMail;
 use App\Jobs\ThunderPushAsync;
 use App\Mail\AssignMail;
-use App\Mail\EssyMail;
+use App\Mail\WriterEssayTest;
 use App\Models\Attachment;
 use App\Models\Bargain;
 use App\Models\Bid;
@@ -233,7 +233,7 @@ class OrdersController extends Controller
     public function sendEmail()
     {
         $email='admin@admin.com.';
-        Mail::to(Auth::user())->send(new EssyMail(Auth::user(),$email));
+        Mail::to(Auth::user())->send(new WriterEssayTest(Auth::user(),$email));
     }
 
 

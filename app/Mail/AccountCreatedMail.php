@@ -8,11 +8,15 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SuccessRegistrationMail extends Mailable
+class AccountCreatedMail extends Mailable
 {
     use Queueable, SerializesModels;
-        protected $user;
-        protected $message;
+    /**
+     * @var User
+     */
+    private $user;
+    private $message;
+
     /**
      * Create a new message instance.
      *
@@ -20,8 +24,9 @@ class SuccessRegistrationMail extends Mailable
      */
     public function __construct(User $user,$message)
     {
-        $this->user=$user;
-        $this->message=$message;
+        //
+        $this->user = $user;
+        $this->message = $message;
     }
 
     /**
@@ -31,9 +36,8 @@ class SuccessRegistrationMail extends Mailable
      */
     public function build()
     {
-
         return $this->to($this->user->email)
             ->with(['user'=>$this->user,'message_to_user'=>$this->message])
-            ->view('mails.assignment_mail'); //this page has been reused
+            ->view('mails.account_created');
     }
 }

@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Jobs\AssignOrderMail;
 use App\Jobs\SendApproveEmailJob;
 use App\Jobs\SendEssyMail;
+use App\Jobs\SendSystemEmail;
+use App\Mail\AccountCreatedMail;
 use App\Mail\SuccessRegistrationMail;
+use App\Mail\WriterEssayTest;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
@@ -93,18 +96,18 @@ class RegisterController extends Controller
         event(new Registered($user = $this->create($request->all())));
 
         $this->guard()->login($user);
+
         //send email notification here  to the writer only
         if($user->user_type==1){
-            $this->dispatch(new SendEssyMail($user));
+            $email = new WriterEssayTest($user);
+            $this->dispatch(new SendSystemEmail($user->email,$email));
 
         }elseif ($user->user_type==2){
-
             $message='Your account has successfully been created.';
-        $this->dispatch(new AssignOrderMail($user,$message));
+            $email = new AccountCreatedMail($user,$message);
+            $this->dispatch(new SendSystemEmail($user->email,$email));
         }
 
-
-//
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
     }

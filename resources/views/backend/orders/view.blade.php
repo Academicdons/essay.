@@ -81,8 +81,44 @@
                         <h3 class="box-title">Order No. {{ $order->order_no }}</h3>
                         <div class="box-tools" id="bid_area">
                             <a href="{{ route('admin.orders.index') }}" class="btn btn-xs btn-info">Back To Orders</a>
-                         
-                            @if($order->status==0 )
+                            <button class="btn-danger btn-xs" data-toggle="modal" data-target="#disputedModal">Mark Order as Disputed</button>
+                            <div class="modal" id="disputedModal" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Mark Order as Disputed</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card " v-if="existing_disputes!=''">
+                                                <div class="card-header">
+                                                    <h6 >Existing Disputes</h6>
+
+                                                </div>
+                                                <div class="card-body">
+                                                    <li v-for="existing_dispute in existing_disputes">@{{ existing_dispute.reason }}</li>
+
+                                                </div>
+                                            </div>
+
+
+                                            <p><b>Provide a reason why you need to mark the order as disputed below</b></p>
+
+                                            <textarea v-model="dispute_reason" style="min-height: 200px" class="form-control" placeholder=""></textarea>
+
+                                            <p class="text-center">
+                                                <button @click="requestDispute()" class="btn btn-success mt-3">Submit Dispute request</button>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        @if($order->status==0 )
 
                             <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#rateModal"  @click="getBids('{{$order->id}}')">View Placed Bids</button>
                             @endif
@@ -492,7 +528,14 @@
 
             el:'#bid_area',
             data:{
-                bids:[]
+                bids:[],
+                dispute_reason:'',
+                dispute:{},
+                existing_disputes:[],
+            },
+            created:function(){
+                this.getDisputes();
+
             },
             methods:{
                 getBids:function (order_id) {
@@ -504,8 +547,29 @@
                             me.bids=res.data.bids;
                         })
 
-                }
+                },
+                requestDispute:function(){
+                    let order_id_id='<?php echo $order->id; ?>';
 
+                    let url = '{{route('customer.orders.dispute_order',$order->id)}}';
+                    let me = this;
+                    axios.post(url,{'dispute_reason':me.dispute_reason,'order_id':order_id_id})
+                        .then(function (res) {
+                            me.dispute=res.data.dispute;
+                            // me.getOrder();
+                            $('#disputedModal').modal('hide')
+                        })
+                },
+                getDisputes(){
+                    let url='{{route('customer.orders.fetch_disputes',$order->id)}}';
+                    let me = this
+                    axios.get(url)
+                        .then(function (res) {
+                            me.getDisputes();
+                            me.existing_disputes=res.data.disputes;
+
+                        })
+                }
             }
         });
         function assignOrder() {
@@ -583,7 +647,7 @@
                     let me = this;
                     axios.get(url)
                         .then(function (res) {
-                            console.log(res.data)
+                            // console.log(res.data)
                             me.assignments = res.data.assignments;
                         })
                 },

@@ -46,7 +46,6 @@ class GeneralController extends Controller
         if($domain->type == 1){
             return View::make('welcome_writer')->withOrders($latest);
         }
-
         return View::make('welcome')->withOrders($latest);
     }
 

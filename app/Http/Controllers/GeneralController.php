@@ -41,8 +41,8 @@ class GeneralController extends Controller
         /*
          * check subdomain
          */
-        $domain = Saas::getDomain();
 
+        $domain = Saas::getDomain();
         if($domain->type == 1){
             return View::make('welcome_writer')->withOrders($latest);
         }

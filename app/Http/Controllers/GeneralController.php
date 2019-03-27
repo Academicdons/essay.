@@ -27,6 +27,12 @@ class GeneralController extends Controller
 {
     //
 
+    public function accountPending()
+    {
+        return View::make('auth.account_pending');
+
+    }
+
     public function index()
     {
         $latest = Order::orderBy('created_at','desc')->has('Education')->limit(5)->get();

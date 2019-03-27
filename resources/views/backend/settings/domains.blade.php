@@ -97,8 +97,8 @@
 
                                 <div class="form-group">
                                     <label for="name" class="">Email</label>
-                                    <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="name" value="{{ old('email') }}" required autofocus>
-                                    <span class="invalid-feedback" role="alert"><strong>{{ ($errors->has('name'))?$errors->first('name'):"" }}</strong></span>
+                                    <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                                    <span class="invalid-feedback" role="alert"><strong>{{ ($errors->has('email'))?$errors->first('name'):"" }}</strong></span>
                                 </div>
 
                                 <div class="form-group">

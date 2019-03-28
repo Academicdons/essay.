@@ -121,7 +121,11 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
 
 //Backend Routes:
 Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', 'middleware' => ['admin', 'auth','account_status']], function () {
+//   /dashboard
     Route::get('/', 'DashboardController@index')->name('index');
+    Route::get('get_clients_json','DashboardController@getClientsJson')->name('get_clients_json');
+    Route::get('get_writers_json','DashboardController@getWritersJson')->name('get_writers_json');
+    Route::get('get_date_order_json','DashboardController@getOrdersSum')->name('get_date_order_json');
     Route::get('/discipline/index', 'DashboardController@discipline')->name('discipline');
     Route::get('/education_level/index', 'DashboardController@educationLevel')->name('education_level');
     Route::get('/paper_type/index', 'DashboardController@paperType')->name('paper_type');

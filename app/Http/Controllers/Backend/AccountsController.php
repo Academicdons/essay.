@@ -47,15 +47,15 @@ class AccountsController extends Controller
         }
 
         $orders->whereBetween('orders.created_at',[$stop,$start]);
-//        $orders->where('orders.status',4);
+        $orders->where('orders.status',4);
         $orders->select(['orders.id','orders.order_no','orders.salary','users.name',DB::raw('SUM(bargains.amount) As bargains_sum')]);
         $orders->groupBy('orders.id');
 
         $result = $orders->get();
 
         return response()->json($result);
-
     }
+
 
     public function payOrder(Request $request)
     {

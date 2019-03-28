@@ -12,6 +12,7 @@ use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
@@ -157,4 +158,32 @@ class OrdersController extends Controller
 
         return redirect()->back();
     }
+
+    public function finishedOrders(Request $request)
+    {
+        $orders = Order::join('assignments', 'orders.active_assignment', '=', 'assignments.id');
+        $orders->join('users', 'assignments.user_id', '=', 'users.id');
+        $orders->leftJoin('bargains', 'bargains.order_id', '=', 'orders.id');
+
+        /*
+         * Consider complete orders which are paid or unpaid
+         */
+        if(request('pay_state')==0 || !$request->has('pay_state')){
+            $orders->doesntHave('payment');
+        }else{
+            $orders->has('payment');
+        }
+        $orders->with('payment');
+
+
+        $orders->where('orders.status',4);
+        $orders->where('assignments.user_id',Auth::id());
+        $orders->select(['orders.id','orders.order_no','orders.salary',DB::raw('SUM(bargains.amount) As bargains_sum')]);
+        $orders->groupBy('orders.id');
+
+        $result = $orders->get();
+
+        return response()->json($result);
+    }
+
 }

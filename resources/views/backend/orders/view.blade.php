@@ -291,14 +291,6 @@
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="pull-right">
-                                        {{--<form action="{{route('writer.orders.upload_file',$order->id)}}" method="post" enctype="multipart/form-data">--}}
-                                            {{--<input type="hidden" name="_token" value="zKZlLTxABOWHmdOl56Lz1RHrXQilvvfC7IlAsxTF">--}}
-                                            {{--<input type="hidden" name="task_id" value="639">--}}
-                                            {{--<input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name">--}}
-                                            {{--<label for="file" class="btn btn-xs btn-warning">Choose file</label>--}}
-                                            {{--<input type="file" name="file" id="file" style="display: none">--}}
-                                            {{--<button class="btn btn-primary btn-xs" type="submit"><i class="fa fa-upload"></i></button>--}}
-                                        {{--</form>--}}
                                         <form action="{{route('admin.orders.upload_file',$order->id)}}" method="post" enctype="multipart/form-data">
                                             @csrf
                                             <input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name" required>
@@ -556,7 +548,7 @@
                     axios.post(url,{'dispute_reason':me.dispute_reason,'order_id':order_id_id})
                         .then(function (res) {
                             me.dispute=res.data.dispute;
-                            // me.getOrder();
+                            me.getDisputes();
                             $('#disputedModal').modal('hide')
                         })
                 },
@@ -565,9 +557,7 @@
                     let me = this
                     axios.get(url)
                         .then(function (res) {
-                            me.getDisputes();
                             me.existing_disputes=res.data.disputes;
-
                         })
                 }
             }

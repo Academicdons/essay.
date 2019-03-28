@@ -96,6 +96,15 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="">Spacing</label>
+                                <select name="spacing" id="spacing" class="form-control academic-input">
+                                    <option value="0">Single</option>
+                                    <option value="1">Double</option>
+                                </select>
+                            </div>
+
+
+                            <div class="form-group">
                                 <label for="">Number of pages</label>
                                 <div class="row">
                                     <div class="col-sm-8">
@@ -251,13 +260,13 @@
 
                             </div>
 
-                            <div class="form-group p-2" style="border: 1px solid dodgerblue">
+                            <div class="form-group p-2">
                                 <p class="text-center m-2" for="" style="color: orange;font-size: 30px;font-weight: bold;">
                                     <span id="amount">
 
                                     </span>
                                     <br>
-                                    <button type="submit" style="border: none !important;" onclick="evaluateCost()" class="btn btn-primary mx-auto academic-button elevate">Order Now</button>
+                                    <button type="submit"  onclick="evaluateCost()" class="button">Order Now</button>
 
                                 </p>
                             </div>

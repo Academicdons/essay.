@@ -35,11 +35,27 @@
 
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="title">Title</label>
-                                    <input type="text" id="title" class="form-control" name="title" value="{{old('title')}}">
-                                    <span class="form-control-feedback text-danger text-sm">{{($errors->has('title')?$errors->first('title'):"")}}</span>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="title">Title</label>
+                                            <input type="text" id="title" class="form-control" name="title" value="{{old('title')}}">
+                                            <span class="form-control-feedback text-danger text-sm">{{($errors->has('title')?$errors->first('title'):"")}}</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Spacing</label>
+                                            <select name="spacing" id="spacing" class="form-control academic-input">
+                                                <option value="0" {{ old('spacing') == 1?"selected":'' }}>Single</option>
+                                                <option value="1" {{ old('spacing') == 1?"selected":'' }}>Double</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
+
 
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -155,54 +171,39 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <input type="hidden" id="bid_expiry" class="form-control" name="bid_expiry" value="{{old('bid_expiry')}}">
-                                            <span class="form-control-feedback text-danger text-sm">{{($errors->has('bid_expiry')?$errors->first('bid_expiry'):"")}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <input type="hidden" id="deadline" class="form-control" name="deadline" value="{{old('deadline')}}">
+                                            <label for="">Deadline</label>
+                                            <div class='input-group date' id='deadline'>
+                                                <input type='text' name="deadline" value="{{old('deadline')}}" class="form-control" />
+                                                <span class="input-group-addon">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                            </div>
                                             <span class="form-control-feedback text-danger text-sm">{{($errors->has('deadline')?$errors->first('deadline'):"")}}</span>
                                         </div>
-                                    </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <label for="deadline">Deadline</label>
-                                        <div style="overflow:hidden;">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <div id="datetimepicker12"></div>
-                                                    </div>
-                                                </div>
+                                    </div>
+                                    <div class="col-sm-6">
+
+                                        <div class="form-group">
+                                            <label for="">Bid expiry</label>
+                                            <div class='input-group date' id='bid_expiry'>
+                                                <input type='text' name="bid_expiry" value="{{old('bid_expiry')}}" class="form-control" />
+                                                <span class="input-group-addon">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
                                             </div>
-
+                                            <span class="form-control-feedback text-danger text-sm">{{($errors->has('bid_expiry')?$errors->first('bid_expiry'):"")}}</span>
                                         </div>
+
                                     </div>
                                 </div>
+
 
 
                             </div>
 
 
                             <div class="col-sm-6">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <label for="bid_expiry">Bid Expiry Time</label>
-                                        <div style="overflow:hidden;">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <div id="datetimepicker13"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="form-group">
                                     <label for="notes">Notes</label>
@@ -238,27 +239,19 @@
         });
 
         $(function () {
-            $('#datetimepicker12').datetimepicker({
-                inline: true,
-                sideBySide: true
+
+
+
+            $('#deadline').datetimepicker({
+                format:'DD/MM/YYYY H:mm:ss'
             });
 
-            $("#datetimepicker12").on("dp.change", function (e) {
-                var date =  $('#datetimepicker12').data("DateTimePicker").viewDate()
-                $('#deadline').val(date.format('DD/MM/YYYY H:mm:ss'));
-
+            $('#bid_expiry').datetimepicker({
+                format:'DD/MM/YYYY H:mm:ss'
             });
+
 
         });
-        $(function () {
-            $('#datetimepicker13').datetimepicker({
-                inline: true,
-                sideBySide: true
-            });
-            $("#datetimepicker13").on("dp.change", function (e) {
-                var date =  $('#datetimepicker13').data("DateTimePicker").viewDate()
-                $('#bid_expiry').val(date.format('DD/MM/YYYY H:mm:ss'));
-            });
-        });
+
     </script>
 @stop

@@ -12,7 +12,7 @@ class OrderAssignmentMail extends Mailable
 {
     use Queueable, SerializesModels;
     protected $user;
-    protected $message;
+    protected $msg;
     /**
      * Create a new message instance.
      *
@@ -22,7 +22,7 @@ class OrderAssignmentMail extends Mailable
     {
         //
         $this->user=$user;
-        $this->message=$msg;
+        $this->msg=$msg;
     }
 
     /**

@@ -43,7 +43,7 @@ class GeneralController extends Controller
          */
 
         $domain = Saas::getDomain();
-        if($domain->type == 1){
+        if($domain->domain_type == 1){
             return View::make('welcome_writer')->withOrders($latest);
         }
         return View::make('welcome')->withOrders($latest);

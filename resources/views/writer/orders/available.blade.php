@@ -82,7 +82,7 @@
                                         <td>Pages</td><th>@{{ order.no_pages }}</th>
                                     </tr>
                                     <tr>
-                                        <td>CPP</td><th>@{{ order.cpp }}</th>
+                                        <td>Salary</td><th>@{{ order.salary }}</th>
                                     </tr>
                                 </table>
                             {{--</div>--}}
@@ -91,7 +91,10 @@
                     <div class="col-sm-12 col-md-4 col-lg-4">
                         <table class="table table-sm table-striped">
                             <tr>
-                                <td>Amount</td><th>@{{ order.amount }}</th>
+                                <td>Spacing</td><th>
+                                    <span v-if="order.spacing==0">Single</span>
+                                    <span v-if="order.spacing==1">Double</span>
+                                    </th>
                             </tr>
                             <tr>
                                 <td>Created at</td><th>@{{ moment.utc(order.created_at).local().format("D-M-YYYY, h:mm:ss a") }}</th>

@@ -84,7 +84,10 @@
                                         <td>Pages</td><th>@{{ order.no_pages }}</th>
                                     </tr>
                                     <tr>
-                                        <td>CPP</td><th>@{{ order.cpp }}</th>
+                                        <td>Spacing</td><th>
+                                            <span v-if="order.spacing==0">Single</span>
+                                            <span v-if="order.spacing==1">Double</span>
+                                        </th>
                                     </tr>
                                 </table>
                             </div>

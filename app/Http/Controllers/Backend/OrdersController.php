@@ -85,11 +85,11 @@ class OrdersController extends Controller
 
         $message='Order '.$order->order_no.  ' has been assigned to you. Please log in to your account as soon as possible. Regards Admin';
         $user = User::find(request('par1'));
-        $email = new MessageMail($user,$message);
+        $email = new OrderAssignmentMail($user,$message);
         $this->dispatch(new SendSystemEmail($user->email,$email));
 
-        //send sms
-        Log::warning((new \App\Plugins\AfricasTalking)->safeSend($user->phone_number,$message));
+        //send sms and dispatch it
+        //Log::warning((new \App\Plugins\AfricasTalking)->safeSend($user->phone_number,$message));
 
         return response()->json([
             'success'=>true
@@ -119,6 +119,7 @@ class OrdersController extends Controller
 
 
         $order->notes = $request->notes;
+        $order->spacing = $request->spacing;
         $order->cpp = $request->cpp;
         $order->title = $request->title;
         $order->order_no = mt_rand(100000, 999999);
@@ -280,7 +281,7 @@ class OrdersController extends Controller
 
         $message='Order '.$order->order_no.  ' has been assigned to you. Please log in to your account as soon as possible. Regards Admin';
         $user = User::find($user_id);
-        $email = new MessageMail($user,$message);
+        $email = new OrderAssignmentMail($user,$message);
         $this->dispatch(new SendSystemEmail($user->email,$email));
 
         return \redirect()->back();

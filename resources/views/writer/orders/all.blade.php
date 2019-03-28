@@ -129,7 +129,7 @@
                                         <th>No</th>
                                         <th>Order number</th>
                                         <th>Salary</th>
-                                        <th>Bargains</th>
+                                        <th>Bonus/Fine</th>
                                         <th>Total</th>
                                         <th>Actions</th>
                                     </tr>

@@ -113,10 +113,16 @@
                                                 @endif
                                             </th>
 
-                                            <td>Bonus</td>
-                                            <th>{{ $order->no_pages }}</th>
-                                            <td> Writer quality </td>
-                                            <th>{{ $order->no_words }}</th>
+                                            <td>Bonus/fine</td>
+                                            <th>{{ $order->bargains()->sum('amount') }}</th>
+                                            <td> Spacing </td>
+                                            <th>
+                                                @if($order->spacing==1)
+                                                    Double
+                                                    @else
+                                                    Single
+                                                    @endif
+                                            </th>
                                         </tr>
 
                                         <tr>
@@ -131,8 +137,8 @@
                                         </tr>
 
                                         <tr>
-                                            <td>Bonus</td>
-                                            <th>{{ $order->no_pages }}</th>
+                                            <td>SSP</td>
+                                            <th>{{ $order->salary/$order->no_pages }}</th>
                                             <td> Discipline </td>
                                             <th>{{ $order->Discipline->name }}</th>
 

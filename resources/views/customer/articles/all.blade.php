@@ -21,7 +21,7 @@
                                         <p class="small">{{$article->created_at->diffForHumans()}}</p>
                                     </div>
                                     <div class="small">
-                                        {!! str_limit($article->description,400) !!}}
+                                        {!! str_limit($article->description,300) !!}}
                                     </div>
                                     <div class="buttons mt-2">
                                         <a href="{{route('read_article',$article->title)}}" class="float-right btn btn-outline-success btn-sm">Read article</a>

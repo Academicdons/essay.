@@ -3,7 +3,7 @@
 @section('content')
     <p>Dear {{$user->name}},</p>
     <p>
-        {!!  $message_to_user!!}
+        {!!  $msg !!}
     </p>
 
     @endsection

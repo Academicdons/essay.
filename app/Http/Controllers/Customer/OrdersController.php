@@ -88,6 +88,7 @@ class OrdersController extends Controller
 
         $order->notes = $request->instructions;
         $order->cpp = $cpp;
+        $order->spacing = $request->spacing;
         $order->title = $request->topic;
         $order->order_no = mt_rand(100000, 999999);
         $order->no_pages = $request->number_of_pages;

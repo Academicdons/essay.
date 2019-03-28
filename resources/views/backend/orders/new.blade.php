@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@section('style')
+    <link rel="stylesheet" href="{{asset('bstpick/css/bootstrap-datetimepicker.css')}}">
+    @endsection
+
 @section('content')
 
     <section class="content-header">
@@ -27,6 +31,7 @@
                     <form role="form" method="post" action="{{ route('admin.orders.store') }}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" value="{{old('id')}}">
+                        <input type="hidden" name="tz" id="tz">
 
                         <div class="row">
                             <div class="col-sm-6">
@@ -56,9 +61,9 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="amount">Amount</label>
-                                            <input type="text" id="amount" class="form-control" name="amount" value="{{old('amount')}}">
-                                            <span class="form-control-feedback text-danger text-sm">{{($errors->has('amount')?$errors->first('amount'):"")}}</span>
+                                            <label for="amount">Salary PP</label>
+                                            <input type="text" id="spp" class="form-control" name="spp" value="{{old('spp')}}">
+                                            <span class="form-control-feedback text-danger text-sm">{{($errors->has('spp')?$errors->first('spp'):"")}}</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -150,23 +155,54 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="bid_expiry">Bid Expiry Time</label>
-                                            <input type="datetime-local" id="bid_expiry" class="form-control" name="bid_expiry" value="{{old('bid_expiry')}}">
+                                            <input type="hidden" id="bid_expiry" class="form-control" name="bid_expiry" value="{{old('bid_expiry')}}">
                                             <span class="form-control-feedback text-danger text-sm">{{($errors->has('bid_expiry')?$errors->first('bid_expiry'):"")}}</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="deadline">Deadline</label>
-                                            <input type="datetime-local" id="deadline" class="form-control" name="deadline" value="{{old('deadline')}}">
+                                            <input type="hidden" id="deadline" class="form-control" name="deadline" value="{{old('deadline')}}">
                                             <span class="form-control-feedback text-danger text-sm">{{($errors->has('deadline')?$errors->first('deadline'):"")}}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                            </div>
-                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label for="deadline">Deadline</label>
+                                        <div style="overflow:hidden;">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div id="datetimepicker12"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label for="bid_expiry">Bid Expiry Time</label>
+                                        <div style="overflow:hidden;">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div id="datetimepicker13"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="form-group">
                                     <label for="notes">Notes</label>
@@ -176,7 +212,7 @@
                             </div>
                         </div>
 
-                        <Button class="btn btn-primary" type="submit">Submit</Button>
+                        <Button class="btn btn-primary pull-right" type="submit">Submit</Button>
                     </form>
                 </div>
             </div>
@@ -188,10 +224,41 @@
 
 @section('script')
     <script src="{{ asset('bower_components/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('bower_components/moment/moment.js') }}"></script>
+    <script src="{{asset('bstpick/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jstz.min.js')}}"></script>
+
 
     <script>
         $(function () {
             CKEDITOR.replace('notes')
-        })
+            var tz = jstz.determine();
+
+            $('#tz').val(tz.name());
+        });
+
+        $(function () {
+            $('#datetimepicker12').datetimepicker({
+                inline: true,
+                sideBySide: true
+            });
+
+            $("#datetimepicker12").on("dp.change", function (e) {
+                var date =  $('#datetimepicker12').data("DateTimePicker").viewDate()
+                $('#deadline').val(date.format('DD/MM/YYYY H:mm:ss'));
+
+            });
+
+        });
+        $(function () {
+            $('#datetimepicker13').datetimepicker({
+                inline: true,
+                sideBySide: true
+            });
+            $("#datetimepicker13").on("dp.change", function (e) {
+                var date =  $('#datetimepicker13').data("DateTimePicker").viewDate()
+                $('#bid_expiry').val(date.format('DD/MM/YYYY H:mm:ss'));
+            });
+        });
     </script>
 @stop

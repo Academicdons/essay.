@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Jobs\AssignOrderMail;
+use App\Jobs\SendSystemEmail;
 use App\Jobs\ThunderPushAsync;
-use App\Mail\AssignMail;
+use App\Mail\OrderAssignmentMail;
+use App\Mail\MessageMail;
 use App\Mail\WriterEssayTest;
 use App\Models\Attachment;
 use App\Models\Bargain;
@@ -16,6 +18,7 @@ use App\Models\Message;
 use App\Models\Order;
 use App\Models\PaperType;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -62,8 +65,6 @@ class OrdersController extends Controller
              */
             Assignment::where('order_id', '=', request('par1'))
                 ->update(['status' => 1]);
-
-
             $as = new Assignment();
             $as->id = Uuid::generate();
             $as->order_id = request('par1');
@@ -81,16 +82,14 @@ class OrdersController extends Controller
             $order->save();
 
         }
-            //send the user an email
-//        Mail::to($request->user())->send(new OrderShipped($order));
 
         $message='Order '.$order->order_no.  ' has been assigned to you. Please log in to your account as soon as possible. Regards Admin';
-
-        $userToSendEmail=User::find(request('par2'));
-        $this->dispatch(new AssignOrderMail($userToSendEmail,$message));
+        $user = User::find(request('par1'));
+        $email = new MessageMail($user,$message);
+        $this->dispatch(new SendSystemEmail($user->email,$email));
 
         //send sms
-        Log::warning((new \App\Plugins\AfricasTalking)->safeSend($userToSendEmail->phone_number,$message));
+        Log::warning((new \App\Plugins\AfricasTalking)->safeSend($user->phone_number,$message));
 
         return response()->json([
             'success'=>true
@@ -102,6 +101,8 @@ class OrdersController extends Controller
 
     public function store(Request $request)
     {
+
+
         if ($request->has('id') && $request->id != null){
             $order = Order::find($request->id);
         }else{
@@ -109,16 +110,25 @@ class OrdersController extends Controller
             $order->id = Uuid::generate();
         }
 
+        $deadline = Carbon::createFromFormat("d/m/Y H:i:s", $request->deadline, request('tz'));
+        $deadline->setTimezone('UTC');
+
+        $bid_expiry = Carbon::createFromFormat("d/m/Y H:i:s", $request->bid_expiry, request('tz'));
+        $bid_expiry->setTimezone('UTC');
+
+
+
         $order->notes = $request->notes;
         $order->cpp = $request->cpp;
         $order->title = $request->title;
         $order->order_no = mt_rand(100000, 999999);
         $order->no_pages = $request->no_pages;
         $order->no_words = $request->no_words;
-        $order->amount = $request->amount;
+        $order->amount = $request->cpp*$request->no_pages;
+        $order->amount = $request->spp*$request->no_pages;
         $order->order_assign_type = $request->order_assign_type;
-        $order->deadline = $request->deadline;
-        $order->bid_expiry = $request->bid_expiry;
+        $order->deadline = $deadline;
+        $order->bid_expiry = $bid_expiry;
         $order->paper_type = $request->paper_type;
         $order->discipline = $request->discipline;
         $order->education_level = $request->education_level;
@@ -219,6 +229,11 @@ class OrdersController extends Controller
             "data"=>null
         ]));
 
+        $message = $msg['message'];
+        $user = User::find($msg['user_id']);
+        $email = new MessageMail($user,$message);
+        $this->dispatch(new SendSystemEmail($user->email,$email));
+
         return \response()->json([
             'success'=>true
         ]);
@@ -261,6 +276,12 @@ class OrdersController extends Controller
         $order=Order::find($order_id);
         $order->active_assignment=$assignment->id;
         $order->save();
+
+
+        $message='Order '.$order->order_no.  ' has been assigned to you. Please log in to your account as soon as possible. Regards Admin';
+        $user = User::find($user_id);
+        $email = new MessageMail($user,$message);
+        $this->dispatch(new SendSystemEmail($user->email,$email));
 
         return \redirect()->back();
     }

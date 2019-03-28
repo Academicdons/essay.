@@ -36,7 +36,6 @@
                             <li><a href="#" @click="getUserOrders(1)"><i class="fa fa-envelope-o" ></i> In Progress</a></li>
                             <li><a href="#" @click="getUserOrders(2)"><i class="fa fa-file-text-o" ></i> Revision</a></li>
                             <li><a href="#" @click="getUserOrders(3)"><i class="fa fa-filter" ></i> Complete </a>
-                            <li><a href="#" @click="getUserOrders(4)"><i class="fa fa-address-book-o" ></i> Finished </a>
                             <li><a href="#" @click="getUserOrders(5)"><i class="fa fa-times" ></i> Disputed </a>
                             </li>
                             {{--<li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>--}}
@@ -47,7 +46,7 @@
                 <!-- /. box -->
                 <div class="box box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Labels</h3>
+                        <h3 class="box-title">Finished orders</h3>
 
                         <div class="box-tools">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -56,9 +55,8 @@
                     </div>
                     <div class="box-body no-padding">
                         <ul class="nav nav-pills nav-stacked">
-                            <li><a href="#"><i class="fa fa-circle-o text-red"></i> Important</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Promotions</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Social</a></li>
+                            <li><a href="#" @click="getFinishedOrders(0)"><i class="fa fa-circle-o text-red"></i>Unpaid orders</a></li>
+                            <li><a href="#" @click="getFinishedOrders(1)"><i class="fa fa-circle-o text-yellow"></i>Paid orders</a></li>
                         </ul>
                     </div>
                     <!-- /.box-body -->
@@ -103,7 +101,7 @@
                             <!-- /.pull-right -->
                         </div>
                         <div class="table-responsive mailbox-messages">
-                            <table class="table table-hover table-striped">
+                            <table class="table table-hover table-striped" v-if="!accounts">
                                 <tbody>
 
                                 <tr v-for="(order,index) in orders">
@@ -123,33 +121,42 @@
 
                                 </tbody>
                             </table>
+
+                            <table class="table table-hover table-striped" v-if="accounts">
+
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Order number</th>
+                                        <th>Salary</th>
+                                        <th>Bargains</th>
+                                        <th>Total</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr v-for="(order,index) in pay_orders">
+                                    <td>@{{ index+1 }}</td>
+                                    <td><a href="#">@{{ order.order_no }}</a></td>
+                                    <td ><b>$@{{ order.salary }}</b></td>
+                                    <td>$@{{ order.bargains_sum }}</td>
+                                    <td>$@{{ order.bargains_sum+order.salary }}</td>
+                                    <td>
+                                        <a :href="'{{url('/writer/orders/view')}}/' + order.id" class="btn btn-xs btn-default">Read more</a>
+                                    </td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
                             <!-- /.table -->
                         </div>
                         <!-- /.mail-box-messages -->
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer no-padding">
-                        <div class="mailbox-controls">
-                            <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
-                            </button>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
-                            </div>
-                            <!-- /.btn-group -->
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                            <div class="pull-right">
-                                1-50/200
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                                </div>
-                                <!-- /.btn-group -->
-                            </div>
-                            <!-- /.pull-right -->
-                        </div>
+
                     </div>
                 </div>
                 <!-- /. box -->
@@ -201,6 +208,8 @@
             data:{
                 orders:[],
                 revisions:[],
+                pay_orders:[],
+                accounts:false
             },
             created:function(){
                 console.log("the orders vue created");
@@ -214,11 +223,22 @@
                     axios.get(url)
                         .then(function (res) {
                             console.log(res.data.orders);
+                            me.accounts = false
                             me.orders = res.data.orders
                         })
                 },
                 getRevisions:function (orderRevisions) {
                     this.revisions=orderRevisions;
+                },
+                getFinishedOrders:function (pay_state) {
+                    let url = '{{route('writer.orders.finished_orders')}}'+"?pay_state="+pay_state;
+                    let me = this;
+                    axios.get(url)
+                        .then(function (res) {
+                            me.pay_orders=res.data
+                            me.accounts = true
+                        })
+
                 }
             }
 

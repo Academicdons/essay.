@@ -42,7 +42,7 @@ Route::post('customer/orders/store','Customer\OrdersController@store')->name('cu
 
 Route::group([],function () {
     Route::get('articles','GeneralController@articles')->name('articles');
-    Route::get('read_article/{title}','GeneralController@readArticle')->name('read_article')->where('slashData', '(.*)');;
+    Route::get('read_article/{title?}','GeneralController@readArticle')->name('read_article')->where('slashData', '(.*)');;
 
 });
 

@@ -122,6 +122,24 @@
                 </div>
                 <!-- /.nav-tabs-custom -->
 
+                <!-- solid sales graph -->
+                <div class="box box-solid bg-teal-gradient">
+                    <div class="box-header">
+                        <i class="fa fa-money"></i>
+
+                        <h3 class="box-title">Total Order Monetary Amounts</h3>
+
+                        <div class="box-tools pull-right">
+
+                        </div>
+                    </div>
+                    <div class="box-body border-radius-none">
+                        <div class="chart tab-pane active" id="logins-chart" style="position: relative; height: 300px;"></div>
+                    </div>
+
+                </div>
+                <!-- /.box -->
+
             </section>
             <!-- /.Left col -->
             <!-- right col (We are only adding the ID to make the widgets sortable)-->
@@ -150,23 +168,6 @@
                 </div>
                 <!-- /.box -->
 
-                <!-- solid sales graph -->
-                <div class="box box-solid bg-teal-gradient">
-                    <div class="box-header">
-                        <i class="fa fa-money"></i>
-
-                        <h3 class="box-title">Total Order Monetary Amounts</h3>
-
-                        <div class="box-tools pull-right">
-
-                        </div>
-                    </div>
-                    <div class="box-body border-radius-none">
-                        <div class="chart tab-pane active" id="logins-chart" style="position: relative; height: 300px;"></div>
-                    </div>
-
-                </div>
-                <!-- /.box -->
 
             </section>
             <!-- right col -->

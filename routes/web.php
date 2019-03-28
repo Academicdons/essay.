@@ -138,6 +138,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/system', 'SettingsController@getSystemDomains')->name('system');
     });
 
+    Route::group(['prefix' => 'accounts', 'as' => 'accounts.'], function () {
+        Route::get('/', 'AccountsController@index')->name('all');
+        Route::get('/data', 'AccountsController@getData')->name('data');
+        Route::post('/pay_orders', 'AccountsController@payOrder')->name('pay_orders');
+
+    });
+
+
     Route::group(['prefix' => 'announcement', 'as' => 'announce.'], function () {
         Route::get('/', 'AnnouncementController@index')->name('index');
         Route::get('/new', 'AnnouncementController@newAnnouncement')->name('new');

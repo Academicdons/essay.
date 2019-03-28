@@ -147,6 +147,9 @@
                         <li class="active"><a href="{{route('admin.settings.system')}}"><i class="fa fa-cog"></i>System settings</a></li>
                     </ul>
                 </li>
+
+                <li class="active"><a href="{{ route('admin.accounts.all') }}"><i class="fa fa-money"></i>Accounts</a></li>
+
             </ul>
         </section>
         <!-- /.sidebar -->

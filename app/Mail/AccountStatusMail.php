@@ -8,18 +8,25 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ApproveMail extends Mailable
+class AccountStatusMail extends Mailable
 {
     use Queueable, SerializesModels;
-    protected $user;
+    /**
+     * @var User
+     */
+    private $user;
+    private $msg;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct($user,$msg)
     {
-        $this->user=$user;
+        //
+        $this->user = $user;
+        $this->msg = $msg;
     }
 
     /**
@@ -30,7 +37,8 @@ class ApproveMail extends Mailable
     public function build()
     {
         return $this->to($this->user->email)
-            ->with(['user'=>$this->user])
-            ->view('mails.approve');
+            ->subject('Homeworkprowriters Account status')
+            ->view('mails.account_status')
+            ->with(['user'=>$this->user,'msg'=>$this->msg]);
     }
 }

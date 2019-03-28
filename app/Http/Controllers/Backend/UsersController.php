@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Backend;
 
 use App\Jobs\SendApproveEmailJob;
 use App\Jobs\SendEssyMail;
+use App\Jobs\SendSystemEmail;
+use App\Mail\AccountStatusMail;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -34,9 +36,14 @@ class UsersController extends Controller
         $user->save();
 
         if ($user->account_status==true){
-            $this->dispatch(new SendApproveEmailJob($user));
-
+            $message = "Your account has been reviewed by our quality assurance team and has been approoved";
+        }else{
+            $message = "Your account has been reviewed by our quality assurance team and has been suspended";
         }
+
+        $email = new AccountStatusMail($user,$message);
+        $this->dispatch(new SendSystemEmail($user->email,$email));
+
         return back();
     }
 

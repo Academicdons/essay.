@@ -176,8 +176,10 @@
                                 {{--<a href="" class="btn btn-xs bg-aqua"><i class="fa fa-check"></i>Done</a>--}}
                         </div>
                         </span>
-                            <span class="description">To be completed - {{ \Carbon\Carbon::parse($order->deadline)->diffForHumans() }} &nbsp <b>-</b> &nbsp;Bid Expiry Time - <span class="text-orange">{{ \Carbon\Carbon::parse($order->bid_expiry)->diffForHumans() }}</span> &nbsp;
-                                {{--Added by -  <span class="text-aqua">Admin</span> &nbsp;--}}
+                            <span class="description" id="description_data">To be completed -
+                                @{{ deadline }}
+
+                               &nbsp <b>-</b> &nbsp;Bid Expiry Time - <span class="text-orange">  @{{ expiry }}</span> &nbsp;
                             </span>
                         </div>
 
@@ -199,7 +201,10 @@
                                             </th>
                                             <td>Academic level</td>
                                             <th>
+                                                @if($order->Education!=null)
                                                 {{$order->Education->name}}
+
+                                                    @endif
                                             </th>
 
                                             <td>Pages</td>
@@ -214,9 +219,19 @@
                                             <td>Amount </td>
                                             <th>{{ $order->amount }}</th>
                                             <td>Paper type</td>
-                                            <th>{{ $order->Paper->name }}</th>
+                                            <th>
+                                                @if($order->Paper!=null)
+                                                {{ $order->Paper->name }}
+
+                                                    @endif
+                                            </th>
                                             <td> Discipline </td>
-                                            <th>{{ $order->Discipline->name }}</th>
+
+                                            <th>
+                                                @if($order->Discipline!=null)
+                                                {{ $order->Discipline->name }}
+                                                @endif
+                                            </th>
                                         </tr>
 
                                         <tr>
@@ -305,7 +320,7 @@
 
 
                                     <div class="table-responsive">
-                                        <table class="table table-striped">
+                                        <table class="table table-striped" id="table_area">
                                             <tbody><tr>
                                                 <th style="width: 10px">#</th>
                                                 <th>File</th>
@@ -322,7 +337,16 @@
                                                     <td>{{$attachment->display_name}}</td>
                                                     <td>-</td>
                                                     <td>-</td>
-                                                    <td>{{$attachment->created_at->diffForHumans()}}</td>
+                                                    <td id="date{{$loop->iteration}}">
+                                                        <script>
+                                                            $(function(){
+                                                                let date ='{{$attachment->created_at}}';
+                                                                let converted_date = moment.utc(date).local().format('MMMM Do YYYY, h:mm:ss a')
+                                                                $('#date{{$loop->iteration}}').html(converted_date)
+                                                            })
+                                                        </script>
+
+                                                    </td>
                                                     <td>{{current(array_reverse(explode('.',$attachment->file_name)))}}</td>
 
                                                     <td><a href="{{asset('uploads/files/order_files/'. $attachment->file_name)}}" class="btn btn-warning btn-xs" download>
@@ -513,7 +537,23 @@
 @section('script')
 
     <script src="{{asset('plugins/easycomplete/jquery.easy-autocomplete.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
 
+    <script>
+        var dadsd=new Vue({
+            el:'#description_data',
+            data:{
+                deadline:moment.utc('{{$order->deadline}}').local().startOf('hour').fromNow(),
+                expiry:moment.utc('{{$order->bid_expiry}}').local().startOf('hour').fromNow()
+            },
+            created:function(){
+
+            },
+            methods:{
+
+            }
+        });
+    </script>
     <script type="text/javascript">
 
         let bid_area=new Vue({

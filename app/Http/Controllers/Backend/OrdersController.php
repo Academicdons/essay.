@@ -58,30 +58,29 @@ class OrdersController extends Controller
     {
         $as = Assignment::where([['order_id',request('par1')],['user_id',request('par2')]])->first();
         $order = Order::find(request('par1'));
-        if($as == null){
 
-            /*
-             * update all other assignments to invalid
-             */
-            Assignment::where('order_id', '=', request('par1'))
-                ->update(['status' => 1]);
+        /*
+         * invalidate all assignments
+         */
+        Assignment::where('order_id', '=', request('par1'))->update(['status' => 0]);
+
+        if($as == null){
             $as = new Assignment();
             $as->id = Uuid::generate();
             $as->order_id = request('par1');
             $as->user_id = request('par2');
+            $as->status = 1;
             $as->Save();
 
-            $order->active_assignment = $as->id;
-            $order->save();
         }else{
-
-            Assignment::where('order_id', '=', request('par1'))
-                ->update(['status' => 1]);
-            $as->status = 0;
-            $order->active_assignment = $as->id;
-            $order->save();
-
+            $as->status =1;
+            $as->save();
         }
+
+        $order->active_assignment=$as->id;
+        $order->status = 1;
+        $order->save();
+
 
         $message='Order '.$order->order_no.  ' has been assigned to you. Please log in to your account as soon as possible. Regards Admin';
         $user = User::find(request('par1'));
@@ -266,16 +265,29 @@ class OrdersController extends Controller
 
     public function assignUserBid($order_id,$user_id)
     {
-        //create the assignment
-        $assignment=new Assignment();
-        $assignment->id=Uuid::generate()->string;
-        $assignment->order_id=$order_id;
-        $assignment->user_id=$user_id;
-        $assignment->save();
+
+        $assignment = Assignment::where([['order_id',request('par1')],['user_id',request('par2')]])->first();
+        Assignment::where('order_id', '=', request('par1'))->update(['status' => 0]);
+
+        // if as create the assignment
+        $user_id = request('par2');
+
+        if($assignment==null){
+            $assignment=new Assignment();
+            $assignment->id=Uuid::generate()->string;
+            $assignment->order_id=$order_id;
+            $assignment->user_id=$user_id;
+            $assignment->status = 1;
+            $assignment->save();
+        }else{
+            $assignment->status = 1;
+            $assignment->save();
+        }
 
         //assign the order the assignment id
         $order=Order::find($order_id);
         $order->active_assignment=$assignment->id;
+        $order->status = 1;
         $order->save();
 
 

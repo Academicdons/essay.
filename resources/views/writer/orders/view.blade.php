@@ -48,12 +48,15 @@
             color: orange;
         }
     </style>
-    @endsection
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+
+@endsection
 
 @section('content')
 
 
-    <section class="container">
+    <section class="container" >
         <div class="row">
             @if($errors->has('bid'))
                 <div class="alert alert-danger">
@@ -79,7 +82,7 @@
                         </div>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body">
+                    <div class="box-body" id="">
                         <div class="user-block">
                             <img class="img-circle img-bordered-sm" src="{{ asset('dist/img/anonymous.jpg') }}" alt="User Image">
                             <span class="username">
@@ -87,7 +90,10 @@
                           <div class="pull-right btn-box-tool">
                         </div>
                         </span>
-                            <span class="description">To be completed - {{ \Carbon\Carbon::parse($order->deadline)->diffForHumans() }} &nbsp <b>-</b> &nbsp;Bid Expiry Time - <span class="text-orange">{{ \Carbon\Carbon::parse($order->bid_expiry)->diffForHumans() }}</span> &nbsp;
+                            <span class="description" id="description_data">To be completed -
+                                @{{ deadline }}
+
+                               &nbsp <b>-</b> &nbsp;Bid Expiry Time - <span class="text-orange">  @{{ expiry }}</span> &nbsp;
                             </span>
                         </div>
 
@@ -224,7 +230,17 @@
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>{{$attachment->file_name}}</td>
                                                 <td>{{$attachment->display_name}}</td>
-                                                <td>{{$attachment->created_at->toDayDateTimeString()}}</td>
+
+                                                <td id="date{{$loop->iteration}}">
+                                                    <script>
+                                                        $(function(){
+                                                            let date ='{{$attachment->created_at}}';
+                                                            let converted_date = moment.utc(date).local().format('MMMM Do YYYY, h:mm:ss a');
+                                                            $('#date{{$loop->iteration}}').html(converted_date)
+                                                        })
+                                                    </script>
+
+                                                </td>
                                                 <td>{{current(array_reverse(explode('.',$attachment->file_name)))}}</td>
                                                 <td><a href="{{asset('uploads/files/order_files/'. $attachment->file_name)}}" class="btn btn-warning btn-xs" download>
                                                         <i class="fa fa-cloud-download"></i>
@@ -346,6 +362,21 @@
 
 @section('script')
     <script src="{{asset('plugins/rater/rater.min.js')}}"></script>
+    <script>
+        var dadsd=new Vue({
+            el:'#description_data',
+            data:{
+                deadline:moment.utc('{{$order->deadline}}').local().startOf('hour').fromNow(),
+                expiry:moment.utc('{{$order->bid_expiry}}').local().startOf('hour').fromNow()
+            },
+            created:function(){
+
+            },
+            methods:{
+
+            }
+        });
+    </script>
 
     <script>
 
@@ -360,7 +391,8 @@
             $(".rating").on("change", function(ev, data){
                 $('#rating_value').val(data.to)
             });
-        })
+        });
+
 
         var reviewArea = new Vue({
             el:'#review_area',

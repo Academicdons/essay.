@@ -83,7 +83,7 @@ class OrdersController extends Controller
 
 
         $message='Order '.$order->order_no.  ' has been assigned to you. Please log in to your account as soon as possible. Regards Admin';
-        $user = User::find(request('par1'));
+        $user = User::find(request('par2'));
         $email = new OrderAssignmentMail($user,$message);
         $this->dispatch(new SendSystemEmail($user->email,$email));
 
@@ -266,12 +266,10 @@ class OrdersController extends Controller
     public function assignUserBid($order_id,$user_id)
     {
 
-        $assignment = Assignment::where([['order_id',request('par1')],['user_id',request('par2')]])->first();
-        Assignment::where('order_id', '=', request('par1'))->update(['status' => 0]);
+        $assignment = Assignment::where([['order_id',$order_id],['user_id',$user_id]])->first();
+        Assignment::where('order_id', '=', $order_id)->update(['status' => 0]);
 
         // if as create the assignment
-        $user_id = request('par2');
-
         if($assignment==null){
             $assignment=new Assignment();
             $assignment->id=Uuid::generate()->string;

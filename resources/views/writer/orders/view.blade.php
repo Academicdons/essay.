@@ -58,6 +58,11 @@
 
     <section class="container" >
         <div class="row">
+            @if($errors->has('bid'))
+                <div class="alert alert-danger">
+                    {{$errors->first('bid')}}
+                </div>
+            @endif
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
@@ -137,25 +142,16 @@
                                             <td> Number of words </td>
                                             <th>{{ $order->no_words }}</th>
                                             <td>Education level</td>
-                                            <th>
-                                                @if($order->Education!=null)
-
-                                                {{ $order->Education->name }}
-
-                                            @endif</th>
+                                            <th>{{( $order->Education!=null)? $order->Education->name:"" }}</th>
                                             <td> Paper type </td>
-                                            <th>
-                                                @if($order->Paper!=null)
-                                                {{ $order->Paper->name }}
-                                                    @endif
-                                            </th>
+                                            <th>{{ ($order->Paper!=null)?$order->Paper->name:"" }}</th>
                                         </tr>
 
                                         <tr>
                                             <td>SSP</td>
                                             <th>{{ $order->salary/$order->no_pages }}</th>
                                             <td> Discipline </td>
-                                            <th>{{ $order->Discipline->name }}</th>
+                                            <th>{{ ($order->Discipline!=null)?$order->Discipline->name:"" }}</th>
 
                                             <td>Salary</td>
                                             <th>{{ $order->amount    }}</th>

@@ -8,6 +8,7 @@ use App\Models\Bid;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Order;
+use Carbon\Carbon;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\MessageBag;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
@@ -103,12 +105,13 @@ class OrdersController extends Controller
 
 
             $attachment=new Attachment();
+            $attachment->id = Uuid::generate();
             $attachment->file_name=$filename;
             $attachment->display_name=$request->display_name;
             $attachment->order_id=$order->id;
             $attachment->save();
 
-                return redirect()->back();
+            return redirect()->back();
             }
         }else{
             return redirect()->back()->withErrors(['error'=>'The picture is absent']);
@@ -138,9 +141,15 @@ class OrdersController extends Controller
         //TODO add the review data here from the writer
     }
 
-    public function placeBid($order_id)
+    public function placeBid(Order $order_id)
     {
-        $bid=Bid::where('order_id',$order_id)->where('user_id',Auth::id())->first();
+        $bid=Bid::where('order_id',$order_id->id)->where('user_id',Auth::id())->first();
+
+        if($order_id->bid_expiry->isPast()){
+            return back()->withErrors(new MessageBag(["bid"=>"Bidding time for this order has expired"]));
+        }
+
+
         if ($bid==null){
             $bid=new Bid();
             $bid->order_id=$order_id;

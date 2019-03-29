@@ -134,6 +134,7 @@
 
                     $('#id').val(res.data.discipline.id);
                     $('#name').val(res.data.discipline.name);
+                    $('#group').val(res.data.discipline.group_id);
                     $('#disciplinesModal').modal('show');
                 })
         }

@@ -36,10 +36,15 @@ class OrdersController extends Controller
     public function getUsersOrders(Request $request)
     {
 
-        $orders=Order::where('status',$request->status)->with(['client','revision'])->get();
+        $orders = Order::join('assignments', 'orders.active_assignment', '=', 'assignments.id');
+        $orders->join('users', 'assignments.user_id', '=', 'users.id');
+        $orders->where('assignments.user_id',Auth::id());
+        $orders->where('assignments.status',1);
+        $orders->where('orders.status',$request->input('status'));
+
 
         return response()->json([
-            'orders'=>$orders
+            'orders'=>$orders->withCount('attachments')->get()
         ]);
     }
 
@@ -58,7 +63,8 @@ class OrdersController extends Controller
     public function getMessages(Order $order)
     {
         $conversation = Conversation::firstOrCreate(['user_id' => Auth::id(),'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => Auth::id(),'order_id'=>$order->id]);
-        return \response()->json([
+
+        return response()->json([
             'conversation'=>$conversation,
             'messages'=>$conversation->messages()->with('user')->get(),
             'conversation_user'=>$conversation->user
@@ -94,7 +100,6 @@ class OrdersController extends Controller
 
 
                 $image->move($path,$filename);
-
 
 
             $attachment=new Attachment();
@@ -184,6 +189,12 @@ class OrdersController extends Controller
         $result = $orders->get();
 
         return response()->json($result);
+    }
+
+    public function revisions(Request $request)
+    {
+        $order = Order::find($request->input('order_id'));
+        return response()->json($order->revision);
     }
 
 }

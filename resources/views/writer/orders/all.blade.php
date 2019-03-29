@@ -31,7 +31,6 @@
                     </div>
                     <div class="box-body no-padding">
                         <ul class="nav nav-pills nav-stacked">
-                            <li><a href="#"  @click="getUserOrders(0)"><i class="fa fa-inbox"></i> Available
                                     <span class="label label-primary pull-right"></span></a></li>
                             <li><a href="#" @click="getUserOrders(1)"><i class="fa fa-envelope-o" ></i> In Progress</a></li>
                             <li><a href="#" @click="getUserOrders(2)"><i class="fa fa-file-text-o" ></i> Revision</a></li>
@@ -107,11 +106,11 @@
                                 <tr v-for="(order,index) in orders">
                                     <td>@{{ index+1 }}<div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
                                     <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="#">@{{ order.client.name }}</a></td>
-                                    <td class="mailbox-subject"><b>@{{ order.title }}</b> - Trying to find a solution to this problem...
+                                    <td class="mailbox-subject"><b>@{{ order.title }}</b>
                                     </td>
-                                    <td class="mailbox-attachment"></td>
-                                    <td class="mailbox-date" v-if="order.status==2"><button class="btn btn-primary btn-sm" data-target="#edit_modal" data-toggle="modal" @click="getRevisions(order.revision)">View Comments</button> </td>
+                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i> Files: @{{ order.attachments_count }} </td>
+                                    <td class="mailbox-attachment">@{{ getStatusString(order.status) }}</td>
+                                    <td class="mailbox-date" v-if="order.status==2"><button class="btn btn-primary btn-sm" data-target="#edit_modal" data-toggle="modal" @click="getRevisions(order.id)">View revisions</button> </td>
                                     <td class="mailbox-date" v-if="order.status==1"><a :href="'{{url('/writer/orders/mark_as_complete')}}/' + order.id" class="btn btn-primary btn-sm" >Mark As Complete</a> </td>
                                     <td class="mailbox-date">
                                         <a :href="'{{url('/writer/orders/view')}}/' + order.id" class="btn btn-xs btn-default">Read more</a>
@@ -213,7 +212,7 @@
             },
             created:function(){
                 console.log("the orders vue created");
-                this.getUserOrders(0)
+                this.getUserOrders(1)
             },
             methods:{
                 getUserOrders:function(status){
@@ -227,8 +226,15 @@
                             me.orders = res.data.orders
                         })
                 },
-                getRevisions:function (orderRevisions) {
-                    this.revisions=orderRevisions;
+                getRevisions:function (order_id) {
+                    let url = '{{route('writer.orders.revisions')}}'+"?order_id="+order_id;
+                    let me = this;
+                    axios.get(url)
+                        .then(function (res) {
+                            me.revisions=res.data;
+
+                        })
+
                 },
                 getFinishedOrders:function (pay_state) {
                     let url = '{{route('writer.orders.finished_orders')}}'+"?pay_state="+pay_state;
@@ -239,7 +245,22 @@
                             me.accounts = true
                         })
 
-                }
+                },
+                getStatusString:function(status){
+                    if(status==1){
+                        return "in-progress"
+                    }else if(status==2){
+                        return "revision"
+                    }else if(status==3){
+                        return "completing"
+                    }else if(status==5){
+                        return "disputed"
+                    }else if(status ==4){
+                        return "complete"
+                    }else{
+                        return "processing"
+                    }
+                },
             }
 
         })

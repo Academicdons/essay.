@@ -98,6 +98,7 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
         Route::get('/user_orders', 'OrdersController@getUsersOrders')->name('user_orders');
         Route::get('/finished_orders', 'OrdersController@finishedOrders')->name('finished_orders');
         Route::get('/view/{order}', 'OrdersController@viewOrder')->name('view');
+        Route::get('/revisions', 'OrdersController@revisions')->name('revisions');
         Route::get('/reviews/{order}', 'OrdersController@orderReviews')->name('reviews');
         Route::get('/messages/{order}', 'OrdersController@getMessages')->name('messages');
         Route::post('/save_messages/{order}', 'OrdersController@saveMessage')->name('save_messages');

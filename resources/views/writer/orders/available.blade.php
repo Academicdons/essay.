@@ -61,13 +61,13 @@
                     <div class="col-sm-12 col-md-4 col-lg-4">
                         <table class="table table-sm table-striped">
                             <tr>
-                                <td>Discipline</td><th>@{{ order.discipline.name }}</th>
+                                <td>Discipline</td><th><span v-if="order.discipline!=null">@{{ order.discipline.name }}</span></th>
                             </tr>
                             <tr>
-                                <td>Education level</td><th>@{{ order.education.name }}</th>
+                                <td>Education level</td><th><span v-if="order.education!=null">@{{ order.education.name }}</span></th>
                             </tr>
                             <tr>
-                                <td>Paper type</td><th>@{{ order.paper.name }}</th>
+                                <td>Paper type</td><th><span v-if="order.paper!=null">@{{ order.paper.name }}</span></th>
                             </tr>
                         </table>
                     </div>

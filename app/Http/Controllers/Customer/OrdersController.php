@@ -82,7 +82,6 @@ class OrdersController extends Controller
         $cpp = $base_price*$ed_factor*$this->getAmountInTime($date->diffInHours(Carbon::now()));
 
         $base_salary = Group::find($discipline->group_id)->writer_price;
-        $wcpp = $base_salary*$ed_factor*$this->getAmountInTime($date->diffInHours(Carbon::now()));
 
 
 
@@ -94,7 +93,7 @@ class OrdersController extends Controller
         $order->no_pages = $request->number_of_pages;
         $order->no_words = $request->number_of_pages*275;
         $order->amount = $cpp*$request->number_of_pages;
-        $order->salary = $wcpp*$request->number_of_pages;
+        $order->salary = $base_salary *$request->number_of_pages;
         $order->order_assign_type = 1;
         $order->deadline = $date;
         $order->bid_expiry = Carbon::now()->addMinute(5);

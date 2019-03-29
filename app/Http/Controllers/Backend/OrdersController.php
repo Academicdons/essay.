@@ -125,7 +125,7 @@ class OrdersController extends Controller
         $order->no_pages = $request->no_pages;
         $order->no_words = $request->no_words;
         $order->amount = $request->cpp*$request->no_pages;
-        $order->amount = $request->spp*$request->no_pages;
+        $order->salary = $request->spp*$request->no_pages;
         $order->order_assign_type = $request->order_assign_type;
         $order->deadline = $deadline;
         $order->bid_expiry = $bid_expiry;

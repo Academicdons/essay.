@@ -9,7 +9,7 @@ class Order extends Model
 {
     //
     public $incrementing = false;
-    protected $dates = ['deadline'];
+    protected $dates = ['deadline','bid_expiry'];
 
 
     public function conversations()

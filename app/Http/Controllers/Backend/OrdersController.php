@@ -270,6 +270,8 @@ class OrdersController extends Controller
         Assignment::where('order_id', '=', request('par1'))->update(['status' => 0]);
 
         // if as create the assignment
+        $user_id = request('par2');
+
         if($assignment==null){
             $assignment=new Assignment();
             $assignment->id=Uuid::generate()->string;

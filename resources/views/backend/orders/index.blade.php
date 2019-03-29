@@ -51,7 +51,11 @@
                                             <td>@{{ order.no_pages }}</td>
                                             <td>@{{ order.no_words }}</td>
                                             <td>@{{ order.amount }}</td>
-                                            <td>@{{ order.deadline }}</td>
+                                            <td>
+                                                @{{ moment.utc(order.deadline).local().format("dddd,Do M-YYYY, h:mm:ss a")  }}
+
+                                            </td>
+
                                             <td>
                                                 <span class="label label-success" v-if="order.order_assign_type==0">Take</span>
                                                 <span class="label label-success" v-if="order.order_assign_type==1">Bid</span>
@@ -139,6 +143,7 @@
 @stop
 
 @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
 
     <script type="text/javascript">
 

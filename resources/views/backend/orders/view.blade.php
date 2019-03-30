@@ -543,14 +543,26 @@
         var dadsd=new Vue({
             el:'#description_data',
             data:{
-                deadline:moment.utc('{{$order->deadline}}').local().startOf('hour').fromNow(),
-                expiry:moment.utc('{{$order->bid_expiry}}').local().startOf('hour').fromNow()
+                deadline:null,
+                expiry:null
             },
             created:function(){
-
+                this.updateDeadline();
+                this.updateExpiry()
             },
             methods:{
-
+                updateDeadline:function () {
+                    let x = moment.utc('{{$order->deadline}}').local()
+                    let y = moment.now()
+                    let duration = x.diff(y)
+                    this.deadline= moment.utc(duration).format('h[h] m[m] s[s]')
+                },
+                updateExpiry:function () {
+                    let x = moment.utc('{{$order->bid_expiry}}').local()
+                    let y = moment.now()
+                    let duration = x.diff(y)
+                    this.expiry= moment.utc(duration).format('h[h] m[m] s[s]')
+                }
             }
         });
     </script>

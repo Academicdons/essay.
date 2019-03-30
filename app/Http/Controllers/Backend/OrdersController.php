@@ -181,7 +181,7 @@ class OrdersController extends Controller
             if($request->input('mode')==0){
                 /*
                  * this is a writers conversation
-                 * get the current assignment user in the order and thats the relevant conversation
+                 * get the current assignment user in the order and thats the relevant conversation return null else
                  */
                 $assignment = $order->currentAssignment();
                 if($assignment==null){

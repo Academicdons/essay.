@@ -184,6 +184,13 @@ class OrdersController extends Controller
                  * get the current assignment user in the order and thats the relevant conversation
                  */
                 $assignment = $order->currentAssignment();
+                if($assignment==null){
+                    return \response()->json([
+                        'conversation'=>null,
+                        'messages'=>[],
+                        'conversation_user'=>null
+                    ]);
+                }
                 $conversation = Conversation::firstOrCreate(['user_id' => $assignment->user_id,'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $assignment->user_id,'order_id'=>$order->id]);
                 return \response()->json([
                     'conversation'=>$conversation,

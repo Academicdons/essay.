@@ -129,7 +129,7 @@ class OrdersController extends Controller
         $order->order_assign_type = $request->order_assign_type;
 
 
-        //make the writes deadline to be half of the client deadline
+        //make the writers deadline to be half of the client deadline
         $writer_hours=$deadline->diffInHours(Carbon::now())/2;
         $writer_deadline=Carbon::now()->addHours($writer_hours);
 

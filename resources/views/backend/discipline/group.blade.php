@@ -19,7 +19,7 @@
                     <div class="box-header">
                         <h3 class="box-title">Groups</h3>
                         <div class="box-tools">
-                            <button data-toggle="modal" data-target="#disciplinesModal" class="btn btn-sm btn-info">Add Group</button>
+                            <button data-toggle="modal" data-target="#groupModal" class="btn btn-sm btn-info">Add Group</button>
                         </div>
                     </div>
                     <!-- /.box-header -->

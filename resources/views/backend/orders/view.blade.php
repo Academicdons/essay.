@@ -177,7 +177,7 @@
                         </div>
                         </span>
                             <span class="description" id="description_data">To be completed -
-                                @{{ deadline }}
+                                @{{ deadline }}(@{{ writer_deadline }})
 
                                &nbsp <b>-</b> &nbsp;Bid Expiry Time - <span class="text-orange">  @{{ expiry }}</span> &nbsp;
                             </span>
@@ -544,11 +544,13 @@
             el:'#description_data',
             data:{
                 deadline:null,
+                writer_deadline:null,
                 expiry:null
             },
             created:function(){
                 this.updateDeadline();
-                this.updateExpiry()
+                this.updateExpiry();
+                this.updateWriterDeadline();
             },
             methods:{
                 updateDeadline:function () {
@@ -562,6 +564,12 @@
                     let y = moment.now()
                     let duration = x.diff(y)
                     this.expiry= moment.utc(duration).format('h[h] m[m] s[s]')
+                },
+                updateWriterDeadline:function () {
+                    let x = moment.utc('{{$order->writer_deadline}}').local()
+                    let y = moment.now()
+                    let duration = x.diff(y)
+                    this.writer_deadline= moment.utc(duration).format('h[h] m[m] s[s]')
                 }
             }
         });

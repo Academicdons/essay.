@@ -341,6 +341,7 @@ class OrdersController extends Controller
                 $attachment->file_name=$filename;
                 $attachment->display_name=$request->display_name;
                 $attachment->order_id=$order->id;
+                $attachment->created_by=Auth::id();
                 $attachment->save();
 
                 return redirect()->back();

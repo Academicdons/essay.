@@ -42,18 +42,14 @@
                                                 <td>{{ $group->base_price }}</td>
                                                 <td>{{ $group->writer_price }}</td>
                                                 <td>
-                                                    <a href="javascript:editDiscipline('{{ $group->id }}')"><i class="fa fa-edit"></i></a>
-                                                    <a href="{{ route('admin.discipline.delete', $group->id) }}"><i style="color: red;" class="fa fa-trash-o"></i></a>
+                                                    <a href="javascript:editGroup('{{ $group->id }}')"><i class="fa fa-edit"></i></a>
+                                                    <a href="{{ route('admin.discipline.delete_group', $group->id) }}"><i style="color: red;" class="fa fa-trash-o"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
                                         </tbody>
                                         <tfoot>
-                                        {{--<tr>--}}
-                                            {{--<th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">No.</th>--}}
-                                            {{--<th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Name</th>--}}
-                                            {{--<th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Action</th>--}}
-                                        {{--</tr>--}}
+
                                         </tfoot>
                                     </table>
                                 </div>
@@ -65,7 +61,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="disciplinesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="z-index: 100000000000;" aria-hidden="true">
+        <div class="modal fade" id="groupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="z-index: 100000000000;" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="box">
@@ -142,17 +138,18 @@
 
 @section('script')
     <script>
-        function editDiscipline(discipline_id) {
-            var base_url = '{{ route('admin.discipline.index') }}';
-            var url = base_url + '/edit'+'/'+discipline_id;
+        function editGroup(group_id) {
 
-            axios.get(url)
+            var url1='{{asset('admin/discipline/edit_group')}}'+'/'+group_id;
+            axios.get(url1)
                 .then(function (res) {
                     console.log(res);
 
-                    $('#id').val(res.data.discipline.id);
-                    $('#name').val(res.data.discipline.name);
-                    $('#disciplinesModal').modal('show');
+                    $('#id').val(res.data.group.id);
+                    $('#name').val(res.data.group.name);
+                    $('#base_price').val(res.data.group.base_price);
+                    $('#writer_price').val(res.data.group.writer_price);
+                    $('#groupModal').modal('show');
                 })
         }
     </script>

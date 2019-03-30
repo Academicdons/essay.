@@ -71,6 +71,7 @@
                             <a href="{{ route('admin.orders.index') }}" class="btn btn-xs btn-info">Back To Orders</a>
 
                             @if($order->status==1)
+
                             <a href="#" class="btn btn-xs btn-success" data-toggle="modal" data-target="#rateModal">Mark as done</a>
                             @elseif($order->status==0)
                                 @if(\App\Models\Bid::where('order_id',$order->id)->where('user_id',\Illuminate\Support\Facades\Auth::id())->first()==null)
@@ -338,6 +339,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
+                    @if(\App\Models\Attachment::where('order_id',$order->id)->where('created_by',\Illuminate\Support\Facades\Auth::id())->first() ==null)
+
+
+                        <div class="alert alert-danger">
+                            <h3>Please upload a file before marking the order as done</h3>
+                        </div>
+                    @endif
                     <p>Help us improve the quality of our service by providing a review</p>
                     <p class="text-ceter">Rate the quality of work:</p>
                     <div class="rating mx-auto"></div>
@@ -348,7 +357,14 @@
                         <textarea v-model="review.review" class="form-control" placeholder="The writer understood the task and delivered as instruc..."></textarea>
                         <br>
                         <p class="text-center">
-                            <button type="submit" class="btn btn-success mt-3">Submit review</button>
+                            @if(\App\Models\Attachment::where('order_id',$order->id)->where('created_by',\Illuminate\Support\Facades\Auth::id())->first() ==null)
+                                <button type="submit" class="btn btn-success mt-3" disabled>Submit review</button>
+
+
+                            @else
+                                <button type="submit" class="btn btn-success mt-3">Submit review</button>
+
+                            @endif
                         </p>
                     </form>
 

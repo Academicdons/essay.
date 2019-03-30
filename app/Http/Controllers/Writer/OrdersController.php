@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Writer;
 
 use App\Jobs\AssignOrderMail;
+use App\Jobs\SendSystemEmail;
 use App\Models\Attachment;
 use App\Models\Bid;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Order;
+use App\User;
 use Carbon\Carbon;
-use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -109,6 +110,7 @@ class OrdersController extends Controller
             $attachment->file_name=$filename;
             $attachment->display_name=$request->display_name;
             $attachment->order_id=$order->id;
+                $attachment->created_by=Auth::id();
             $attachment->save();
 
             return redirect()->back();
@@ -162,13 +164,20 @@ class OrdersController extends Controller
 
     public function markAsComplete(Order $order)
     {
+        //first determine if the order has an existing attachment from the writer
+        $attachment=Attachment::where('created_by',Auth::id())->where('order_id',$order->id)->first();
+        if ($attachment==null){
+
+            return redirect()->back()->withErrors([ 'First Upload the file before marking the order as complete']);
+        }
+
         $order->status=3;
         $order->save();
 
         $client=User::where('created_by',$order->created_by)->first();
         $message='The order' . $order->order_no. ' has been completed';
         //dispatch the job
-        $this->dispatch(new AssignOrderMail($client,$message));
+        $this->dispatch(new SendSystemEmail($client->email,$message));
 
         return redirect()->back();
     }

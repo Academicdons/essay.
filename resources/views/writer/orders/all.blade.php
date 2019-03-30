@@ -68,6 +68,16 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Orders list</h3>
 
+                        @if(count($errors->all())>0)
+                            <div class="alert alert-danger">
+
+                                @foreach($errors->all() as $error)
+
+                                    <li>{{$error}}</li>
+                                    @endforeach
+                            </div>
+
+                            @endif
                         <div class="box-tools pull-right">
                             <div class="has-feedback">
                                 <input type="text" class="form-control input-sm" placeholder="Search Orders">
@@ -111,7 +121,7 @@
                                     <td class="mailbox-attachment"><i class="fa fa-paperclip"></i> Files: @{{ order.attachments_count }} </td>
                                     <td class="mailbox-attachment">@{{ getStatusString(order.status) }}</td>
                                     <td class="mailbox-date" v-if="order.status==2"><button class="btn btn-primary btn-sm" data-target="#edit_modal" data-toggle="modal" @click="getRevisions(order.id)">View revisions</button> </td>
-                                    <td class="mailbox-date" v-if="order.status==1"><a :href="'{{url('/writer/orders/mark_as_complete')}}/' + order.id" class="btn btn-primary btn-sm" >Mark As Complete</a> </td>
+                                    <td class="mailbox-date" v-if="order.status==1 "><a :href="'{{url('/writer/orders/mark_as_complete')}}/' + order.id" class="btn btn-primary btn-sm" >Mark As Complete</a> </td>
                                     <td class="mailbox-date">
                                         <a :href="'{{url('/writer/orders/view')}}/' + order.id" class="btn btn-xs btn-default">Read more</a>
                                     </td>

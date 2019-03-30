@@ -563,9 +563,7 @@
                     let me = this
                     axios.get(url)
                         .then(function (res) {
-                            me.getDisputes();
                             me.existing_disputes=res.data.disputes;
-
                         })
                 },
                 getTimedifference:function (order_date) {

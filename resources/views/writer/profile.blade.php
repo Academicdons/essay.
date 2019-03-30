@@ -48,7 +48,7 @@
 @section('content')
 
 
-    <section class="container content">
+    <section class="container content" id="profile_content">
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
@@ -165,11 +165,123 @@
 
                     </div>
                 </div>
+
+
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Disciplines</h3>
+                        <button class="btn btn-primary  pull-right" data-toggle="modal" data-target="#disciplineModal" @click="getDisciplines">Add Discipline</button>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="col-md-12 col-sm-12 col-lg-12">
+                            <div class="col-md-8 col-lg-8 col-sm-12">
+
+                                @if(count($errors->all())>0)
+
+                                    <div class="alert alert-danger">
+
+                                        @foreach($errors->all() as $error)
+                                            <li>{{$error}}</li>
+                                        @endforeach
+                                    </div>
+                                @endif
+
+
+
+
+                            </div>
+
+                            <div class="row">
+
+                            @foreach($disciplines as $discipline)
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <li>{{$discipline->Discipline->name}}  <a href="{{route('writer.delete_user_discipline',$discipline->id)}}"> <span class="fa fa-trash "></span></a> </li>
+                                    </div>
+
+                                @endforeach
+                            </div>
+
+                    </div>
+
+
+                    </div>
+                </div>
             </div>
         </div>
+
+
+
+        <div class="modal" id="disciplineModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Select Discipline to Add</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form method="post" action="{{route('writer.update_disciplines')}}">
+
+                            @csrf
+                        <table class="table table-responsive table-striped">
+                            <thead>
+                            <tr>
+                                <td>Name</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr v-for="discipline in all_disciplines">
+                            <td>@{{ discipline.name }}</td>
+                            <td>
+                                <input type="checkbox" :value="discipline.id" name="selected_disciplines[]">
+                            </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <button class="btn btn-success">Submit</button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
     @endsection
 @section('script')
     <script src="{{asset('plugins/holder-master/holder.js')}}" type="text/javascript"></script>
     <script src="{{asset('plugins/jasny-bootstrap/js/jasny-bootstrap.js')}}"></script>
+
+    <script>
+
+        let content=new Vue({
+
+            el:'#profile_content',
+            data:{
+                all_disciplines:[]
+            },
+            methods:{
+                getDisciplines:function () {
+                    let url='{{route('writer.get_all_disciplines')}}';
+                    let me=this;
+                    axios.get(url)
+                        .then(res=>{
+                            console.log(res.data.all_disciplines);
+                            me.all_disciplines=res.data.all_disciplines
+
+                        });
+                }
+
+            }
+        })
+    </script>
 @endsection

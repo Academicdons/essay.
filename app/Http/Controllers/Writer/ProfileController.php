@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Writer;
 
+use App\Models\UserDiscipline;
 use App\User;
 use http\Exception;
 use Illuminate\Http\Request;
@@ -20,7 +21,8 @@ class ProfileController extends Controller
     {
         Session::flash('_old_input',Auth::user());
 
-        return view('writer.profile');
+        $userDisciplines=UserDiscipline::where('user_id',Auth::id())->with('Discipline')->get();
+        return view('writer.profile')->withDisciplines($userDisciplines);
 
     }
 

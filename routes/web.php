@@ -118,6 +118,11 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
     Route::get('profile','ProfileController')->name('profile');
     Route::post('update_profile','ProfileController@updateUser')->name('update_profile');
     Route::post('update_user_profile','ProfileController@updateUserProfile')->name('update_user_profile');
+
+    //user discipline routes
+    Route::get('get_all_disciplines','UserDisciplineController@getAllDisciplines')->name('get_all_disciplines');
+    Route::post('update_disciplines','UserDisciplineController@updateDisciplines')->name('update_disciplines');
+    Route::get('delete_user_discipline/{userDiscipline}','UserDisciplineController@deleteUserDiscipline')->name('delete_user_discipline');
 });
 
 

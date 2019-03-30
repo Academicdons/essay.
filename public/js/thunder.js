@@ -1,1 +1,287 @@
-var isMSIE=0,Thunder=new function(){this.channels=[],this.handlers=[],this.reconnect_delays=[1e3,2500,5e3,1e4,3e4,6e4],this.options={log:!1,retry:!0};var a=Array.prototype,b=Object.prototype,c=Function.prototype,d=(a.push,a.slice,a.concat,b.toString,b.hasOwnProperty,a.forEach,a.map,a.reduce,a.reduceRight,a.filter,a.every,a.some,a.indexOf),e=(a.lastIndexOf,Array.isArray,Object.keys,c.bind,function(a){return a instanceof e?a:this instanceof e?void(this._wrapped=a):new e(a)});"function"!=typeof/./&&(e.isFunction=function(a){return"function"==typeof a}),e.identity=function(a){return a},e.lookupIterator=function(a){return e.isFunction(a)?a:function(b){return b[a]}},e.sortedIndex=function(a,b,c,d){c=null==c?e.identity:e.lookupIterator(c);for(var f=c.call(d,b),g=0,h=a.length;h>g;){var i=g+h>>>1;c.call(d,a[i])<f?g=i+1:h=i}return g},e.indexOf=function(a,b,c){if(null==a)return-1;var f=0,g=a.length;if(c){if("number"!=typeof c)return f=e.sortedIndex(a,b),a[f]===b?f:-1;f=0>c?Math.max(0,g+c):c}if(d&&a.indexOf===d)return a.indexOf(b,c);for(;g>f;f++)if(a[f]===b)return f;return-1},this.onSockOpen=function(a){"function"==typeof a&&(this.onopen=a)},this.onSockError=function(a){"function"==typeof a&&(this.onerror=a)},this.onSockClose=function(a){"function"==typeof a&&(this.onclose=a)},this.onSockMessage=function(a){"function"==typeof a&&(this.onmessage=a)},this.connect=function(a,b,c,d){this.server="http://"+a+"/connect",this.apikey=b,this.channels=c,this.reconnect_tries=0;for(var e in d)this.options[e]=d[e];this.user=this.options.user,this.makeConnection()},this.disconnect=function(){var a=this;return this.socket.onclose=function(b){this.onclose&&this.onclose.call(a,b)},this.socket.readyState===SockJS.OPEN?this.socket.close():!1},this.subscribe=function(a,b,c){if("string"!=typeof a||a.length<=0)throw{name:"channel.invalid",message:"Channel is not a string"};if(this.socket.readyState===SockJS.OPEN)return-1!==e.indexOf(this.channels,a)?("function"==typeof b&&b(this,"Channel already subscribed"),!0):(this.socket.send("SUBSCRIBE "+a),this.channels.push(a),"function"==typeof b&&b(this,"Channel subscribed"),!0);throw"function"==typeof c&&c(this,"Socket not open"),{name:"socket.status",message:"Socket not OPEN: ".this.socket.readyState}},this.unsubscribe=function(a,b,c){if(this.socket.readyState===SockJS.OPEN){this.socket.send("UNSUBSCRIBE "+a);var d=e.indexOf(this.channels,a);return-1!==d&&(channels=this.channels.splice(d,1)),"function"==typeof b&&b(this,"Channel unsubscribed"),!0}var c="";throw"function"==typeof c&&c(this,"Socket not open"),{name:"socket.status",message:"Socket not OPEN: ".this.socket.readyState}},this.listen=function(a){this.log("New handler has been registered."),this.handlers.push(a)},this.makeConnection=function(){var a=this;this.socket=new SockJS(this.server,void 0,{debug:this.options.log}),this.socket.onopen=function(b){a.log("Connection has been estabilished."),a.onopen&&a.onopen.call(a,b),a.reconnect_tries=0,a.socket.send("CONNECT "+a.user+":"+a.apikey),a.channels.length&&a.socket.send("SUBSCRIBE "+a.channels.join(":"))},this.socket.onmessage=function(b){a.log("Message has been received",b.data),a.onmessage&&a.onmessage.call(a,b);try{var c=JSON.parse(b.data.payload);b.data=c}catch(b){}for(var d=0;d<a.handlers.length;d++)a.handlers[d](b.data)},this.socket.onerror=function(b){a.onerror&&a.onerror.call(a,b)},this.socket.onclose=function(b){if(a.log("Connection has been lost."),a.onclose&&a.onclose.call(a,b),a.options.retry===!1)return void a.log("Reconnect supressed because of retry option false");if(9e3==b.code||9001==b.code||9002==b.code)return void a.log("Reconnect supressed because of:",b);var c=a.reconnect_delays[a.reconnect_tries]||a.reconnect_delays[a.reconnect_delays.length-1];a.log("Reconnecting in",c,"ms..."),a.reconnect_tries++,setTimeout(function(){a.makeConnection()},c)}},this.log=function(){if(this.options.log&&"console"in window&&"log"in window.console)if(1==arguments.length)console.log(arguments[0]);else if(isMSIE){var a=Function.prototype.bind.call(console.log,console);a.apply(console,Array.prototype.slice.call(arguments))}else console.log.apply(console,Array.prototype.slice.call(arguments))}};
+/**
+ * Thunderpush javascript client
+ * @version v0.9.0 - 2014-04-11 * @link https://github.com/thunderpush/thunderpush-js
+ * @author Krzysztof Jagiełło
+ * @license MIT License, http://www.opensource.org/licenses/MIT
+ */var isMSIE = /*@cc_on!@*/0;
+var Thunder = new function() {
+    this.channels = [];
+    this.handlers = [];
+
+    this.reconnect_delays = [1000, 2500, 5000, 10000, 30000, 60000];
+
+    this.options = {
+        // verbose?
+        log: false,
+        retry: true
+    };
+
+
+    /** Underscore Functions **/
+    var ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype;
+
+    var
+        push             = ArrayProto.push,
+        slice            = ArrayProto.slice,
+        concat           = ArrayProto.concat,
+        toString         = ObjProto.toString,
+        hasOwnProperty   = ObjProto.hasOwnProperty;
+
+    var
+        nativeForEach      = ArrayProto.forEach,
+        nativeMap          = ArrayProto.map,
+        nativeReduce       = ArrayProto.reduce,
+        nativeReduceRight  = ArrayProto.reduceRight,
+        nativeFilter       = ArrayProto.filter,
+        nativeEvery        = ArrayProto.every,
+        nativeSome         = ArrayProto.some,
+        nativeIndexOf      = ArrayProto.indexOf,
+        nativeLastIndexOf  = ArrayProto.lastIndexOf,
+        nativeIsArray      = Array.isArray,
+        nativeKeys         = Object.keys,
+        nativeBind         = FuncProto.bind;
+
+    var _ = function(obj) {
+        if (obj instanceof _) return obj;
+        if (!(this instanceof _)) return new _(obj);
+        this._wrapped = obj;
+    };
+
+    if (typeof (/./) !== 'function') {
+        _.isFunction = function(obj) {
+            return typeof obj === 'function';
+        };
+    }
+    _.identity = function(value) {
+        return value;
+    };
+    _.lookupIterator = function(value) {
+        return _.isFunction(value) ? value : function(obj){ return obj[value]; };
+    };
+    _.sortedIndex = function(array, obj, iterator, context) {
+        iterator = iterator == null ? _.identity : _.lookupIterator(iterator);
+        var value = iterator.call(context, obj);
+        var low = 0, high = array.length;
+        while (low < high) {
+            var mid = (low + high) >>> 1;
+            iterator.call(context, array[mid]) < value ? low = mid + 1 : high = mid;
+        }
+        return low;
+    };
+    _.indexOf = function(array, item, isSorted) {
+        if (array == null) return -1;
+        var i = 0, l = array.length;
+        if (isSorted) {
+            if (typeof isSorted == 'number') {
+                i = (isSorted < 0 ? Math.max(0, l + isSorted) : isSorted);
+            } else {
+                i = _.sortedIndex(array, item);
+                return array[i] === item ? i : -1;
+            }
+        }
+        if (nativeIndexOf && array.indexOf === nativeIndexOf) return array.indexOf(item, isSorted);
+        for (; i < l; i++) if (array[i] === item) return i;
+        return -1;
+    };
+    /** UnderscoreJS Functions **/
+
+    this.onSockOpen = function(cb) {
+        if(typeof cb === 'function')
+            this.onopen = cb;
+    }
+
+    this.onSockError = function(cb) {
+        if(typeof cb === 'function')
+            this.onerror = cb;
+    }
+
+    this.onSockClose = function(cb) {
+        if(typeof cb === 'function')
+            this.onclose = cb;
+    }
+
+    this.onSockMessage = function(cb) {
+        if(typeof cb === 'function')
+            this.onmessage = cb;
+    }
+
+
+    this.connect = function(server, apikey, channels, options) {
+        this.server = "https://" + server + "/connect";
+        this.apikey = apikey;
+        this.channels = channels;
+        this.reconnect_tries = 0;
+
+        // merge options
+        for (var attr in options) {
+            this.options[attr] = options[attr];
+        }
+
+        this.user = this.options.user;
+        this.makeConnection();
+
+        var that = this;
+    };
+
+    this.disconnect = function() {
+        var thunder = this;
+
+        this.socket.onclose = function(e) {
+            if(this.onclose) this.onclose.call(thunder, e);
+        }
+
+        if(this.socket.readyState === SockJS.OPEN) return this.socket.close();
+        return false;
+    }
+
+    /**
+     * Subscribe to channel
+     */
+    this.subscribe = function(channel, success, error) {
+        if(typeof channel !== 'string' || channel.length <= 0)
+            throw {
+                name: 'channel.invalid',
+                message: 'Channel is not a string'
+            };
+
+        if(this.socket.readyState === SockJS.OPEN) {
+            if(_.indexOf(this.channels, channel) !== -1) {
+                typeof success === 'function' && success(this, 'Channel already subscribed');
+                return true;
+            }
+
+            this.socket.send("SUBSCRIBE " + channel);
+            this.channels.push(channel);
+            typeof success === 'function' && success(this, 'Channel subscribed');
+            return true;
+        }
+
+        typeof error === 'function' && error(this, 'Socket not open');
+        throw {
+            name: 'socket.status',
+            message: 'Socket not OPEN: ' . this.socket.readyState
+        };
+    }
+
+    /**
+     * Subscribe to channel
+     */
+    this.unsubscribe = function(channel, success, error) {
+        if(this.socket.readyState === SockJS.OPEN) {
+            this.socket.send("UNSUBSCRIBE " + channel);
+
+            var pos = _.indexOf(this.channels, channel);
+
+            if(pos !== -1) {
+                channels = this.channels.splice(pos, 1);
+            }
+
+            typeof success === 'function' && success(this, 'Channel unsubscribed');
+            return true;
+        }
+        else {
+            var error = ''
+            typeof error === 'function' && error(this, 'Socket not open');
+            throw {
+                name: 'socket.status',
+                message: 'Socket not OPEN: ' . this.socket.readyState
+            };
+        }
+    }
+
+    this.listen = function(handler) {
+        this.log("New handler has been registered.");
+        this.handlers.push(handler);
+    };
+
+    this.makeConnection = function() {
+        var that = this;
+
+        // make a connection
+        this.socket = new SockJS(this.server, undefined,
+            {'debug': this.options.log});
+
+        this.socket.onopen = function(e) {
+            that.log("Connection has been estabilished.");
+
+            if (that.onopen) that.onopen.call(that, e);
+
+            // reset retries counter
+            that.reconnect_tries = 0;
+
+            // connect and subscribe to channels
+            that.socket.send("CONNECT " + that.user + ":" + that.apikey);
+
+            if (that.channels.length)
+                that.socket.send("SUBSCRIBE " + that.channels.join(":"));
+        }
+
+        this.socket.onmessage = function(e) {
+            that.log("Message has been received", e.data);
+
+            if (that.onmessage) that.onmessage.call(that, e);
+
+            try {
+                // try to parse the message as json
+                var json_data = JSON.parse(e.data.payload);
+                e.data = json_data;
+            }
+            catch(e) {
+                // not json, leave it as is
+            }
+
+            for (var i = 0; i < that.handlers.length; i++) {
+                that.handlers[i](e.data);
+            }
+        }
+
+        this.socket.onerror = function(e) {
+            if (that.onerror) that.onerror.call(that, e);
+        }
+
+        this.socket.onclose = function(e) {
+            that.log("Connection has been lost.");
+
+            if (that.onclose) that.onclose.call(that, e);
+
+            if (that.options.retry === false) {
+                that.log("Reconnect supressed because of retry option false");
+                return;
+            }
+
+            if (e.code == 9000 || e.code == 9001 || e.code == 9002) {
+                // received "key not good" close message
+                that.log("Reconnect supressed because of:", e);
+                return;
+            }
+
+            var delay = that.reconnect_delays[that.reconnect_tries]
+                || that.reconnect_delays[that.reconnect_delays.length - 1];
+
+            that.log("Reconnecting in", delay, "ms...");
+            that.reconnect_tries++;
+
+            setTimeout(function() {
+                that.makeConnection();
+            }, delay);
+        }
+    };
+
+    this.log = function(msg) {
+        if (this.options.log
+            && "console" in window && "log" in window.console) {
+
+            if (arguments.length == 1) {
+                console.log(arguments[0]);
+            }
+            else {
+                if (isMSIE) {
+                    var log = Function.prototype.bind.call(console.log, console);
+                    log.apply(console, Array.prototype.slice.call(arguments));
+                } else {
+                    console.log.apply(console, Array.prototype.slice.call(arguments));
+                }
+            }
+        }
+    };
+}

@@ -149,13 +149,13 @@
                                         </tr>
 
                                         <tr>
-                                            <td>SSP</td>
+                                            <td>SPP</td>
                                             <th>{{ $order->salary/$order->no_pages }}</th>
                                             <td> Discipline </td>
                                             <th>{{ ($order->Discipline!=null)?$order->Discipline->name:"" }}</th>
 
                                             <td>Salary</td>
-                                            <th>{{ $order->amount    }}</th>
+                                            <th>{{ $order->salary    }}</th>
                                             <td> Writer quality </td>
                                             <th>
 
@@ -382,7 +382,7 @@
         var dadsd=new Vue({
             el:'#description_data',
             data:{
-                deadline:moment.utc('{{$order->deadline}}').local().startOf('hour').fromNow(),
+                deadline:moment.utc('{{$order->writer_deadline}}').local().startOf('hour').fromNow(),
                 expiry:moment.utc('{{$order->bid_expiry}}').local().startOf('hour').fromNow()
             },
             created:function(){

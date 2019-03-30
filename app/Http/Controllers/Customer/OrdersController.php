@@ -96,6 +96,13 @@ class OrdersController extends Controller
         $order->salary = $base_salary *$request->number_of_pages;
         $order->order_assign_type = 1;
         $order->deadline = $date;
+
+        //make the writes deadline to be half of the client deadline
+        $writer_hours=$date->diffInHours(Carbon::now())/2;
+        $writer_deadline=Carbon::now()->addHours($writer_hours);
+
+
+        $order->writer_deadline = $writer_deadline;
         $order->bid_expiry = Carbon::now()->addMinute(5);
         $order->paper_type = $request->paper_type;
         $order->discipline = $request->discipline;

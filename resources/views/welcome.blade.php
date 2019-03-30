@@ -214,7 +214,7 @@
             <div class="row">
                 <div class="col-sm-12 ">
                     <center>
-                        <img src="https://seeklogo.com/images/M/mpesa-logo-AE44B6F8EB-seeklogo.com.png" class="partner-img" alt="">
+                        <img src="{{asset('visa.jpg')}}" class="partner-img" alt="">
                         <img src="https://www.freepnglogos.com/uploads/paypal-logo-png-3.png" class="partner-img" alt="">
                     </center>
 
@@ -426,7 +426,7 @@
                                     <th>Level</th>
                                     <th>Deadline</th>
                                     <th>No of pages</th>
-                                    <th>Salary</th>
+                                    <th>Amount</th>
                                 </tr>
                                 </thead>
 

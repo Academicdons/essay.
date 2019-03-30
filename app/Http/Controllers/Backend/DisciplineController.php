@@ -65,4 +65,24 @@ class DisciplineController extends Controller
 
 
     }
+
+    public function deleteGroup(Group $group)
+    {
+        try{
+            $group->delete();
+        }catch(\Exception $e){
+
+
+        }
+
+
+        return redirect()->back();
+    }
+
+    public function editGroup(Group $group)
+    {
+        return Response::json([
+            'group' => $group
+        ]);
+    }
 }

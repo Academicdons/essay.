@@ -84,4 +84,9 @@ class Order extends Model
     {
         return $this->hasOne(PaymentTransaction::class,'order_id','id');
     }
+
+    public function PaypalTransaction()
+    {
+        return $this->hasMany(PaypalTransaction::class,'order_id','id');
+    }
 }

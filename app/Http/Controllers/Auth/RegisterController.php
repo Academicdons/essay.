@@ -7,12 +7,14 @@ use App\Jobs\SendApproveEmailJob;
 use App\Jobs\SendEssyMail;
 use App\Jobs\SendSystemEmail;
 use App\Mail\AccountCreatedMail;
+use App\Mail\AccountCredentials;
 use App\Mail\SuccessRegistrationMail;
 use App\Mail\WriterEssayTest;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -110,5 +112,49 @@ class RegisterController extends Controller
 
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
+    }
+
+    public function quickRegister(Request $request)
+    {
+
+        $validator= Validator::make($request->all(),[
+            'customer_email'=>'required|unique:users,email|email',
+        ]);
+        if($validator->fails()){
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $parts = explode("@", "johndoe@domain.com");
+        $username = $parts[0];
+        $pin = $this->generatePIN();
+
+        $user = new User();
+        $user->name = $username;
+        $user->email = $request->input('customer_email');
+        $user->password= bcrypt($pin);
+        $user->phone_number='';
+        $user->user_type= 2;
+        $user->save();
+
+        $message = "Your account password at homeworkprowriters is " . $pin;
+        $email = new AccountCredentials($user,$message);
+        $this->dispatch(new SendSystemEmail($user->email,$email));
+
+        Auth::login($user);
+
+
+        return redirect()->intended();
+
+
+    }
+    function generatePIN($digits = 4){
+        $i = 0; //counter
+        $pin = ""; //our default pin is blank.
+        while($i < $digits){
+            //generate a random number between 0 and 9.
+            $pin .= mt_rand(0, 9);
+            $i++;
+        }
+        return $pin;
     }
 }

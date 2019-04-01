@@ -13,6 +13,7 @@ use App\Models\Message;
 use App\Models\Order;
 use App\Models\OrderReview;
 use App\Models\PaperType;
+use App\Models\PaypalTransaction;
 use App\Models\Revision;
 use App\User;
 use Carbon\Carbon;
@@ -24,6 +25,10 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
+use PayPal\Exception\PayPalConnectionException;
+use PayPalCheckoutSdk\Core\PayPalHttpClient;
+use PayPalCheckoutSdk\Core\SandboxEnvironment;
+use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 use Webpatser\Uuid\Uuid;
 
 class OrdersController extends Controller
@@ -41,10 +46,57 @@ class OrdersController extends Controller
           return View::make('customer.orders.list');
     }
 
+    public function pay(Order $order)
+    {
+        return View::make('customer.orders.pay')->withOrder($order);
+
+    }
+
+    public function processPay(Request $request)
+    {
+
+        $clientId = "AXPXlreWYY0RDRZxP1NA1m9_ITSPv2eqcyYpZg_RHN5-s82A2Z2aX4fM715bn33pZeMyzrZuCFNQ3_Au";
+        $clientSecret = "EP7UNGWN85s9b790ny77joM8xJvYG_ZJap3tySsKETSuzdy6uCdkJ35WqeyTM381dGXVYsdnuklzeg5J";
+
+        $environment = new SandBoxEnvironment($clientId, $clientSecret);
+        $client = new PayPalHttpClient($environment);
+        $result=[];
+
+
+        $paypal_transaction = new PaypalTransaction();
+        $paypal_transaction->id=Uuid::generate();
+        $paypal_transaction->order_id = $request->input('orderRef');
+        $paypal_transaction->pay_pal_ref = $request->input('orderID');
+
+        try{
+            $response = $client->execute(new OrdersGetRequest($request->input('orderID')));
+
+            $paypal_transaction->amount = $response->result->purchase_units[0]->amount->value;
+            $paypal_transaction->pay_pal_name=$response->result->purchase_units[0]->amount->currency_code;
+            $paypal_transaction->status = 1;
+
+            $result = [
+                'success'=>true,
+            ];
+
+        }catch (Exception $exception){
+
+            $paypal_transaction->amount = 0;
+            $result = [
+                'success'=>false,
+            ];
+        }
+
+        $paypal_transaction->save();
+
+        return response()->json($result);
+
+    }
+
 
     public function getOrders(Request $request)
     {
-        $orders = Order::where('created_by',Auth::id())->with(['Discipline','Education','Paper'])->withCount('attachments')->orderBy('created_at','desc')->get();
+        $orders = Order::where('created_by',Auth::id())->with(['Discipline','Education','Paper','PaypalTransaction'])->withCount('attachments')->orderBy('created_at','desc')->get();
         return response()->json([
             'orders'=>$orders
         ]);
@@ -52,7 +104,7 @@ class OrdersController extends Controller
 
     public function fetchOrder($order)
     {
-        $orders = Order::where('id',$order)->with(['Discipline','Education','Paper'])->withCount('attachments')->orderBy('created_at','desc')->first();
+        $orders = Order::where('id',$order)->with(['Discipline','Education','Paper','PaypalTransaction'])->withCount('attachments')->orderBy('created_at','desc')->first();
 
         return response()->json([
             'order'=>$orders,
@@ -144,14 +196,8 @@ class OrdersController extends Controller
 
         Session::put('upload_files',null);
 
-        if (Auth::check()){
+        return redirect()->route('customer.orders.pay',$order->id);
 
-            return redirect()->route('customer.orders.list');
-
-        }else{
-            //redirect to login
-            return redirect()->route('login');
-        }
 
     }
 

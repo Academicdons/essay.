@@ -90,10 +90,32 @@ class OrdersController extends Controller
         $order->spacing = $request->spacing;
         $order->title = $request->topic;
         $order->order_no = mt_rand(100000, 999999);
-        $order->no_pages = $request->number_of_pages;
-        $order->no_words = $request->number_of_pages*275;
-        $order->amount = $cpp*$request->number_of_pages;
-        $order->salary = $base_salary *$request->number_of_pages;
+
+        //determine the number of pages
+        if ($request->spacing==0){
+            //single space
+            $no_of_pages=(int)($request->number_of_words/550);
+            $no_of_pages+=1;
+
+            $order->no_pages =$no_of_pages;
+            $order->salary = $base_salary *$no_of_pages;
+            $order->amount = $cpp*$no_of_pages;
+
+
+        }elseif ($request->spacing==1){
+            //double space
+            $no_of_pages=(int)($request->number_of_words/275);
+            $no_of_pages+=1;
+
+            $order->no_pages = $no_of_pages;
+            $order->salary = $base_salary *$no_of_pages;
+            $order->amount = $cpp*$no_of_pages;
+
+        }else{
+            //unlikely to happen
+        }
+
+        $order->no_words = $request->number_of_words;
         $order->order_assign_type = 1;
         $order->deadline = $date;
 

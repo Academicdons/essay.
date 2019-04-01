@@ -97,33 +97,39 @@
 
                             <div class="form-group">
                                 <label for="">Spacing</label>
-                                <select name="spacing" id="spacing" class="form-control academic-input">
-                                    <option value="0">Single</option>
+                                <select name="spacing" id="spacing" onchange="determinePageWords(this.value)" class="form-control academic-input">
+                                    <option value="0" selected>Single</option>
                                     <option value="1">Double</option>
                                 </select>
                             </div>
 
 
                             <div class="form-group">
-                                <label for="">Number of pages</label>
+                                <label for="">Number of Words</label>
                                 <div class="row">
                                     <div class="col-sm-8">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span onclick="updatePages(1)" class="input-group-text" id="basic-addon1">+</span>
+                                                <span onclick="updateWords(+1)" class="input-group-text" id="basic-addon1">+</span>
                                             </div>
-                                            <input id="number_of_pages" name="number_of_pages" onchange="evaluateCost()" type="number" value="1" class="form-control academic-input flat" style="text-align: center" placeholder="required pages" aria-label="Username" aria-describedby="basic-addon1">
+                                            <input id="number_of_words" name="number_of_words" onchange="evaluateCost()" type="number" value="1" class="form-control academic-input flat" style="text-align: center" placeholder="required words" aria-label="Words" aria-describedby="basic-addon1">
                                             <div class="input-group-append">
-                                                <span onclick="updatePages(-1)" class="input-group-text" id="basic-addon1">-</span>
+                                                <span onclick="updateWords(-1)" class="input-group-text" id="basic-addon1">-</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-4 pt-2">
-                                        (<span id="words"></span>) words
+                                        (<span id="total_pages"></span>) Total Pages
                                     </div>
                                 </div>
 
                             </div>
+
+
+
+
+
+
 
                             <div class="form-group">
                                 <label for="">Deadline</label>
@@ -299,6 +305,8 @@
         window.base_price = 10;
         window.ed_factor =1;
 
+
+
         var r = new Resumable({
             @if(old('id')==null)
             target: '{{url('/upload_order_files')}}'
@@ -442,13 +450,42 @@
         }
 
 
-        function updatePages(delta) {
-            var number_of_pages = $('#number_of_pages').val();
-            if(number_of_pages<=1 && delta<=0){
+        function determinePageWords(spacing) {
+          if (spacing===0){
+              //single spaces
+              // $('#number_of_words').val(550);
+          }  else if (spacing===1){
+              //double space
+              // $('#number_of_words').val(275);
+
+          }
+
+
+        }
+
+
+        function updateWords(delta) {
+            var number_of_words = $('#number_of_words').val();
+            if(number_of_words<=1 && delta<=0){
                 return
             }else{
-                number_of_pages=+number_of_pages+delta;
-                $('#number_of_pages').val(number_of_pages);
+                number_of_words=+number_of_words+delta;
+                $('#number_of_words').val(number_of_words);
+                //show the no of pages
+                //get the spacing value         var selectedCountry = $(this).children("option:selected").val();
+
+            var spacingValue=    $('#spacing').children("option:selected").val();
+            if (spacingValue==0){
+                //single space
+                var pages=parseInt(number_of_words/550);
+                $('#total_pages').text(pages+1)
+            } else if (spacingValue==1) {
+                //double value
+                var pages=parseInt(number_of_words/275);
+
+                $('#total_pages').text(pages+1)
+
+            }
             }
             evaluateCost()
         }
@@ -474,11 +511,10 @@
             var education_level = $('#education_level').val();
             var topic = $('#topic').val();
             var instructions = $('#instructions').val();
-            var number_of_pages = $('#number_of_pages').val();
+            var number_of_words = $('#number_of_words').val();
 
 
-            var words = number_of_pages*275;
-            $('#words').text(words);
+
 
             /*
             valiadtion critereas to the form
@@ -500,9 +536,9 @@
                 Consider the education level
                  */
 
-                var price_per_page = ed_factor  * time_amt
-                $('#amount').html("$ "+(price_per_page*number_of_pages))
-                $('#cost').val(price_per_page*number_of_pages);
+                var price_per_page = ed_factor  * time_amt;
+                $('#amount').html("$ "+(price_per_page*number_of_words));
+                $('#cost').val(price_per_page*number_of_words);
 
 
             }
@@ -518,7 +554,7 @@
             var education_level = $('#education_level').val();
             var topic = $('#topic').val();
             var instructions = $('#instructions').val();
-            var number_of_pages = $('#number_of_pages').val();
+            var number_of_words = $('#number_of_words').val();
 
 
             /*

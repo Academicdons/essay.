@@ -557,7 +557,7 @@
                     axios.get(url)
                         .then(function (res) {
                             me.order=res.data.order
-                            me.files=res.data.files
+                            me.files=res.data.files.attachments
                         })
                 },
                 getDisputes(){
@@ -652,7 +652,8 @@
                     axios.post(url,this.review)
                         .then(function (res) {
                             me.getOrderReviews();
-                            $('#rateModal').modal('hide')
+                            $('#rateModal').modal('hide');
+                            window.location='{{url('customer/orders/list')}}'
                         })
                 },
                 getOrderReviews:function () {

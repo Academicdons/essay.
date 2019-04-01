@@ -369,5 +369,13 @@ class OrdersController extends Controller
 
     }
 
+    public function verifyFile(Attachment $attachment)
+    {
+        $attachment->is_verified=true;
+        $attachment->save();
+
+        return \redirect()->back();
+    }
+
 }
 

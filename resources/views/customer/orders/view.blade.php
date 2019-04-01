@@ -652,7 +652,8 @@
                     axios.post(url,this.review)
                         .then(function (res) {
                             me.getOrderReviews();
-                            $('#rateModal').modal('hide')
+                            $('#rateModal').modal('hide');
+                            window.location='{{url('customer/orders/list')}}'
                         })
                 },
                 getOrderReviews:function () {

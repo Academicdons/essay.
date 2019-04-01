@@ -240,6 +240,10 @@ class OrdersController extends Controller
 
         OrderReview::create($data);
 
+        $order->status=4;
+        $order->save();
+
+
         return response()->json([
             'success'=>true
         ]);

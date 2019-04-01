@@ -295,6 +295,9 @@
                 <a href="{{($domain->domain_type==0)?route('register'):url('register_writer')}}" class="btn btn-success my-2 my-sm-0" ><i class="fa fa-user"></i> Register</a>
                 <a href="{{route('login')}}" class="btn btn-warning my-2 my-sm-0 ml-3" ><i class="fa fa-key"></i> Login</a>
                     @else
+                <span id="the_link" class="mr-3"></span>
+                <button class="btn btn-primary"  onclick="generateReferralLink()"> Referral Link</button>
+
                 <a href="{{url('logout')}}" class="btn btn-default my-2 my-sm-0 ml-3" ><i class="fa fa-power-off"></i> Logout</a>
 
             @endif
@@ -357,7 +360,17 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="{{asset('js/sock.min.js')}}"></script>
     <script src="{{asset('js/thunder.js')}}"></script>
+    <script>
 
+        function generateReferralLink() {
+            //get the referra link
+            var url_refer='{{route('generate_referral_link')}}';
+            axios.get(url_refer)
+                .then(function (res) {
+                    $('#the_link').text( res.data.ref_value);
+                })
+        }
+    </script>
     @yield('script')
 
     </body>

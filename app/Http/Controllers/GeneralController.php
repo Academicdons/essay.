@@ -15,6 +15,7 @@ use Dilab\Resumable;
 use Exception;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -190,4 +191,24 @@ class GeneralController extends Controller
     {
         
         }
+
+
+    public function referralLink()
+    {
+
+        if (Auth::user()->referral_value==null || Auth::user()->referral_value=='' || Auth::user()->referral_value=='null'){
+            $string=substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 12);
+            $user=Auth::user();
+            $user->referral_value=$string;
+            $user->save();
+        }else{
+            $string=Auth::user()->referral_value;
+        }
+
+        return response()->json([
+            'ref_value'=>$string
+        ]);
+
+
+    }
 }

@@ -81,6 +81,17 @@ class RegisterController extends Controller
         if ($data['user_type']==1){
         $account_status=0;
         }
+
+        $link='null';
+        if ($data['referral_link']==null){
+            $link='null';
+            $referer=null;
+        }else{
+            $link=$data['referral_link'];
+            //determine the user who has that referral link and save their id
+            $referringUser=User::where('referral_value',$data['referral_link'])->first();
+            $referer=$referringUser->id;
+        }
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -88,6 +99,8 @@ class RegisterController extends Controller
             'phone_number' => $data['phone_number'],
             'user_type' => $data['user_type'],
             'account_status'=>$account_status,
+            'referral_value'=>$link,
+            'referred_by'=>$referer
         ]);
     }
 

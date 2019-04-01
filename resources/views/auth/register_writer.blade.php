@@ -84,6 +84,22 @@
 
                             <div class="form-group col-md-6 col-lg-6 col-sm-12">
 
+                                <label class="badge badge-primary ">Referral Link</label>
+                                <input class="form-control" name="referral_link" id="referral_link" placeholder="Referral Link">
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row ">
+
+                            <div class="form-group col-md-6 col-lg-6 col-sm-12">
+
+                            </div>
+
+                            <div class="form-group col-md-6 col-lg-6 col-sm-12">
                                 <p class="small">
                                     A writers account allows you to bid for orders and earn money from writing
                                 </p>

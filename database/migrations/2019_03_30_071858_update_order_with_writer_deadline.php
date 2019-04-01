@@ -15,7 +15,7 @@ class UpdateOrderWithWriterDeadline extends Migration
     {
         //
         Schema::table('orders',function (Blueprint $table){
-            $table->dateTime('writer_deadline');
+            $table->dateTime('writer_deadline')->nullable();
         });
     }
 

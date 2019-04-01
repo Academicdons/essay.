@@ -24,6 +24,7 @@ Auth::routes();
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware(['account_status']);
+Route::post('/quick_register', 'Auth\RegisterController@quickRegister')->name('quick_register');
 
 #Links for resume able uploads feature
 Route::get('test','GeneralController@paypalTest')->name('test');
@@ -37,8 +38,7 @@ Route::post('upload_order_files','GeneralController@uploadOrderFiles')->name('up
 Route::post('upload_order_files_main','GeneralController@uploadOrderFilesMain')->name('upload_order_files_main');
 Route::get('delete_order_upload/{file}','GeneralController@deleteSessionFile')->name('delete_order_upload');
 
-Route::get('customer/orders/create','Customer\OrdersController@create')->name('customer.orders.create');
-Route::post('customer/orders/store','Customer\OrdersController@store')->name('customer.orders.store');
+
 
 Route::group([],function () {
     Route::get('articles','GeneralController@articles')->name('articles');
@@ -53,7 +53,7 @@ Route::group(['middleware'=>['auth','account_status']],function (){
     Route::post('update_picture','HomeController@updatePicture')->name('update_picture');
 });
 
-Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],function(){
+Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.','middleware'=>'auth'],function(){
 
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
         Route::get('messages/{order}','OrdersController@messages')->name('messages');
@@ -69,9 +69,14 @@ Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.'],fu
         Route::get('delete_file','OrdersController@deleteFile')->name('delete_file');
         Route::post('dispute_order','OrdersController@disputeOrder')->name('dispute_order');
         Route::get('fetch_disputes/{order_id}','OrdersController@fetchDisputes')->name('fetch_disputes');
+
+        Route::get('create','OrdersController@create')->name('create');
+        Route::post('store','OrdersController@store')->name('store');
+        Route::get('pay/{order}','OrdersController@pay')->name('pay');
+        Route::post('pay/process','OrdersController@processPay')->name('pay.process');
     });
 
-    Route::group(['middleware'=>['auth','account_status']],function (){
+    Route::group(['middleware'=>['account_status']],function (){
 
         #Reoutes regarding to orders
         Route::group(['as'=>'orders.','prefix'=>'orders'],function () {

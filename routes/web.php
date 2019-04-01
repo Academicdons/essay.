@@ -46,6 +46,10 @@ Route::group([],function () {
 
 });
 
+Route::group(['middleware'=>'auth'],function () {
+
+    Route::get('generate_referral_link','GeneralController@referralLink')->name('generate_referral_link');
+});
 //home profile routes
 Route::group(['middleware'=>['auth','account_status']],function (){
     Route::get('profile','HomeController@profileView')->name('profile');
@@ -141,6 +145,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
     Route::get('/discipline/index', 'DashboardController@discipline')->name('discipline');
     Route::get('/education_level/index', 'DashboardController@educationLevel')->name('education_level');
     Route::get('/paper_type/index', 'DashboardController@paperType')->name('paper_type');
+
 
     Route::group(['prefix' => 'general', 'as' => 'general.'], function () {
         Route::get('/suggest_writer', 'GeneralController@suggestWriters')->name('suggest_writer');

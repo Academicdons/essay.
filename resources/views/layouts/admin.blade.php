@@ -57,14 +57,49 @@
 
                 <ul class="nav navbar-nav">
 
-                    {{--<li class="dropdown user user-menu">--}}
-                        {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown">--}}
-                            {{--<form class="form-inline ml-3" action="{{url('logout')}}" method="post">--}}
-                                {{--{{csrf_field()}}--}}
-                                {{--<button type="submit" class="btn btn-sm btn-warning"><i class="fa fa-sign-out"></i> Logout</button>--}}
-                            {{--</form>--}}
-                        {{--</a>--}}
-                    {{--</li>--}}
+                    <li>
+
+                    </li>
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {{--<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">--}}
+                            <span class="hidden-xs">Referral Link</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                                <p>
+                                    Alexander Pierce - Web Developer
+                                    <small>Member since Nov. 2012</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="row">
+                                    <div class="col-xs-4 text-center">
+                                        <button class="btn btn-primary" onclick="generateReferralLink()">Generate Referral Link</button>
+
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+
+                                    <input class="form-control" name="referral_link" id="referral_link" >
+
+                                </div>
+
+                            </li>
+                        </ul>
+                    </li>
                     <!-- Control Sidebar Toggle Button -->
                     <li>
                         <a href="{{ url('/logout') }}" class=""><i class="fa fa-sign-out"></i> Logout</a>
@@ -387,7 +422,17 @@
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
 <script src="{{asset('js/thunder.js')}}"></script>
+<script>
 
+    function generateReferralLink() {
+        //get the referra link
+        var url_refer='{{route('generate_referral_link')}}';
+        axios.get(url_refer)
+            .then(function (res) {
+                   $('#referral_link').val( res.data.ref_value);
+            })
+    }
+</script>
 @yield('script')
 
 </body>

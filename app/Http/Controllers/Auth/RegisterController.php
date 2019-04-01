@@ -124,7 +124,7 @@ class RegisterController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        $parts = explode("@", "johndoe@domain.com");
+        $parts = explode("@", $request->input('customer_email'));
         $username = $parts[0];
         $pin = $this->generatePIN();
 

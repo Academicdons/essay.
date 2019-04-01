@@ -56,7 +56,9 @@ class OrdersController extends Controller
 
         return response()->json([
             'order'=>$orders,
-            'files'=>Order::find($order)->attachments
+            'files'=>Order::where('id',$order)->with(['attachments'=>function($query){
+                    $query->where('is_verified',true);
+            }])->first(),
         ]);
 
     }

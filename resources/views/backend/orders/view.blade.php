@@ -328,6 +328,7 @@
                                                 <th>Description</th>
                                                 <th>Date</th>
                                                 <th>Type</th>
+                                                <th>Action</th>
                                                 <th style="width: 40px"></th>
                                             </tr>
 
@@ -348,7 +349,13 @@
 
                                                     </td>
                                                     <td>{{current(array_reverse(explode('.',$attachment->file_name)))}}</td>
-
+                                                    <td>
+                                                        @if(!$attachment->is_verified)
+                                                        <a href="{{route('admin.orders.verify_file',$attachment->id)}}" class="btn btn-xs btn-primary">Verify</a>
+                                                            @else
+                                                        <span class="badge badge-primary">Verified</span>
+                                                        @endif
+                                                    </td>
                                                     <td><a href="{{asset('uploads/files/order_files/'. $attachment->file_name)}}" class="btn btn-warning btn-xs" download>
                                                             <i class="fa fa-cloud-download"></i>
                                                         </a></td>

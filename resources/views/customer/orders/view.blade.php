@@ -557,7 +557,7 @@
                     axios.get(url)
                         .then(function (res) {
                             me.order=res.data.order
-                            me.files=res.data.files
+                            me.files=res.data.files.attachments
                         })
                 },
                 getDisputes(){

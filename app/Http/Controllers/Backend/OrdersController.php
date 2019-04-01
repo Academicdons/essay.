@@ -107,6 +107,7 @@ class OrdersController extends Controller
         }else{
             $order = new Order();
             $order->id = Uuid::generate();
+            $order->created_by=Auth::id();
         }
 
         $deadline = Carbon::createFromFormat("d/m/Y H:i:s", $request->deadline, request('tz'));

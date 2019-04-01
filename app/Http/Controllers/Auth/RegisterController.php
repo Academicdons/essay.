@@ -134,6 +134,7 @@ class RegisterController extends Controller
         $user->password= bcrypt($pin);
         $user->phone_number='';
         $user->user_type= 1;
+        $user->account_status= 1;
         $user->save();
 
         $message = "Your account password at homeworkprowriters is " . $pin;

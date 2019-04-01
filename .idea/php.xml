@@ -90,7 +90,6 @@
       <path value="$PROJECT_DIR$/vendor/dilab/resumable.php" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/promises" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
-      <path value="$PROJECT_DIR$/vendor/paypal/rest-api-sdk-php" />
       <path value="$PROJECT_DIR$/vendor/braintree/braintreehttp" />
       <path value="$PROJECT_DIR$/vendor/paypal/paypal-checkout-sdk" />
     </include_path>

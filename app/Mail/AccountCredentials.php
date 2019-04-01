@@ -39,6 +39,6 @@ class AccountCredentials extends Mailable
         return $this->to($this->user->email)
             ->subject('Account password')
             ->with(['user'=>$this->user,'message_to_user'=>$this->message])
-            ->view('mails.account_created');
+            ->view('mails.account_credentials');
     }
 }

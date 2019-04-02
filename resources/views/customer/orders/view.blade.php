@@ -228,7 +228,7 @@
                             <div class="col-sm-6">
                                 <table class="table table-sm table-striped">
                                     <tr>
-                                        <td>Discipline</td><th><span v-if="order.discipline!=null">@{{ order.discipline.name }}<</span>/th>
+                                        <td>Discipline</td><th><span v-if="order.discipline!=null">@{{ order.discipline.name }}</span></th>
                                     </tr>
                                     <tr>
                                         <td>Education level</td><th><span v-if="order.education!=null">@{{ order.education.name }}</span></th>

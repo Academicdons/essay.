@@ -362,7 +362,7 @@
                         var file = "<div class=\"file p-2 border-bottom\">\n" +
                             "                                <span><i class=\"fa fa-file\"></i></span>\n" +
                             "                                <span class=\"file-name\">"+value.display_name+"</span>\n" +
-                            "                                <span class=\"pull-right\"><a href=\"{{url('/delete_order_upload')}}/"+value.id+"\" class=\"text-danger\"><i class=\"fa fa-trash\"></i></a></span>\n" +
+                            "                                <span class=\"pull-right\"><a onclick=\"deleteFile('"+value.id+"')\" href=\"javascript:;\" class=\"text-danger\"><i class=\"fa fa-trash\"></i></a></span>\n" +
                             "                            </div>"
 
                         $('.session-files').append(file);
@@ -379,8 +379,8 @@
                             var file = "<div class=\"file p-2 border-bottom\">\n" +
                                 "                                <span><i class=\"fa fa-file\"></i></span>\n" +
                                 "                                <span class=\"file-name\" style=\"padding-right:40px\">"+value.display_name+"</span>\n" +
-                                "                                <span class=\"pull-right\"><a href=\"{{url('/delete_order_file')}}/"+value.id+"\" class=\"text-danger\"><i class=\"fa fa-trash\"></i></a></span>\n" +
-                                "                            </div>"
+                                "                                <span class=\"pull-right\"><a onclick=\"deleteFile('"+value.id+"')\" href=\"javascript:;\" class=\"text-danger\"><i class=\"fa fa-trash\"></i></a></span>\n" +
+                                "                            </div>";
 
                             $('.session-files').append(file);
                         })
@@ -418,6 +418,13 @@
 
         })
 
+        function deleteFile(id){
+            var url = '{{url('delete_order_upload')}}'+"/"+id;
+            axios.get(url)
+                .then(function(res){
+                    loadSeddionFiles();
+                })
+        }
         /*
         Configure the time concious inputs
          */

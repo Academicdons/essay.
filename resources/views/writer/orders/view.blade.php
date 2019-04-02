@@ -352,6 +352,8 @@
                     <div class="rating mx-auto"></div>
                     <p class="text-cener">Review the quality of work:</p>
                     <form action="{{route('writer.orders.review')}}" method="post" >
+
+                        @csrf
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="rating" id="rating_value" value="9">
                         <textarea v-model="review.review" class="form-control" placeholder="The writer understood the task and delivered as instruc..."></textarea>

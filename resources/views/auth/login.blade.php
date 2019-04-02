@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container mt-2 mb-5">
+    @php($domain = Saas::getDomain())
 
     <div class="row pt-3 pb-3 justify-content-center">
         <img src="{{asset('images/logo.png')}}"  width="240px" height="170px" alt="">
@@ -11,6 +12,7 @@
         <div class="card-body">
             <div class="row">
 
+                @if($domain->domain_type!=1)
                 <div class="col-md-6">
 
                     <h3 class="mt-3 mb-2">Quick register</h3>
@@ -36,6 +38,9 @@
 
 
                 </div>
+
+
+                @endif
                 <div class="col-md-6 border-left">
 
                     <h3 class="mt-3 mb-2">Log in</h3>

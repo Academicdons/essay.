@@ -424,7 +424,6 @@
                                 <tr>
                                     <th>Topic</th>
                                     <th>Level</th>
-                                    <th>Deadline</th>
                                     <th>No of pages</th>
                                     <th>Amount</th>
                                 </tr>
@@ -435,7 +434,6 @@
                                         <tr>
                                             <td>{{$order->title}}</td>
                                             <td>{{$order->Education->name}}</td>
-                                            <td>{{$order->deadline->diffForHumans()}}</td>
                                             <td>{{$order->no_pages}}</td>
                                             <td>${{$order->amount}}</td>
                                         </tr>

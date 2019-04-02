@@ -97,7 +97,7 @@
 
                             <div class="form-group">
                                 <label for="">Spacing</label>
-                                <select name="spacing" id="spacing" onchange="determinePageWords(this.value)" class="form-control academic-input">
+                                <select name="spacing" id="spacing" onchange="updateBySpacing(this.value)" class="form-control academic-input">
                                     <option value="0" selected>Single</option>
                                     <option value="1">Double</option>
                                 </select>
@@ -112,7 +112,7 @@
                                             <div class="input-group-prepend">
                                                 <span onclick="updateWords(+50)" class="input-group-text" id="basic-addon1">+</span>
                                             </div>
-                                            <input id="number_of_words" name="number_of_words" onkeyup="evaluateCost()" type="number" value="275" class="form-control academic-input flat" style="text-align: center" placeholder="required words" aria-label="Words" aria-describedby="basic-addon1">
+                                            <input id="number_of_words" name="number_of_words" onchange="updateByWords(this.value)" type="number" value="550" class="form-control academic-input flat" style="text-align: center" placeholder="required words" aria-label="Words" aria-describedby="basic-addon1">
                                             <div class="input-group-append">
                                                 <span onclick="updateWords(-50)" class="input-group-text" id="basic-addon1">-</span>
                                             </div>
@@ -166,7 +166,26 @@
                             <input type="radio" value="2" name="type_of_service">Rewriting <br>
                             <input type="radio" value="3" name="type_of_service">Editing <br>
                             <span class="error-text" id="service_type_error"></span>
-                            <br> <br>
+                            <br>
+
+                            <div class="form-group">
+                                <label for="">Number of pages</label>
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span onclick="updatePages(1)" class="input-group-text" id="basic-addon1">+</span>
+                                            </div>
+                                            <input type="number" onchange="updateByPages(this.value)" id="number_pages" name="number_pages" value="1" class="form-control academic-input flat" style="text-align: center" placeholder="0" aria-label="Username" aria-describedby="basic-addon1">
+                                            <div class="input-group-append">
+                                                <span onclick="updatePages(-1)" class="input-group-text" id="basic-addon1">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 pt-2">
+                                    </div>
+                                </div>
+                            </div>
 
                             <span class="mb-2 mt-2 font-weight-bold">Writer quality</span> <br>
 
@@ -182,9 +201,8 @@
                                     <p class="triangle-border">
 
                                         <small>
-                                            <strong>Qualified</strong>-Approved experts <br>
-                                            <strong>Premium</strong>-Experts with at most masters degree and have a rating more than 9
-                                            <br>
+                                            <strong>Standard</strong>-General level language<br>
+                                            <strong>Premium</strong>-College level language
                                             <strong>Platinum</strong>Experts with PHD and rated higher than 9.5 <br>
                                         </small>
 
@@ -450,18 +468,38 @@
         }
 
 
-        function determinePageWords(spacing) {
-          if (spacing===0){
-              //single spaces
-              // $('#number_of_words').val(550);
-          }  else if (spacing===1){
-              //double space
-              // $('#number_of_words').val(275);
-
-          }
-
+        function updateBySpacing(spacing) {
+            var words =  $('#number_of_words').val()
+            updateByWords(words)
 
         }
+
+        function updateByWords(words) {
+            var spacing = $('#spacing').val();
+            var pages = 0;
+            if(spacing==0){
+                pages = Math.round(words / 550)
+                if(pages==0)pages=1;
+            }else{
+                pages = Math.round(words / 275)
+            }
+            $('#number_pages').val(pages)
+            evaluateCost()
+
+        }
+
+        function updateByPages(pages) {
+            var spacing = $('#spacing').val();
+            var words = 0;
+            if(spacing==0){
+                words = pages * 550
+            }else{
+                words = pages * 275;
+            }
+            $('#number_of_words').val(words)
+            evaluateCost()
+        }
+
 
 
         function updateWords(delta) {
@@ -476,7 +514,7 @@
                 $('#number_of_words').val(number_of_words);
                 //show the no of pages
             }
-            evaluateCost()
+            updateByWords(number_of_words)
         }
 
         function updateSources(delta) {
@@ -490,6 +528,19 @@
             evaluateCost()
         }
 
+        function updatePages(delta) {
+            var number_of_pages = $('#number_pages').val();
+            if(number_of_pages<=0 && delta<=0){
+                return
+            }else{
+                number_of_pages=+number_of_pages+delta;
+                $('#number_pages').val(number_of_pages);
+            }
+            updateByPages(number_of_pages)
+        }
+
+
+
         function evaluateCost() {
 
 
@@ -501,9 +552,6 @@
             var topic = $('#topic').val();
             var instructions = $('#instructions').val();
             var number_of_words = $('#number_of_words').val();
-
-
-
 
             /*
             valiadtion critereas to the form

@@ -71,7 +71,10 @@ class HomeController extends Controller
                 $filename=time() . '.' . $image->getClientOriginalExtension();
                 $path = public_path('uploads/user_pictures/');
                 if(!File::exists($path)) {File::makeDirectory($path, $mode = 0777, true, true);}
-                Image::make($image->getRealPath())->fit(500,500)->save($path . $filename);
+
+                $request->file('user_pic')->move($path,$filename);
+
+//                Image::make($image->getRealPath())->fit(500,500)->save($path . $filename);
                 try{
                     if ($user->avatar!='user.jpg')
                         File::Delete($path . $user->avatar);

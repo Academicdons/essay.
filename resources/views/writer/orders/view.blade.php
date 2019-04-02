@@ -467,14 +467,14 @@
                 }
             }
         });
-        Thunder.connect("157.230.213.22:8080", "MhPN3ItPqy", ["{{$order->id}}","homepro_user_{{Auth::id()}}"], {log: true});
+        Thunder.connect("eneza.neverest.co.ke", "MhPN3ItPqy", ["{{$order->id}}","homepro_user_{{Auth::id()}}"], {log: true});
         Thunder.listen(function(message) {
             this.getClientOrders();
             // alert(message);
 
         });
 
-        Thunder.connect("157.230.213.22:8080", "MhPN3ItPqy", [chat_area.message.conversation_id,"homepro_user_{{Auth::id()}}"], {log: true});
+        Thunder.connect("eneza.neverest.co.ke", "MhPN3ItPqy", [chat_area.message.conversation_id,"homepro_user_{{Auth::id()}}"], {log: true});
         Thunder.listen(function(message) {
             this.getClientOrders();
             // alert(message);

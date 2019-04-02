@@ -3,8 +3,6 @@
 @section('style')
 
     <style>
-
-
         .carousel {
             width: 650px;
             margin: 0 auto;

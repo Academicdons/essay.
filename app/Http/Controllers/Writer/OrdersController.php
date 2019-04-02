@@ -126,11 +126,11 @@ class OrdersController extends Controller
     public function availableOrdersJson()
     {
 
-
-        $orders=Order::where('status',0)->with(['Discipline','Education','Paper'])->withCount('attachments')->orderBy('created_at','desc')->get();
+        $orders=Order::has('PaypalTransaction')->where('status',0)->with(['Discipline','Education','Paper'])->withCount('attachments')->orderBy('created_at','desc')->get();
         return response()->json([
             'orders'=>$orders,
         ]);
+
     }
 
     public function view(Order $order)

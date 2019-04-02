@@ -45,7 +45,7 @@ class OrdersController extends Controller
     public function getOrders(Request $request)
     {
         return \response()->json([
-            'orders'=>Order::where('status',request('status'))->get()
+            'orders'=>Order::has('PaypalTransaction')->where('status',request('status'))->get()
         ]);
     }
 

@@ -119,7 +119,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-4 pt-2">
-                                        (<span id="total_pages"></span>) Total Pages
+                                        {{--(<span id="total_pages"></span>) Total Pages--}}
                                     </div>
                                 </div>
 

@@ -148,17 +148,25 @@ class OrdersController extends Controller
         $order->order_no = mt_rand(100000, 999999);
 
         //determine the number of pages
+        if($order->spacing==0){
+            $no_of_pages=(round($request->number_of_words/550));
+        }else{
             $no_of_pages=(round($request->number_of_words/275));
-//            $no_of_pages+=1;
-            if ($no_of_pages==0){
-                $no_of_pages=1;
-            }
-
-            $order->no_pages =$no_of_pages;
-            $order->salary = $base_salary *$no_of_pages;
-            $order->amount = $cpp*$no_of_pages;
+        }
+        if ($no_of_pages==0){
+            $no_of_pages=1;
+        }
 
 
+        $order->no_pages =$no_of_pages;
+        $order->salary = $base_salary *$no_of_pages;
+        $order->amount = $cpp*$no_of_pages;
+
+
+
+        $order->no_pages =$no_of_pages;
+        $order->salary = $base_salary *$no_of_pages;
+        $order->amount = $cpp*$no_of_pages;
 
         $order->no_words = $request->number_of_words;
         $order->order_assign_type = 1;

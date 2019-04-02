@@ -146,7 +146,7 @@ class RegisterController extends Controller
         $user->email = $request->input('customer_email');
         $user->password= bcrypt($pin);
         $user->phone_number='';
-        $user->user_type= 1;
+        $user->user_type= 2;
         $user->account_status= 1;
         $user->save();
 

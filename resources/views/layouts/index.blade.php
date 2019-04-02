@@ -221,6 +221,25 @@
                 background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABi0lEQVRIib2VTUpDQQzHfw4PEelSpCsRBRfq6oEX8ASew2v0CB7BlXgATyBVKiJdKn7golQURKi0VJ26mIyN03nt9FUMhMnLZCbJ/yUZgHNgIPwBHAHLgPkjpg68A13l6NRvasOSMhlQEa4C9+IkV4aUlQ1ggY5wG7gSgw3Z81RKziKe75SDCrNRb45hFt7RPnAAfAL9GR00TaCwDDPIKE8ZsAhsjoPoEdgq6WAPOATOvAP9c1pAD1iS744KwibKPrDLECJ/4QsuxarS24htEeWyNsLm8N8eptVgL7W5vIOfDKxigAflQOtT5BUcvG2gFYPIArcirwf6FNlH3wT6uhRjlbQW6FNoR9YLwOjDOs1rWXNcN6dCNA/siq7h92MRGn6P8Wn5BjVmYpVkcCV6DLzhxvkk7uLekxOG0JpwFsFo4ywUZBkjg+sjq++JHc6AGvAqXMPhW0Rj7WMQ1XBYfgkPRFf0LI6zH8kgA55xeObAthx4UlGZVPtpa9zTNHPp/yEyTP7J4eNeaP8N3MOiAZAY+OMAAAAASUVORK5CYII=") no-repeat left center transparent;
                 background-size: 100% 100%;
             }
+
+            .whatsapp-float{
+                position:fixed;
+                width:60px;
+                height:60px;
+                bottom:40px;
+                left:40px;
+                background-color:#25d366;
+                color:#FFF;
+                border-radius:50px;
+                text-align:center;
+                font-size:30px;
+                box-shadow: 2px 2px 3px #999;
+                z-index:100;
+            }
+
+            .my-float{
+                margin-top:16px;
+            }
         </style>
 
         @yield('style')
@@ -349,6 +368,10 @@
         </div>
     </footer>
 
+    <a href="https://api.whatsapp.com/send?phone=+1(919) 588 4106&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Varela%202." class="whatsapp-float" target="_blank">
+        <i class="fa fa-whatsapp my-float"></i>
+    </a>
+
 
 
 
@@ -370,6 +393,8 @@
                 })
         }
     </script>
+
+
     @yield('script')
 
     </body>

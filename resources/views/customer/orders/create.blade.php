@@ -110,11 +110,11 @@
                                     <div class="col-sm-8">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span onclick="updateWords(+1)" class="input-group-text" id="basic-addon1">+</span>
+                                                <span onclick="updateWords(+50)" class="input-group-text" id="basic-addon1">+</span>
                                             </div>
-                                            <input id="number_of_words" name="number_of_words" onchange="evaluateCost()" type="number" value="1" class="form-control academic-input flat" style="text-align: center" placeholder="required words" aria-label="Words" aria-describedby="basic-addon1">
+                                            <input id="number_of_words" name="number_of_words" onkeyup="evaluateCost()" type="number" value="275" class="form-control academic-input flat" style="text-align: center" placeholder="required words" aria-label="Words" aria-describedby="basic-addon1">
                                             <div class="input-group-append">
-                                                <span onclick="updateWords(-1)" class="input-group-text" id="basic-addon1">-</span>
+                                                <span onclick="updateWords(-50)" class="input-group-text" id="basic-addon1">-</span>
                                             </div>
                                         </div>
                                     </div>
@@ -466,26 +466,15 @@
 
         function updateWords(delta) {
             var number_of_words = $('#number_of_words').val();
+            if(number_of_words<50){
+                return;
+            }
             if(number_of_words<=1 && delta<=0){
                 return
             }else{
                 number_of_words=+number_of_words+delta;
                 $('#number_of_words').val(number_of_words);
                 //show the no of pages
-                //get the spacing value         var selectedCountry = $(this).children("option:selected").val();
-
-            var spacingValue=    $('#spacing').children("option:selected").val();
-            if (spacingValue==0){
-                //single space
-                var pages=parseInt(number_of_words/550);
-                $('#total_pages').text(pages+1)
-            } else if (spacingValue==1) {
-                //double value
-                var pages=parseInt(number_of_words/275);
-
-                $('#total_pages').text(pages+1)
-
-            }
             }
             evaluateCost()
         }
@@ -530,16 +519,15 @@
 
                 console.log(time_amt);
 
-
-
                 /*
                 Consider the education level
                  */
-
                 var price_per_page = ed_factor  * time_amt;
-                $('#amount').html("$ "+(price_per_page*number_of_words));
-                $('#cost').val(price_per_page*number_of_words);
-
+                var pages = Math.round(number_of_words/275);
+                if(pages == 0)
+                    pages=1;
+                $('#amount').html("$ "+(price_per_page*pages));
+                $('#cost').val(price_per_page*pages);
 
             }
 

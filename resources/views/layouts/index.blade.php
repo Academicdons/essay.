@@ -240,6 +240,7 @@
                 </div>
                 <div class="col-sm-6 float-left">
                     <ul class="list-inline pt-2 top-bar-text float-right">
+                        <li class="list-inline-item">{{$domain->phone_number}}</li>
                         <li class="list-inline-item">&copy; Homework pro writers</li>
                         <li class="list-inline-item">| {{$domain->email}}</li>
                     </ul>

@@ -228,13 +228,13 @@
                             <div class="col-sm-6">
                                 <table class="table table-sm table-striped">
                                     <tr>
-                                        <td>Discipline</td><th>@{{ order.discipline.name }}</th>
+                                        <td>Discipline</td><th><span v-if="order.discipline!=null">@{{ order.discipline.name }}<</span>/th>
                                     </tr>
                                     <tr>
-                                        <td>Education level</td><th>@{{ order.education.name }}</th>
+                                        <td>Education level</td><th><span v-if="order.education!=null">@{{ order.education.name }}</span></th>
                                     </tr>
                                     <tr>
-                                        <td>Paper type</td><th>@{{ order.paper.name }}</th>
+                                        <td>Paper type</td><th><span v-if="order.paper!=null">@{{ order.paper.name }}</span></th>
                                     </tr>
                                     <tr>
                                         <td>Status</td><th><p v-bind:class="getStatusClass(order.status)">@{{ getStatusString(order.status) }}</p></th>
@@ -284,7 +284,7 @@
                             <p class="small text-center font-weight-bold p-1">@{{ file.display_name.substring(0,10) }}...</p>
                             <img src="https://static.thenounproject.com/png/47347-200.png" class="img-fluid" alt="">
                             <div class="bottom text-center pt-2 pb-2">
-                                <a href=""><i class="fa fa-cloud-download"></i></a>
+                                <a :href="'{{asset('uploads/files/order_files')}}'+'/'+file.file_name"><i class="fa fa-cloud-download"></i></a>
                                 <a href="javascript:;" @click="deleteFile(file.id)" class="ml-5"><i class="fa fa-trash"></i></a>
                             </div>
                         </div>

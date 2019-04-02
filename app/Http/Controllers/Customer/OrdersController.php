@@ -308,6 +308,9 @@ class OrdersController extends Controller
         $data['user_id']=Auth::id();
 
         OrderReview::create($data);
+        /*
+         * Update order status to finished
+         */
 
         $order->status=4;
         $order->save();

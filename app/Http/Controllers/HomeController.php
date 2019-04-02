@@ -71,6 +71,8 @@ class HomeController extends Controller
                 $filename=time() . '.' . $image->getClientOriginalExtension();
                 $path = public_path('uploads/user_pictures/');
                 if(!File::exists($path)) {File::makeDirectory($path, $mode = 0777, true, true);}
+
+
                 Image::make($image->getRealPath())->fit(500,500)->save($path . $filename);
                 try{
                     if ($user->avatar!='user.jpg')

@@ -157,6 +157,13 @@ class OrdersController extends Controller
             $no_of_pages=1;
         }
 
+
+        $order->no_pages =$no_of_pages;
+        $order->salary = $base_salary *$no_of_pages;
+        $order->amount = $cpp*$no_of_pages;
+
+
+
         $order->no_pages =$no_of_pages;
         $order->salary = $base_salary *$no_of_pages;
         $order->amount = $cpp*$no_of_pages;

@@ -24,7 +24,7 @@
 
 
 @section('script')
-    <script src="https://www.paypal.com/sdk/js?client-id=AXPXlreWYY0RDRZxP1NA1m9_ITSPv2eqcyYpZg_RHN5-s82A2Z2aX4fM715bn33pZeMyzrZuCFNQ3_Au"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=ASjp_tVTIhR9EWEq-OMNcBYV-6blTi1WW--qertlTExyaTZO8S8g9xfUFH2d5ZzUfeKPC6kM9CID6ovd"></script>
     <script>
 
         paypal.Buttons({

@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use PayPal\Exception\PayPalConnectionException;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
+use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
 use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 use Webpatser\Uuid\Uuid;
@@ -55,10 +56,11 @@ class OrdersController extends Controller
     public function processPay(Request $request)
     {
 
-        $clientId = "AXPXlreWYY0RDRZxP1NA1m9_ITSPv2eqcyYpZg_RHN5-s82A2Z2aX4fM715bn33pZeMyzrZuCFNQ3_Au";
-        $clientSecret = "EP7UNGWN85s9b790ny77joM8xJvYG_ZJap3tySsKETSuzdy6uCdkJ35WqeyTM381dGXVYsdnuklzeg5J";
+        $clientId = "ASjp_tVTIhR9EWEq-OMNcBYV-6blTi1WW--qertlTExyaTZO8S8g9xfUFH2d5ZzUfeKPC6kM9CID6ovd";
+        $clientSecret = "EN7AZ7nRbqiKFbKB98i0nwT-gC5fjr8eOZ4wuoDZscFoFLmMpkCeLclZzEiEW5pQE1sxFDxsdeuN0ODC";
 
-        $environment = new SandBoxEnvironment($clientId, $clientSecret);
+//        $environment = new SandboxEnvironment($clientId, $clientSecret);
+        $environment = new ProductionEnvironment($clientId, $clientSecret);
         $client = new PayPalHttpClient($environment);
         $result=[];
 

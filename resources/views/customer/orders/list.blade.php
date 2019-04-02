@@ -52,7 +52,7 @@
         <div class="order box box-solid" v-for="order in orders">
             <div class="box-body">
                 <div class="row">
-                    <div class="col-sm-4"><h4 class="text-light-blue">@{{ order.title }}</h4></div>
+                    <div class="col-sm-4"><h4 class="text-light-blue">@{{ order.title }}  <span class="badge badge-danger"  v-if="order.paypal_transaction == null || order.paypal_transaction.length<=0" >Make payment for your paper to be processed</span> </h4></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4"><h4>ID: <span>@{{ order.order_no }}</span></h4></div>

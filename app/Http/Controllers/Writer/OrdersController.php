@@ -154,7 +154,7 @@ class OrdersController extends Controller
 
         if ($bid==null){
             $bid=new Bid();
-            $bid->order_id=$order_id;
+            $bid->order_id=$order_id->id;
             $bid->user_id=Auth::id();
             $bid->save();
         }

@@ -288,9 +288,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{url('/')}}#about-us">About us</a>
+
                 </li>
 
-                @if(Auth::check() && $domain->domain_type==0)
+
+
+            @if(Auth::check() && $domain->domain_type==0)
 
 
                 <li class="nav-item dropdown">
@@ -306,7 +309,11 @@
                 </li>
 
                 @endif
-
+                @if($domain->domain_type==0)
+                    <li>
+                        <a href="{{route('customer.orders.create')}}" class="btn btn-success">Place An Order</a>
+                    </li>
+                @endif
             </ul>
 
 

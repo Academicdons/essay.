@@ -8,15 +8,13 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('register_writer') }}">
                         <input type="hidden" name="user_type" value="1">
                         @csrf
                 <div class="row">
                     <div class="form-group col-md-6 col-lg-6 col-sm-12">
-                        <label for="name" class=" col-form-label text-md-right">{{ __('Name') }}</label>
-
+                        <label for="name" class=" col-form-label text-md-right">Username</label>
                             <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
-
                             @if ($errors->has('name'))
                                 <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $errors->first('name') }}</strong>
@@ -69,23 +67,49 @@
 
                         </div>
 
-
                     </div>
 
 
                         <div class="row ">
-
                             <div class="form-group col-md-6 col-lg-6 col-sm-12">
-
                                 <label for="password-confirm" class=" col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
 
                             <div class="form-group col-md-6 col-lg-6 col-sm-12">
+                                <label >Full legal names</label>
+                                <input value="{{old('full_name')}}" class="form-control" name="full_name" id="full_name" placeholder="John Doe">
+                                @if ($errors->has('full_name'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('full_name') }}</strong>
+                                    </span>
+                                @endif
 
-                                <label class="badge badge-primary ">Referral Link</label>
-                                <input class="form-control" name="referral_link" id="referral_link" placeholder="Referral Link">
+                            </div>
+
+                        </div>
+
+                        <div class="row ">
+
+                            <div class="form-group col-md-6 col-lg-6 col-sm-12">
+                                <label for="password-confirm" class=" col-form-label text-md-right">Date of birth</label>
+                                <input id="" value="{{old('date_of_birth')}}" type="date" class="form-control" name="date_of_birth" required>
+                                @if ($errors->has('date_of_birth'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('date_of_birth') }}</strong>
+                                    </span>
+                                @endif
+
+                            </div>
+
+                            <div class="form-group col-md-6 col-lg-6 col-sm-12">
+                                <label >Course</label>
+                                <input class="form-control" name="course" value="{{old('course')}}" id="course" placeholder="Computer science">
+                                @if ($errors->has('course'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('course') }}</strong>
+                                    </span>
+                                @endif
 
                             </div>
 
@@ -93,10 +117,19 @@
 
 
 
+
                         <div class="row ">
 
                             <div class="form-group col-md-6 col-lg-6 col-sm-12">
-
+                                <label >Education level</label>
+                                <select class="form-control" name="education_level" id="education_level" >
+                                    <option value="5" {{(old('education_level')==5)?"selected":""}}>PHD</option>
+                                    <option value="4" {{(old('education_level')==4)?"selected":""}}>Masters</option>
+                                    <option value="3" {{(old('education_level')==3)?"selected":""}}>University</option>
+                                    <option value="2" {{(old('education_level')==2)?"selected":""}}>College</option>
+                                    <option value="1" {{(old('education_level')==1)?"selected":""}}>High school</option>
+                                    <option value="0" {{(old('education_level')==0)?"selected":""}}>Other</option>
+                                </select>
                             </div>
 
                             <div class="form-group col-md-6 col-lg-6 col-sm-12">

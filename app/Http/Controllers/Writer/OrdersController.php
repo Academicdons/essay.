@@ -9,6 +9,7 @@ use App\Models\Bid;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Order;
+use App\Models\OrderReview;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -140,7 +141,21 @@ class OrdersController extends Controller
 
     public function review(Request $request)
     {
-        //TODO add the review data here from the writer
+        $review=new OrderReview();
+        $review->id= Uuid::generate();
+        $review->order_id=$request->order_id;
+        $review->rating=$request->rating;
+        $review->review=$request->review_data;
+        $review->user_id=Auth::id();
+        $review->save();
+
+        //mark the order as now completed
+        $order=Order::find($request->order_id);
+        $order->status=3;
+        $order->save();
+
+        return redirect()->back();
+
     }
 
     public function placeBid(Order $order_id)
@@ -174,7 +189,7 @@ class OrdersController extends Controller
         $order->status=3;
         $order->save();
 
-        $client=User::where('created_by',$order->created_by)->first();
+        $client=User::find($order->created_by);
         $message='The order' . $order->order_no. ' has been completed';
         //dispatch the job
         $this->dispatch(new SendSystemEmail($client->email,$message));

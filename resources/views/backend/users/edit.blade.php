@@ -74,12 +74,13 @@
                                 </div>
 
 
+                                @if(old('name')==null || old('email')==\Illuminate\Support\Facades\Auth::user()->email)
                                 <div class="form-group">
                                     <label for="password">Password</label>
                                     <input class="form-control" type="password" id="password" name="password" >
                                     <span class="text-danger">{{($errors->has('password'))?$errors->first('password'):""}}</span>
                                 </div>
-
+                                @endif
 
                                 {{--<div class="form-group">--}}
                                     {{--<label for="password">Password Confirmation</label>--}}

@@ -363,4 +363,14 @@ class OrdersController extends Controller
            'disputes'=>$disputes
        ]);
     }
+
+    public function markRevisedOrderAsComplete(Order $order)
+    {
+        $order->status=3;
+        $order->save();
+
+        //TODO determine if an email should be sent to the writer to inform them whether the order is marked as complete form revision
+
+        return redirect()->back();
+    }
 }

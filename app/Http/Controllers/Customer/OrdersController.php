@@ -305,18 +305,41 @@ class OrdersController extends Controller
 
     public function review(Order $order,Request $request)
     {
-        $data=$request->only(['review','rating']);
-        $data['id']=Uuid::generate()->string;
-        $data['order_id']=$order->id;
-        $data['user_id']=Auth::id();
-
-        OrderReview::create($data);
         /*
          * Update order status to finished
          */
-
         $order->status=4;
         $order->save();
+        $assignment = $order->currentAssignment();
+
+        /*
+         * create a review for the intended user and order
+         */
+
+        $old_review = OrderReview::where([['order_id',$order->id],['user_id',Auth::id()]])->first();
+        if($old_review!=null){
+            return response()->json([
+                'success'=>false
+            ]);
+        }
+
+
+        $data=$request->only(['review','rating']);
+        $data['id']=Uuid::generate()->string;
+        $data['order_id']=$order->id;
+        $data['rated_user']=($assignment!=null)?$assignment->user_id:null;
+        $data['user_id']=Auth::id();
+        OrderReview::create($data);
+
+        /*
+         * update the writers rating
+         */
+        if($assignment!=null){
+            $user = User::find($assignment->user_id);
+            $new_rating = OrderReview::where('rated_user',$assignment->user_id)->average('rating');
+            $user->ratings = $new_rating;
+            $user->save();
+        }
 
 
         return response()->json([

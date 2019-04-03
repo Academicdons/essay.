@@ -361,11 +361,8 @@
                         <p class="text-center">
                             @if(\App\Models\Attachment::where('order_id',$order->id)->where('created_by',\Illuminate\Support\Facades\Auth::id())->first() ==null)
                                 <button type="submit" class="btn btn-success mt-3" disabled>Submit review</button>
-
-
                             @else
                                 <button type="submit" class="btn btn-success mt-3">Submit review</button>
-
                             @endif
                         </p>
                     </form>

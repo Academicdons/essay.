@@ -56,6 +56,10 @@
         .form-wrapper{
             width: 500px;
         }
+        .rating{
+            font-size: 30px;
+            color: orange;
+        }
 
     </style>
     @endsection
@@ -78,7 +82,9 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Order No. {{ $order->order_no }}</h3>
+                        <h3 class="box-title">Order No. {{ $order->order_no }}
+                            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#finishModal">Finish order</button>
+                        </h3>
                         <div class="box-tools" id="bid_area">
                             <a href="{{ route('admin.orders.index') }}" class="btn btn-xs btn-info">Back To Orders</a>
                             <button class="btn-danger btn-xs" data-toggle="modal" data-target="#disputedModal">Mark Order as Disputed</button>
@@ -102,8 +108,6 @@
 
                                                 </div>
                                             </div>
-
-
                                             <p><b>Provide a reason why you need to mark the order as disputed below</b></p>
 
                                             <textarea v-model="dispute_reason" style="min-height: 200px" class="form-control" placeholder=""></textarea>
@@ -163,6 +167,33 @@
                                     </table>
 
 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal" id="finishModal" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title">Finish and rate modal</h3>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p class="text-ceter">Rate the quality of work:</p>
+                                            <div class="rating mx-auto"></div>
+                                            <form action="{{route('admin.orders.review')}}" method="post" >
+
+                                                @csrf
+                                                <input type="hidden" name="order_id" value="{{$order->id}}">
+                                                <input type="hidden" name="rating" id="rating_value" value="9">
+                                                <textarea class="form-control" name="review_data" placeholder="The writer understood the task and delivered as instruc..."></textarea>
+                                                <br>
+                                                <p class="text-center">
+                                                    <button type="submit" class="btn btn-success mt-3">Submit review</button>
+                                                </p>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -551,8 +582,23 @@
 
     <script src="{{asset('plugins/easycomplete/jquery.easy-autocomplete.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+    <script src="{{asset('plugins/rater/rater.min.js')}}"></script>
 
-    <script>
+    <script type="text/javascript">
+
+        $(function () {
+            var options = {
+                max_value: 10,
+                step_size: 1,
+                initial_value: 9,
+
+            };
+            $(".rating").rate(options);
+            $(".rating").on("change", function(ev, data){
+                $('#rating_value').val(data.to)
+            });
+        });
+
         var dadsd=new Vue({
             el:'#description_data',
             data:{

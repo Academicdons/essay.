@@ -181,6 +181,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/all', 'OrdersController@getOrders')->name('all');
         Route::get('/new', 'OrdersController@newOrder')->name('new');
         Route::post('/store', 'OrdersController@store')->name('store');
+        Route::post('/review', 'OrdersController@review')->name('review');
         Route::post('/manual_assign', 'OrdersController@manualAssign')->name('manual_assign');
         Route::post('/save_file', 'OrdersController@saveFile')->name('save_file');
         Route::get('/delete/{order}', 'OrdersController@deleteOrder')->name('delete');

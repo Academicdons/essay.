@@ -16,6 +16,7 @@ use App\Models\Discipline;
 use App\Models\EducationLevel;
 use App\Models\Message;
 use App\Models\Order;
+use App\Models\OrderReview;
 use App\Models\PaperType;
 use App\Models\PaypalTransaction;
 use App\User;
@@ -398,6 +399,43 @@ class OrdersController extends Controller
         //TODO send email to tell the writer that the order has been change to completed from revision
 
         return \redirect()->back();
+    }
+
+    public function review(Request $request)
+    {
+
+        //mark the order as finished
+        $order=Order::find($request->order_id);
+        $order->status=4;
+        $order->save();
+        $assignment = $order->currentAssignment();
+
+
+        /*
+         * create a review for the intended user and order
+         */
+        $review=new OrderReview();
+        $review->id= Uuid::generate();
+        $review->order_id=$request->order_id;
+        $review->rating=$request->rating;
+        $review->review=$request->review_data;
+        $review->user_id=Auth::id();
+        $review->rated_user = ($assignment!=null)?$assignment->user_id:null;
+        $review->save();
+
+
+        /*
+         * update the writers rating
+         */
+        if($assignment!=null){
+            $user = User::find($assignment->user_id);
+            $new_rating = OrderReview::where('rated_user',$assignment->user_id)->average('rating');
+            $user->ratings = $new_rating;
+            $user->save();
+        }
+
+        return redirect()->back();
+
     }
 }
 

@@ -98,7 +98,9 @@ class OrdersController extends Controller
 
     public function getOrders(Request $request)
     {
-        $orders = Order::where('created_by',Auth::id())->with(['Discipline','Education','Paper','PaypalTransaction'])->withCount('attachments')->orderBy('created_at','desc')->get();
+        $orders = Order::where('created_by',Auth::id())->with(['Discipline','Education','Paper','PaypalTransaction'])->withCount(['attachments'=>function($hehe){
+            $hehe->where('is_verified',true);
+        }])->orderBy('created_at','desc')->get();
         return response()->json([
             'orders'=>$orders
         ]);

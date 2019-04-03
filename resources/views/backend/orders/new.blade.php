@@ -215,6 +215,8 @@
                                     </div>
                                     <div class="col-sm-6">
 
+                                        <label>Choose A File</label>
+                                        <input type="file" name="file" class="form-control">
 
                                     </div>
                                 </div>
@@ -224,11 +226,13 @@
 
                             <div class="col-sm-6">
 
+
                                 <div class="form-group">
                                     <label for="notes">Notes</label>
                                     <textarea rows="12" id="notes" class="form-control" name="notes">{{old('notes')}}</textarea>
                                     <span class="form-control-feedback text-danger text-sm">{{($errors->has('notes')?$errors->first('notes'):"")}}</span>
                                 </div>
+
                             </div>
                         </div>
 

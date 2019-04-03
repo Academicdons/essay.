@@ -22,6 +22,7 @@ Route::get('terms',function (){
 Auth::routes();
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::post('/register_writer', '\App\Http\Controllers\Auth\RegisterController@registerWriter')->name('register_writer');
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware(['account_status']);
 Route::post('/quick_register', 'Auth\RegisterController@quickRegister')->name('quick_register');

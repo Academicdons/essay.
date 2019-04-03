@@ -171,6 +171,7 @@ class OrdersController extends Controller
         $order->amount = $cpp*$no_of_pages;
 
         $order->no_words = $request->number_of_words;
+        $order->no_of_sources = $request->no_of_sources;
         $order->order_assign_type = 1;
         $order->deadline = $date;
 

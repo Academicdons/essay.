@@ -17,6 +17,7 @@ use App\Models\EducationLevel;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\PaperType;
+use App\Models\PaypalTransaction;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -106,7 +107,7 @@ class OrdersController extends Controller
             $order = Order::find($request->id);
         }else{
             $order = new Order();
-            $order->id = Uuid::generate();
+            $order->id = Uuid::generate()->string;
             $order->created_by=Auth::id();
         }
 
@@ -120,6 +121,7 @@ class OrdersController extends Controller
 
         $order->notes = $request->notes;
         $order->spacing = $request->spacing;
+        $order->spacing = $request->no_of_sources;
         $order->cpp = $request->cpp;
         $order->title = $request->title;
         $order->order_no = mt_rand(100000, 999999);
@@ -145,34 +147,14 @@ class OrdersController extends Controller
         $order->save();
 
 
+        /*
+         * create or update a paypal transaction with this order id
+         */
 
-        if($request->hasFile('file')) {
-            if (!$request->file('file')->isValid()) {
-                return redirect()->back()->withErrors(['error'=>'The picture is invalid']);
-            } else {
-
-                //save picture
-                $image=Input::file('file');
-                $filename=time() . '.' . $image->getClientOriginalExtension();
-                $path = public_path('uploads/files/order_files/');
-                if(!File::exists($path)) {File::makeDirectory($path, $mode = 0777, true, true);}
-
-
-
-                $image->move($path,$filename);
-
-
-                $attachment=new Attachment();
-                $attachment->id = Uuid::generate();
-                $attachment->file_name=$filename;
-                $attachment->display_name=$filename;
-                $attachment->order_id=$order->id;
-                $attachment->created_by=Auth::id();
-                $attachment->save();
-
-                return redirect()->back();
-            }
-        }
+        PaypalTransaction::updateOrCreate(
+            ['order_id' => $order->id],
+            ['id'=>Uuid::generate()->string,'amount' => $order->amount, 'pay_pal_name' => 'USD','pay_pal_ref'=>'System','status'=>1]
+        );
 
 
         return Redirect::route('admin.orders.index');
@@ -192,7 +174,7 @@ class OrdersController extends Controller
     {
 
         Session::flash('_old_input', $order);
-        return view('backend.orders.new');
+        return View('backend.orders.new')->withDisciplines(Discipline::all())->withEducations(EducationLevel::all())->withPapers(PaperType::all());;
     }
 
     public function viewOrder(Order $order)

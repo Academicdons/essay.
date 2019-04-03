@@ -50,10 +50,9 @@
                                         <div class="form-group">
 
                                             <label for="">Spacing</label>
-                                            <span class="badge badge-primary" v-if="spacing_selected==''">selected spacing to view number of pages</span>
 
                                             <select name="spacing" id="spacing" class="form-control academic-input"  v-model="selected">
-                                                <option value="0" {{ old('spacing') == 1?"selected":'' }}>Single</option>
+                                                <option value="0" {{ old('spacing') == 0?"selected":'' }}>Single</option>
                                                 <option value="1" {{ old('spacing') == 1?"selected":'' }}>Double</option>
                                             </select>
                                         </div>
@@ -65,14 +64,14 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="no_pages">No. of Pages</label>
-                                            <input type="text" id="no_pages" class="form-control" name="no_pages" v-model="no_of_pages" value="{{old('no_pages')}}" readonly>
+                                            <input type="text" id="no_pages" class="form-control" v-on:change="calculatePages" name="no_pages" v-model="no_of_pages" value="{{old('no_pages')}}" readonly>
                                             <span class="form-control-feedback text-danger text-sm">{{($errors->has('no_pages')?$errors->first('no_pages'):"")}}</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="no_words">No. of Words</label>
-                                            <input type="number" id="no_words"  class="form-control" v-model="no_of_words" name="no_words" :onkeyup="calculatePages()" value="{{old('no_words')}}" min="50">
+                                            <input type="number" id="no_of_words" v-model="no_words"  class="form-control"  name="no_words" :onkeyup="calculatePages()" value="">
                                             <span class="form-control-feedback text-danger text-sm">{{($errors->has('no_words')?$errors->first('no_words'):"")}}</span>
                                         </div>
                                     </div>
@@ -81,9 +80,8 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="amount">Salary PP</label>
-                                            <input type="text" id="spp" class="form-control" name="spp" value="{{old('spp')}}">
-                                            <span class="form-control-feedback text-danger text-sm">{{($errors->has('spp')?$errors->first('spp'):"")}}</span>
+                                            <label for="">Number of Sources</label>
+                                            <input type='number' value="{{old('no_of_sources')}}" name="no_of_sources"  class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -202,24 +200,6 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="">Number of Sources</label>
-
-                                                <input type='number' name="no_of_sources"  class="form-control" />
-
-
-                                        </div>
-
-                                    </div>
-                                    <div class="col-sm-6">
-
-                                        <label>Choose A File</label>
-                                        <input type="file" name="file" class="form-control">
-
-                                    </div>
-                                </div>
 
                             </div>
 
@@ -255,33 +235,29 @@
         var  content=new Vue({
             el:'#content_area',
             data:{
-                no_of_words:50,
-                no_of_pages:'',
-                selected:'',
-                spacing_selected:''
+                no_of_pages:0,
+                no_words:'{{old('no_words')}}',
+                selected:0,
+            },
+            created:function(){
+                this.calculatePages()
             },
             methods:{
 
                 calculatePages:function () {
-                    if (this.selected!=''){
-                        this.spacing_selected='here';
+                    //calculate the words here
+                    let no_of_words = $('#no_of_words').val()
+                    var rawPages;
+                    if (this.selected==0){
+                        rawPages=Math.round(no_of_words/550);
 
-                        //calculate the words here
-                        var rawPages;
-                        if (this.selected===0){
-                             rawPages=Math.round(this.no_of_words/550);
-
-                        } else{
-                             rawPages=Math.round(this.no_of_words/275);
-
-
-                        }
-                        if (rawPages===0){
-                            rawPages=1
-                        }
-                        this.no_of_pages=rawPages
-
+                    } else{
+                        rawPages=Math.round(no_of_words/275);
                     }
+                    if (rawPages===0){
+                        rawPages=1
+                    }
+                    this.no_of_pages=rawPages
                 },
 
             }
@@ -299,8 +275,6 @@
 
         $(function () {
 
-
-
             $('#deadline').datetimepicker({
                 format:'DD/MM/YYYY H:mm:ss'
             });
@@ -309,6 +283,19 @@
                 format:'DD/MM/YYYY H:mm:ss'
             });
 
+
+            /*
+            parse deadline to local time
+             */
+            @if(old('deadline')!=null)
+              var deadline=moment.utc('{{old('deadline')}}').local().format("dddd,Do M-YYYY, h:mm:ss a")
+              $('#deadline').data("DateTimePicker").date(deadline)
+            @endif
+
+            @if(old('bid_expiry')!=null)
+            var bid_expiry=moment.utc('{{old('bid_expiry')}}').local().format("dddd,Do M-YYYY, h:mm:ss a")
+            $('#bid_expiry').data("DateTimePicker").date(bid_expiry)
+            @endif
 
         });
 

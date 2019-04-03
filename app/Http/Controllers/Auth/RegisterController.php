@@ -16,6 +16,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -82,16 +83,22 @@ class RegisterController extends Controller
         $account_status=0;
         }
 
-        $link='null';
-        if ($data['referral_link']==null){
-            $link='null';
-            $referer=null;
-        }else{
-            $link=$data['referral_link'];
-            //determine the user who has that referral link and save their id
-            $referringUser=User::where('referral_value',$data['referral_link'])->first();
-            $referer=$referringUser->id;
+        /*
+         * check the referring user
+         */
+        $referral = Session::get('referral');
+        $refer_user = null;
+        if($referral!=null){
+            $refer_user = User::where('referral_value',$referral)->first();
         }
+
+        /*
+         * Generate a referral value for the new customer
+         */
+        $referral_code = $this->getUniqueReferalNo();
+
+
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -99,8 +106,8 @@ class RegisterController extends Controller
             'phone_number' => $data['phone_number'],
             'user_type' => $data['user_type'],
             'account_status'=>$account_status,
-            'referral_value'=>$link,
-            'referred_by'=>$referer
+            'referral_value'=>$referral_code,
+            'referred_by'=>($refer_user!=null)?$refer_user->id:null
         ]);
     }
 
@@ -127,6 +134,63 @@ class RegisterController extends Controller
             ?: redirect($this->redirectPath());
     }
 
+    public function registerWriter(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'name' => ['required', 'string', 'max:255','unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone_number' => ['required'],
+            'user_type' => ['required'],
+            'education_level'=>'required',
+            'course'=>'required',
+            'date_of_birth'=>'required',
+            'full_name'=>'required',
+        ]);
+
+        if($validator->fails()){
+            return back()->withErrors($validator)->withInput();
+        }
+
+
+         /*
+         * check the referring user
+         */
+        $referral = Session::get('referral');
+        $refer_user = null;
+        if($referral!=null){
+            $refer_user = User::where('referral_value',$referral)->first();
+        }
+
+        /*
+         * Generate a referral value for the new customer
+         */
+        $referral_code = $this->getUniqueReferalNo();
+        $data = $request->all();
+
+        $user =  User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'phone_number' => $data['phone_number'],
+            'user_type' => $data['user_type'],
+            'education_level' => $data['education_level'],
+            'course' => $data['course'],
+            'date_of_birth' => $data['date_of_birth'],
+            'full_name' => $data['full_name'],
+            'account_status'=>0,
+            'referral_value'=>$referral_code,
+            'referred_by'=>($refer_user!=null)?$refer_user->id:null
+        ]);
+
+        Auth::login($user);
+        $email = new WriterEssayTest($user);
+        $this->dispatch(new SendSystemEmail($user->email,$email));
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+
+    }
+
     public function quickRegister(Request $request)
     {
 
@@ -141,6 +205,20 @@ class RegisterController extends Controller
         $username = $parts[0];
         $pin = $this->generatePIN();
 
+        /*
+         * check the referring user
+         */
+        $referral = Session::get('referral');
+        $refer_user = null;
+        if($referral!=null){
+            $refer_user = User::where('referral_value',$referral)->first();
+        }
+
+        /*
+         * Generate a referral value for the new customer
+         */
+        $referral_code = $this->getUniqueReferalNo();
+
         $user = new User();
         $user->name = $username;
         $user->email = $request->input('customer_email');
@@ -148,6 +226,8 @@ class RegisterController extends Controller
         $user->phone_number='';
         $user->user_type= 2;
         $user->account_status= 1;
+        $user->referral_value = $referral_code;
+        $user->referred_by = ($refer_user!=null)?$refer_user->id:null;
         $user->save();
 
         $message = "Your account password at homeworkprowriters is " . $pin;
@@ -171,4 +251,18 @@ class RegisterController extends Controller
         }
         return $pin;
     }
+
+
+    public function getUniqueReferalNo()
+    {
+        $no = "HPR-" . $this->generatePIN();
+        $validator = Validator::make(['referral_value'=>$no],['referral_value'=>'unique:users']);
+        if($validator->fails()){
+            return $this->getUniqueReferalNo();
+        }else{
+            return $no;
+        }
+    }
+
+
 }

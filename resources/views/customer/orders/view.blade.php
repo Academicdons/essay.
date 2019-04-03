@@ -287,7 +287,7 @@
                             <p class="small text-center font-weight-bold p-1">@{{ file.display_name.substring(0,10) }}...</p>
                             <img src="https://static.thenounproject.com/png/47347-200.png" class="img-fluid" alt="">
                             <div class="bottom text-center pt-2 pb-2">
-                                <a :href="'{{asset('uploads/files/order_files')}}'+'/'+file.file_name"><i class="fa fa-cloud-download"></i></a>
+                                <a :href="'{{asset('uploads/files/order_files')}}'+'/'+file.file_name" download><i class="fa fa-cloud-download"></i></a>
                                 <a href="javascript:;" @click="deleteFile(file.id)" class="ml-5"><i class="fa fa-trash"></i></a>
                             </div>
                         </div>

@@ -78,6 +78,7 @@ Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.','mi
         Route::post('store','OrdersController@store')->name('store');
         Route::get('pay/{order}','OrdersController@pay')->name('pay');
         Route::post('pay/process','OrdersController@processPay')->name('pay.process');
+        Route::get('mark_revised_order_as_complete/{order}','OrdersController@markRevisedOrderAsComplete')->name('mark_revised_order_as_complete');
     });
 
     Route::group(['middleware'=>['account_status']],function (){
@@ -195,6 +196,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/assign_user_bid/{order_id}/{user_id}', 'OrdersController@assignUserBid')->name('assign_user_bid');
         Route::post('/upload_file/{order}', 'OrdersController@saveFile')->name('upload_file');
         Route::get('/verify_file/{attachment}', 'OrdersController@verifyFile')->name('verify_file');
+        Route::get('/mark_completed_revision/{order}', 'OrdersController@markCompletedOrder')->name('mark_completed_revision');
 
 
         //send email

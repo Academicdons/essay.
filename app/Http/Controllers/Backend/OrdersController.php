@@ -377,5 +377,14 @@ class OrdersController extends Controller
         return \redirect()->back();
     }
 
+    public function markCompletedOrder(Order $order)
+    {
+        $order->status=3;
+        $order->save();
+
+        //TODO send email to tell the writer that the order has been change to completed from revision
+
+        return \redirect()->back();
+    }
 }
 

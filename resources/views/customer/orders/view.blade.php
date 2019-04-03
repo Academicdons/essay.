@@ -271,7 +271,12 @@
                     <div class="col-sm-12">
                         <button class="btn-success btn-sm float-right" data-toggle="modal" data-target="#rateModal">Complete order</button>
                         <button class="btn-danger btn-sm float-right mr-3" data-toggle="modal" data-target="#revisionModal">Request a revision</button>
+                        @if($order->status==2)
+                            <a href="{{route('customer.orders.mark_revised_order_as_complete',$order->id)}}" class="btn btn-success float-right mr-3">Mark Revised Order as Complete</a>
+                            @endif
                         {{--<button class="btn-danger btn-sm float-right mr-3" data-toggle="modal" data-target="#disputedModal">Mark Order as Disputed</button>--}}
+
+
                     </div>
                 </div>
 

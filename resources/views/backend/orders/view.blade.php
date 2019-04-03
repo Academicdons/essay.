@@ -122,6 +122,12 @@
 
                             <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#rateModal"  @click="getBids('{{$order->id}}')">View Placed Bids</button>
                             @endif
+
+
+                            @if($order->status==2 )
+
+                                <a href="{{route('admin.orders.mark_completed_revision',$order->id)}}" class="btn btn-primary btn-xs"   >Mark As Completed Revision</a>
+                            @endif
                             <div class="modal" id="rateModal" tabindex="-1" role="dialog">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">

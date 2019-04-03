@@ -75,8 +75,6 @@ class UsersController extends Controller
             $user = User::find(request('id'));
         }else{
             $user = new User();
-
-
         }
 
         //upload picture

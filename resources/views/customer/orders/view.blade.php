@@ -269,12 +269,8 @@
                 </div>
                 <div class="row pt-1 pb-1">
                     <div class="col-sm-12">
-                        <button class="btn-success btn-sm float-right" data-toggle="modal" data-target="#rateModal">Complete order</button>
+                        <button class="btn-success btn-sm float-right" v-if="order.status<4" data-toggle="modal" data-target="#rateModal">Complete order</button>
                         <button class="btn-danger btn-sm float-right mr-3" data-toggle="modal" data-target="#revisionModal">Request a revision</button>
-                        @if($order->status==2)
-                            <a href="{{route('customer.orders.mark_revised_order_as_complete',$order->id)}}" class="btn btn-success float-right mr-3">Mark Revised Order as Complete</a>
-                            @endif
-                        {{--<button class="btn-danger btn-sm float-right mr-3" data-toggle="modal" data-target="#disputedModal">Mark Order as Disputed</button>--}}
 
 
                     </div>
@@ -598,7 +594,11 @@
                     }else if(status==2){
                         return "revision"
                     }else if(status==3){
-                        return "completing"
+                        return "assessment"
+                    }else if(status==4){
+                        return "Finished"
+                    }else if(status==5){
+                        return "Disputed"
                     }else{
                         return "processing"
                     }
@@ -610,6 +610,10 @@
                         return "text-warning"
                     }else if(status==3){
                         return "text-success"
+                    }else if(status==4){
+                        return "text-success"
+                    }else if(status==5){
+                        return "text-warning"
                     }else{
                         return "text-default"
                     }
@@ -656,7 +660,12 @@
                         .then(function (res) {
                             me.getOrderReviews();
                             $('#rateModal').modal('hide');
-                            window.location='{{url('customer/orders/list')}}'
+                            if(res.data.success){
+                                window.location.reload()
+                            }else{
+                                alert('You have reviewd this order already')
+                                window.location.reload()
+                            }
                         })
                 },
                 getOrderReviews:function () {

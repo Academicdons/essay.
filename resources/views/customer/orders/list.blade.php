@@ -179,6 +179,10 @@
                         return "revision"
                     }else if(status==3){
                         return "completing"
+                    }else if(status==4){
+                        return "Finished"
+                    }else if(status==5){
+                        return "Disputed"
                     }else{
                         return "processing"
                     }

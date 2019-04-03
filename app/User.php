@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\Assignment;
 use App\Models\Order;
+use App\Models\PaymentInformation;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -49,6 +50,11 @@ class User extends Authenticatable
     public function clientOrders()
     {
         return $this->hasMany(Order::class,'created_by','id');
+    }
+
+    public function paymentInformation()
+    {
+        return $this->hasOne(PaymentInformation::class,'user_id','id');
     }
 
 

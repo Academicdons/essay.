@@ -51,6 +51,7 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="{{route('writer.orders.available')}}">Available orders <span class="sr-only">(current)</span></a></li>
             <li><a href="{{route('writer.orders.all')}}">My orders</a></li>
+            <li><a href="{{route('writer.payments.info')}}">Payment Information</a></li>
           </ul>
           <form class="navbar-form navbar-left" role="search">
             <div class="form-group">

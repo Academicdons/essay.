@@ -122,6 +122,12 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
 
 
     });
+
+    Route::group(['as'=>'payments.','prefix'=>'payments'],function (){
+        Route::get('/info', 'PaymentsController@info')->name('info');
+        Route::post('/store', 'PaymentsController@store')->name('store');
+    });
+
     //announcement routes
     Route::get('check_announcements','AnnouncementController@getAnnouncementsJson')->name('check_announcements');
     Route::get('change_announcement','AnnouncementController@toggleAnnouncement')->name('change_announcement');

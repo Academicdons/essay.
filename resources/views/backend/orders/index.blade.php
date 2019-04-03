@@ -61,6 +61,7 @@
                                                 <span class="label label-success" v-if="order.order_assign_type==1">Bid</span>
                                             </td>
                                             <td>
+                                                <a :href="'{{url('/admin/orders/edit_order')}}/'+ order.id" ><i class="fa fa-edit"></i></a>
                                                 <a :href="'{{url('/admin/orders/view')}}/' + order.id"><i class="fa fa-eye"></i></a>
                                             </td>
                                         </tr>

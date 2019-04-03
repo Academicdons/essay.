@@ -144,6 +144,37 @@ class OrdersController extends Controller
         $order->writer_quality = $request->writer_quality;
         $order->save();
 
+
+
+        if($request->hasFile('file')) {
+            if (!$request->file('file')->isValid()) {
+                return redirect()->back()->withErrors(['error'=>'The picture is invalid']);
+            } else {
+
+                //save picture
+                $image=Input::file('file');
+                $filename=time() . '.' . $image->getClientOriginalExtension();
+                $path = public_path('uploads/files/order_files/');
+                if(!File::exists($path)) {File::makeDirectory($path, $mode = 0777, true, true);}
+
+
+
+                $image->move($path,$filename);
+
+
+                $attachment=new Attachment();
+                $attachment->id = Uuid::generate();
+                $attachment->file_name=$filename;
+                $attachment->display_name=$filename;
+                $attachment->order_id=$order->id;
+                $attachment->created_by=Auth::id();
+                $attachment->save();
+
+                return redirect()->back();
+            }
+        }
+
+
         return Redirect::route('admin.orders.index');
     }
 

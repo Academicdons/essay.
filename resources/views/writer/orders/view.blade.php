@@ -350,13 +350,13 @@
                     <p>Help us improve the quality of our service by providing a review</p>
                     <p class="text-ceter">Rate the quality of work:</p>
                     <div class="rating mx-auto"></div>
-                    <p class="text-cener">Review the quality of work:</p>
+                    <p class="text-center">Review the quality of work:</p>
                     <form action="{{route('writer.orders.review')}}" method="post" >
 
                         @csrf
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="rating" id="rating_value" value="9">
-                        <textarea v-model="review.review" class="form-control" placeholder="The writer understood the task and delivered as instruc..."></textarea>
+                        <textarea v-model="review.review" class="form-control" name="review_data" placeholder="The writer understood the task and delivered as instruc..."></textarea>
                         <br>
                         <p class="text-center">
                             @if(\App\Models\Attachment::where('order_id',$order->id)->where('created_by',\Illuminate\Support\Facades\Auth::id())->first() ==null)

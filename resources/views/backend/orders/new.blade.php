@@ -202,7 +202,22 @@
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Number of Sources</label>
 
+                                                <input type='number' name="no_of_sources"  class="form-control" />
+
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-6">
+
+
+                                    </div>
+                                </div>
 
                             </div>
 
@@ -256,6 +271,9 @@
                              rawPages=Math.round(this.no_of_words/275);
 
 
+                        }
+                        if (rawPages===0){
+                            rawPages=1
                         }
                         this.no_of_pages=rawPages
 

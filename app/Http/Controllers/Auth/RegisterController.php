@@ -168,7 +168,7 @@ class RegisterController extends Controller
         $referral_code = $this->getUniqueReferalNo();
         $data = $request->all();
 
-        return User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -182,6 +182,13 @@ class RegisterController extends Controller
             'referral_value'=>$referral_code,
             'referred_by'=>($refer_user!=null)?$refer_user->id:null
         ]);
+
+        Auth::login($user);
+        $email = new WriterEssayTest($user);
+        $this->dispatch(new SendSystemEmail($user->email,$email));
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+
     }
 
     public function quickRegister(Request $request)
@@ -198,6 +205,20 @@ class RegisterController extends Controller
         $username = $parts[0];
         $pin = $this->generatePIN();
 
+        /*
+         * check the referring user
+         */
+        $referral = Session::get('referral');
+        $refer_user = null;
+        if($referral!=null){
+            $refer_user = User::where('referral_value',$referral)->first();
+        }
+
+        /*
+         * Generate a referral value for the new customer
+         */
+        $referral_code = $this->getUniqueReferalNo();
+
         $user = new User();
         $user->name = $username;
         $user->email = $request->input('customer_email');
@@ -205,6 +226,8 @@ class RegisterController extends Controller
         $user->phone_number='';
         $user->user_type= 2;
         $user->account_status= 1;
+        $user->referral_value = $referral_code;
+        $user->referred_by = ($refer_user!=null)?$refer_user->id:null;
         $user->save();
 
         $message = "Your account password at homeworkprowriters is " . $pin;

@@ -17,7 +17,7 @@
         </ol>
     </section>
 
-    <section class="content">
+    <section class="content" id="content_area">
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
@@ -45,10 +45,14 @@
                                         </div>
 
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="form-group">
+
                                             <label for="">Spacing</label>
-                                            <select name="spacing" id="spacing" class="form-control academic-input">
+                                            <span class="badge badge-primary" v-if="spacing_selected==''">selected spacing to view number of pages</span>
+
+                                            <select name="spacing" id="spacing" class="form-control academic-input"  v-model="selected">
                                                 <option value="0" {{ old('spacing') == 1?"selected":'' }}>Single</option>
                                                 <option value="1" {{ old('spacing') == 1?"selected":'' }}>Double</option>
                                             </select>
@@ -61,14 +65,14 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="no_pages">No. of Pages</label>
-                                            <input type="text" id="no_pages" class="form-control" name="no_pages" value="{{old('no_pages')}}">
+                                            <input type="text" id="no_pages" class="form-control" name="no_pages" v-model="no_of_pages" value="{{old('no_pages')}}" readonly>
                                             <span class="form-control-feedback text-danger text-sm">{{($errors->has('no_pages')?$errors->first('no_pages'):"")}}</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="no_words">No. of Words</label>
-                                            <input type="text" id="no_words" class="form-control" name="no_words" value="{{old('no_words')}}">
+                                            <input type="number" id="no_words"  class="form-control" v-model="no_of_words" name="no_words" :onkeyup="calculatePages()" value="{{old('no_words')}}" min="50">
                                             <span class="form-control-feedback text-danger text-sm">{{($errors->has('no_words')?$errors->first('no_words'):"")}}</span>
                                         </div>
                                     </div>
@@ -228,6 +232,39 @@
     <script src="{{ asset('bower_components/moment/moment.js') }}"></script>
     <script src="{{asset('bstpick/js/bootstrap-datetimepicker.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/jstz.min.js')}}"></script>
+    <script>
+        var  content=new Vue({
+            el:'#content_area',
+            data:{
+                no_of_words:50,
+                no_of_pages:'',
+                selected:'',
+                spacing_selected:''
+            },
+            methods:{
+
+                calculatePages:function () {
+                    if (this.selected!=''){
+                        this.spacing_selected='here';
+
+                        //calculate the words here
+                        var rawPages;
+                        if (this.selected===0){
+                             rawPages=Math.round(this.no_of_words/550);
+
+                        } else{
+                             rawPages=Math.round(this.no_of_words/275);
+
+
+                        }
+                        this.no_of_pages=rawPages
+
+                    }
+                },
+
+            }
+        })
+    </script>
 
 
     <script>
@@ -254,4 +291,5 @@
         });
 
     </script>
+
 @stop

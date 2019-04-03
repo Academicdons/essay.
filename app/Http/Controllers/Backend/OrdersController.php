@@ -103,6 +103,17 @@ class OrdersController extends Controller
     public function store(Request $request)
     {
 
+        $this->validate($request,[
+            'title'=>'required',
+            'no_of_pages'=>'required',
+            'no_of_words'=>'required',
+            'paper_type'=>'required',
+            'discipline'=>'required',
+            'education_level'=>'required',
+            'spacing'=>'required',
+            'no_of_sources'=>'required'
+        ]);
+
 
         if ($request->has('id') && $request->id != null){
             $order = Order::find($request->id);

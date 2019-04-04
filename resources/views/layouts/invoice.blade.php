@@ -57,7 +57,7 @@
     <div class="pt-3 pb-3">
         <div class="row p-3">
             <div class="col-sm-6">
-                <img src="{{asset('images/logo2.png')}}" width="150px" alt="">
+                <img src="{{public_path('images/logo2.png')}}" width="150px" alt="">
             </div>
             <div class="col-sm-6r text-right">
                 <h1>INVOICE</h1>

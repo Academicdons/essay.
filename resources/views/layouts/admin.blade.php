@@ -9,6 +9,14 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
+
+
+    <meta name="description" content="HomeWorkPro Writers is taking writing to the next level">
+    <meta name="keywords" content="Writers,Writing,Clients,Order,Clients">
+    <meta name="author" content="Neverest ltd">
+
+    <link rel="icon" type="image/png" href="{{asset('images/logo2.png')}}" />
+
     <link rel="stylesheet" href="{{asset('bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{asset('bower_components/font-awesome/css/font-awesome.min.css')}}">
@@ -19,7 +27,6 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{asset('dist/css/skins/_all-skins.min.css')}}">
-    <link rel="icon" type="image/png" href="images/logo2.png" />
     <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
 
 

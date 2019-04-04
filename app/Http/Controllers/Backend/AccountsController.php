@@ -112,7 +112,6 @@ class AccountsController extends Controller
         $orders->groupBy(['orders.id']);
         $result = $orders->get();
 
-        return json_encode($result);
         $pdf = PDF::loadView('layouts.invoice', ['orders'=>$result,'user'=>$user,'date'=>Carbon::now()]);
         return $pdf->download('invoice.pdf');
     }

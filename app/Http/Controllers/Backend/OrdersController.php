@@ -14,6 +14,7 @@ use App\Models\Bid;
 use App\Models\Conversation;
 use App\Models\Discipline;
 use App\Models\EducationLevel;
+use App\Models\Group;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\OrderReview;
@@ -130,6 +131,9 @@ class OrdersController extends Controller
         $bid_expiry->setTimezone('UTC');
 
 
+        $discipline = Discipline::find(request('discipline'));
+        $base_salary = Group::find($discipline->group_id)->writer_price;
+
 
         $order->notes = $request->notes;
         $order->spacing = $request->spacing;
@@ -140,7 +144,7 @@ class OrdersController extends Controller
         $order->no_pages = $request->no_pages;
         $order->no_words = $request->no_words;
         $order->amount = $request->cpp*$request->no_pages;
-        $order->salary = $request->spp*$request->no_pages;
+        $order->salary = $base_salary*$request->no_pages;
         $order->order_assign_type = $request->order_assign_type;
 
 

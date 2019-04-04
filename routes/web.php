@@ -122,6 +122,12 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
 
 
     });
+
+    Route::group(['as'=>'payments.','prefix'=>'payments'],function (){
+        Route::get('/info', 'PaymentsController@info')->name('info');
+        Route::post('/store', 'PaymentsController@store')->name('store');
+    });
+
     //announcement routes
     Route::get('check_announcements','AnnouncementController@getAnnouncementsJson')->name('check_announcements');
     Route::get('change_announcement','AnnouncementController@toggleAnnouncement')->name('change_announcement');
@@ -163,6 +169,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
 
     Route::group(['prefix' => 'accounts', 'as' => 'accounts.'], function () {
         Route::get('/', 'AccountsController@index')->name('all');
+        Route::get('/users', 'AccountsController@users')->name('users');
+        Route::get('/invoice/{user}', 'AccountsController@invoice')->name('invoice');
         Route::get('/data', 'AccountsController@getData')->name('data');
         Route::post('/pay_orders', 'AccountsController@payOrder')->name('pay_orders');
 

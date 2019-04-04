@@ -130,7 +130,7 @@
                     <td>{{str_limit($order->title)}}</td>
                     <td>{{$order->salary}}</td>
                     <td>{{$order->bargains_sum}}</td>
-                    <td>{{$order->amount}}</td>
+                    <td>{{$order->total}}</td>
                 </tr>
                     @php($total+=$order->total)
                 @endforeach

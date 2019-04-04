@@ -82,8 +82,8 @@ class AccountsController extends Controller
         $orders = Order::join('assignments', 'orders.active_assignment', '=', 'assignments.id');
         $orders->join('users', 'assignments.user_id', '=', 'users.id');
         $orders->leftJoin('bargains', 'bargains.order_id', '=', 'orders.id');
-//        $orders->doesntHave('payment');
-//        $orders->where('orders.status',4);
+        $orders->doesntHave('payment');
+        $orders->where('orders.status',4);
         $orders->select(['orders.id','bargains.order_id','users.id as user_id','users.email','orders.order_no','orders.salary','users.name',DB::raw('SUM(bargains.amount) As bargains_sum, (SUM(bargains.amount)+orders.salary) as total')]);
         $orders->groupBy(['orders.id']);
         $result = $orders->get();
@@ -105,8 +105,8 @@ class AccountsController extends Controller
         $orders = Order::join('assignments', 'orders.active_assignment', '=', 'assignments.id');
         $orders->join('users', 'assignments.user_id', '=', 'users.id');
         $orders->leftJoin('bargains', 'bargains.order_id', '=', 'orders.id');
-//        $orders->doesntHave('payment');
-//        $orders->where('orders.status',4);
+        $orders->doesntHave('payment');
+        $orders->where('orders.status',4);
         $orders->where('assignments.user_id',$user->id);
         $orders->select(['orders.id','orders.order_no','orders.title','bargains.order_id','users.id as user_id','users.email','orders.order_no','orders.salary','users.name',DB::raw('SUM(bargains.amount) As bargains_sum, (SUM(bargains.amount)+orders.salary) as total')]);
         $orders->groupBy(['orders.id']);

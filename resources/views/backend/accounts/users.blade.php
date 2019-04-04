@@ -46,7 +46,7 @@
                                 <td>{{$account['bargains']}}</td>
                                 <td>{{$account['amount']}}</td>
                                 <td>
-                                    <a href="{{route('admin.accounts.invoice',$account['user_id'])}}" class="btn btn-warning"><i class="fa fa-cloud-download"></i>invoice</a>
+                                    <a href="{{route('admin.accounts.invoice',$account['user_id'])}}" class="btn btn-sm btn-warning"><i class="fa fa-cloud-download"></i>invoice</a>
                                 </td>
                             </tr>
                             @endforeach

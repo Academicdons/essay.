@@ -84,7 +84,7 @@ class AccountsController extends Controller
         $orders->leftJoin('bargains', 'bargains.order_id', '=', 'orders.id');
         $orders->doesntHave('payment');
         $orders->where('orders.status',4);
-        $orders->select(['orders.id','bargains.order_id','users.id as user_id','users.email','orders.order_no','orders.salary','users.name',DB::raw('SUM(bargains.amount) As bargains_sum, (IFNULL(SUM(bargains.amount,0))+orders.salary) as total')]);
+        $orders->select(['orders.id','bargains.order_id','users.id as user_id','users.email','orders.order_no','orders.salary','users.name',DB::raw('SUM(bargains.amount) As bargains_sum, (IFNULL(SUM(bargains.amount),0)+orders.salary) as total')]);
         $orders->groupBy(['orders.id']);
         $result = $orders->get();
 

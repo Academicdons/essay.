@@ -3,10 +3,13 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+
+        <meta name="author" content="Neverest ltd">
         <meta name="generator" content="Jekyll v3.8.5">
         <title>Homework pro writers</title>
+        <meta name="description" content="HomeWorkPro Writers is taking writing to the next level">
+        <meta name="keywords" content="Writers,Writing,Clients,Order,Clients">
+        <link rel="icon" type="image/png" href="{{asset('images/logo2.png')}}" />
 
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700" rel="stylesheet">
@@ -15,7 +18,6 @@
         <link rel="stylesheet" href="{{asset('bs4/dist/css/bootstrap.css')}}">
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
         <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-        <link rel="icon" type="image/png" href="images/logo2.png" />
 
         <style type="text/css">
 

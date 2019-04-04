@@ -188,7 +188,19 @@
                     </ul>
                 </li>
 
-                <li class="active"><a href="{{ route('admin.accounts.all') }}"><i class="fa fa-money"></i>Accounts</a></li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-money"></i> <span>Accounts</span>
+                        <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                    </a>
+                    <ul class="treeview-menu" style="">
+                        <li class="active"><a href="{{route('admin.accounts.users')}}"><i class="fa fa-user"></i>Users accounts</a></li>
+                        <li class="active"><a href="{{ route('admin.accounts.all') }}"><i class="fa fa-line-chart"></i>Orders</a></li>
+                    </ul>
+                </li>
+
 
             </ul>
         </section>

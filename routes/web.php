@@ -169,6 +169,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
 
     Route::group(['prefix' => 'accounts', 'as' => 'accounts.'], function () {
         Route::get('/', 'AccountsController@index')->name('all');
+        Route::get('/users', 'AccountsController@users')->name('users');
+        Route::get('/invoice/{user}', 'AccountsController@invoice')->name('invoice');
         Route::get('/data', 'AccountsController@getData')->name('data');
         Route::post('/pay_orders', 'AccountsController@payOrder')->name('pay_orders');
 

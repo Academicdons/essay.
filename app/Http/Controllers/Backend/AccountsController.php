@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Backend;
 
 use App\Models\Order;
 use App\Models\PaymentTransaction;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 use Webpatser\Uuid\Uuid;
+use PDF;
 
 class AccountsController extends Controller
 {
@@ -70,5 +73,46 @@ class AccountsController extends Controller
 
         return response()->json($payment);
 
+    }
+
+
+    public function users()
+    {
+
+        $orders = Order::join('assignments', 'orders.active_assignment', '=', 'assignments.id');
+        $orders->join('users', 'assignments.user_id', '=', 'users.id');
+        $orders->leftJoin('bargains', 'bargains.order_id', '=', 'orders.id');
+//        $orders->doesntHave('payment');
+//        $orders->where('orders.status',4);
+        $orders->select(['orders.id','bargains.order_id','users.id as user_id','users.email','orders.order_no','orders.salary','users.name',DB::raw('SUM(bargains.amount) As bargains_sum, (SUM(bargains.amount)+orders.salary) as total')]);
+        $orders->groupBy(['orders.id']);
+        $result = $orders->get();
+
+        /*
+         * Group the accounts after lessening the DBMS work
+         */
+        $grouped = $result->groupBy('user_id')->map(function ($row) {
+            $first=$row->first();
+            return ['user_id'=>$first->user_id,'username'=>$first->name,'email'=>$first->email,'bargains'=>$row->sum('bargains_sum'),'salary'=>$row->sum('salary'),'amount'=>$row->sum('total')];
+        });;
+
+
+        return View::make('backend.accounts.users')->withAccounts($grouped);
+    }
+
+    public function invoice(User $user)
+    {
+        $orders = Order::join('assignments', 'orders.active_assignment', '=', 'assignments.id');
+        $orders->join('users', 'assignments.user_id', '=', 'users.id');
+        $orders->leftJoin('bargains', 'bargains.order_id', '=', 'orders.id');
+//        $orders->doesntHave('payment');
+//        $orders->where('orders.status',4);
+        $orders->where('assignments.user_id',$user->id);
+        $orders->select(['orders.id','orders.order_no','orders.title','bargains.order_id','users.id as user_id','users.email','orders.order_no','orders.salary','users.name',DB::raw('SUM(bargains.amount) As bargains_sum, (SUM(bargains.amount)+orders.salary) as total')]);
+        $orders->groupBy(['orders.id']);
+        $result = $orders->get();
+
+        $pdf = PDF::loadView('layouts.invoice', ['orders'=>$result,'user'=>$user,'date'=>Carbon::now()]);
+        return $pdf->download('invoice.pdf');
     }
 }

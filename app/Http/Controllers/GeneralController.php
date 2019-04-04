@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Webpatser\Uuid\Uuid;
 use GuzzleHttp\Client;
+use PDF;
 
 class GeneralController extends Controller
 {
@@ -59,15 +60,21 @@ class GeneralController extends Controller
     public function paypalTest()
     {
 
-        $thunder=new Thunderpush();
-        $response = $thunder->notifyChannel("some chanel",$event = ["event"=>"order_file",
-            "data"=>null
-        ]);
-        print_r($response);
-
-//        dispatch(new ThunderPushAsync("some chanel",$event = ["event"=>"order_file",
+//        $thunder=new Thunderpush();
+//        $response = $thunder->notifyChannel("some chanel",$event = ["event"=>"order_file",
 //            "data"=>null
-//        ]));
+//        ]);
+//        print_r($response);
+//
+////        dispatch(new ThunderPushAsync("some chanel",$event = ["event"=>"order_file",
+////            "data"=>null
+////        ]));
+///
+///
+///
+
+        $pdf = PDF::loadView('layouts.invoice', []);
+        return $pdf->download('invoice.pdf');
 
 
     }

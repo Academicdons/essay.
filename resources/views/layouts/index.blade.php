@@ -8,7 +8,7 @@
         <meta name="generator" content="Jekyll v3.8.5">
         <title>Homework pro writers</title>
         <meta name="description" content="HomeWorkPro Writers is taking writing to the next level">
-        <meta name="keywords" content="Writers,Writing,Clients,Order,Clients">
+        <meta name="keywords" content="Writers,Writing,Clients,Order,Clients,HomeworkPro Writers,Homework writers, HomeworkPro">
         <link rel="icon" type="image/png" href="{{asset('images/logo2.png')}}" />
 
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">

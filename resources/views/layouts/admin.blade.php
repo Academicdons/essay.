@@ -12,7 +12,7 @@
 
 
     <meta name="description" content="HomeWorkPro Writers is taking writing to the next level">
-    <meta name="keywords" content="Writers,Writing,Clients,Order,Clients">
+    <meta name="keywords" content="Writers,Writing,Clients,Order,Clients,HomeworkPro Writers,Homework writers, HomeworkPro">
     <meta name="author" content="Neverest ltd">
 
     <link rel="icon" type="image/png" href="{{asset('images/logo2.png')}}" />

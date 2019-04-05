@@ -106,8 +106,8 @@ class OrdersController extends Controller
 
         $this->validate($request,[
             'title'=>'required',
-            'no_of_pages'=>'required',
-            'no_of_words'=>'required',
+            'no_pages'=>'required',
+            'no_words'=>'required',
             'paper_type'=>'required',
             'discipline'=>'required',
             'education_level'=>'required',

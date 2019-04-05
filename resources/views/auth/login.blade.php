@@ -38,6 +38,11 @@
 
 
                 </div>
+                    
+                    @else
+                    <div class="col-md-6">
+                        <img src="{{asset('images/get-paid.png')}}" alt="" class="img-fluid">
+                    </div>
 
 
                 @endif

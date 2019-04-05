@@ -120,7 +120,7 @@ class OrdersController extends Controller
         $bid_expiry->setTimezone('UTC');
 
 
-        $discipline = Discipline::find(request('discipline'));
+        $discipline = Discipline::find($request->discipline);
         $base_salary = Group::find($discipline->group_id)->writer_price;
 
 

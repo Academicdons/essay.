@@ -28,6 +28,7 @@
                     </div>
                 </div>
                 <div class="box-body">
+
                     <form role="form" method="post" action="{{ route('admin.orders.store') }}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" value="{{old('id')}}">

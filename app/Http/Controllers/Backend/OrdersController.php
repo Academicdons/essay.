@@ -21,6 +21,7 @@ use App\Models\OrderReview;
 use App\Models\PaperType;
 use App\Models\PaypalTransaction;
 use App\Notifications\ChatNotification;
+use App\Notifications\OrderAssignment;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -90,8 +91,7 @@ class OrdersController extends Controller
 
         $message='Order '.$order->order_no.  ' has been assigned to you. Please log in to your account as soon as possible. Regards Admin';
         $user = User::find(request('par2'));
-        $email = new OrderAssignmentMail($user,$message);
-        $this->dispatch(new SendSystemEmail($user->email,$email));
+        $user->notify(new OrderAssignment($message));
 
         //send sms and dispatch it
         //Log::warning((new \App\Plugins\AfricasTalking)->safeSend($user->phone_number,$message));
@@ -364,8 +364,7 @@ class OrdersController extends Controller
 
         $message='Order '.$order->order_no.  ' has been assigned to you. Please log in to your account as soon as possible. Regards Admin';
         $user = User::find($user_id);
-        $email = new OrderAssignmentMail($user,$message);
-        $this->dispatch(new SendSystemEmail($user->email,$email));
+        $user->notify(new OrderAssignment($message));
 
         return \redirect()->back();
     }

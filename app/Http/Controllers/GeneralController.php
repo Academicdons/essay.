@@ -8,6 +8,7 @@ use App\Models\Blog;
 use App\Models\EducationLevel;
 use App\Models\Group;
 use App\Models\Order;
+use App\Plugins\AfricasTalking;
 use App\Plugins\Thunderpush;
 use Dilab\Network\SimpleRequest;
 use Dilab\Network\SimpleResponse;
@@ -73,8 +74,11 @@ class GeneralController extends Controller
 ///
 ///
 
-        $pdf = PDF::loadView('layouts.invoice', []);
-        return $pdf->download('invoice.pdf');
+//        $pdf = PDF::loadView('layouts.invoice', []);
+//        return $pdf->download('invoice.pdf');
+
+        $test = new AfricasTalking();
+        $test->safeSend("0718942538","hello there");
 
 
     }

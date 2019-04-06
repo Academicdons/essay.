@@ -15,14 +15,17 @@ use App\Models\OrderReview;
 use App\Models\PaperType;
 use App\Models\PaypalTransaction;
 use App\Models\Revision;
+use App\Notifications\ChatNotification;
 use App\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use PayPal\Exception\PayPalConnectionException;
@@ -277,15 +280,29 @@ class OrdersController extends Controller
         $msg = $request->all();
         $msg['user_id'] = Auth::id();
         $msg['id'] = Uuid::generate()->string;
-        Message::create($msg);
+        $message = Message::create($msg);
 
+        /*
+         * Dispatch a thunderpush event for all people listening
+         */
         dispatch(new ThunderPushAsync($msg['conversation_id'],$event = ["event"=>"conversation",
             "data"=>null
         ]));
 
-        return \response()->json([
+        /*
+         * Dispatch a notification -To email, database and onesignal for emphasis.
+         * 1. query all unique user ids in messages in this conversation
+         * 2. Notify the participants                                                                                                                                                                                                                    ```notify them
+         */
+
+        $user_ids = Message::select('user_id')->where('conversation_id',$msg['conversation_id'])->distinct('user_id')->get()->toArray();
+        $conversation_users = User::whereIn('id',Arr::pluck($user_ids,'user_id'))->get();
+        Notification::send($conversation_users, new ChatNotification($message));
+
+        return response()->json([
             'success'=>true
         ]);
+
     }
 
     public function revision(Order $order,Request $request)

@@ -58,7 +58,7 @@ Route::group(['middleware'=>['auth','account_status']],function (){
     Route::post('update_picture','HomeController@updatePicture')->name('update_picture');
 });
 
-Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.','middleware'=>['auth','client'],function(){
+Route::group(['namespace'=>'Customer','prefix'=>'customer','as'=>'customer.','middleware'=>['auth','client']],function(){
 
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
         Route::get('messages/{order}','OrdersController@messages')->name('messages');

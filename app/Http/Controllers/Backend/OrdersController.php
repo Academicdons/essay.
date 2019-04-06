@@ -137,7 +137,7 @@ class OrdersController extends Controller
 
         $order->notes = $request->notes;
         $order->spacing = $request->spacing;
-        $order->spacing = $request->no_of_sources;
+        $order->no_of_sources = $request->no_of_sources;
         $order->cpp = $request->cpp;
         $order->title = $request->title;
         $order->order_no = mt_rand(100000, 999999);

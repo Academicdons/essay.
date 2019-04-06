@@ -220,7 +220,7 @@
                                             <div class="input-group-prepend">
                                                 <span onclick="updateSources(1)" class="input-group-text" id="basic-addon1">+</span>
                                             </div>
-                                            <input type="number" onchange="evaluateCost()" id="number_of_sources" name="number_of_sources" value="0" class="form-control academic-input flat" style="text-align: center" placeholder="0" aria-label="Username" aria-describedby="basic-addon1">
+                                            <input type="number" onchange="evaluateCost()" id="number_of_sources" name="no_of_sources" value="0" class="form-control academic-input flat" style="text-align: center" placeholder="0" aria-label="Username" aria-describedby="basic-addon1">
                                             <div class="input-group-append">
                                                 <span onclick="updateSources(-1)" class="input-group-text" id="basic-addon1">-</span>
                                             </div>

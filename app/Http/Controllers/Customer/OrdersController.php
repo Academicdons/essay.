@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Jobs\ThunderPushAsync;
+use App\Models\Assignment;
 use App\Models\Attachment;
 use App\Models\Conversation;
 use App\Models\Discipline;
@@ -16,6 +17,8 @@ use App\Models\PaperType;
 use App\Models\PaypalTransaction;
 use App\Models\Revision;
 use App\Notifications\ChatNotification;
+use App\Notifications\DisputedNotification;
+use App\Notifications\RevisedNotification;
 use App\User;
 use Carbon\Carbon;
 use Exception;
@@ -320,6 +323,13 @@ class OrdersController extends Controller
         $data['order_id']=$order->id;
         Revision::create($data);
 
+        //get the active assignment for the order
+        $active_assignment=$order->currentAssignment;
+        if ($active_assignment!=null){
+            $user=User::find($active_assignment->user_id);
+            $user->notify(new RevisedNotification('The order '. $order->order_no.' has been marked under revision, please log in to get more information'));
+        }
+
         $order->status=2;
         $order->save();
 
@@ -399,6 +409,12 @@ class OrdersController extends Controller
         $order->status=5;
         $order->save();
 
+        //get the active assignment for the order
+        $active_assignment=$order->currentAssignment;
+        if ($active_assignment!=null){
+            $user=User::find($active_assignment->user_id);
+            $user->notify(new DisputedNotification('The order '. $order->order_no.' has been disputed with the following reason: '. $request->dispute_reason));
+        }
 
         return response()->json([
             'dispute'=>$dispute
@@ -420,7 +436,12 @@ class OrdersController extends Controller
         $order->status=3;
         $order->save();
 
-        //TODO determine if an email should be sent to the writer to inform them whether the order is marked as complete form revision
+        //get the active assignment for the order
+        $active_assignment=$order->currentAssignment;
+        if ($active_assignment!=null){
+            $user=User::find($active_assignment->user_id);
+            $user->notify(new RevisedNotification('The order '. $order->order_no.' has now been marked as complete from revision'));
+        }
 
         return redirect()->back();
     }

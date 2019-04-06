@@ -266,6 +266,14 @@ class OrdersController extends Controller
     {
 
         $conversation = Conversation::firstOrCreate(['user_id' => $order->created_by,'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $order->created_by,'order_id'=>$order->id]);
+
+        if($conversation->messages()->count()<=0){
+            $msg = ['id'=>Uuid::generate(),'conversation_id'=>$conversation->id,'message'=>'Hello there, start a conversation about this order here'];
+            $msg['user_id'] = config('app.admin');
+            $msg['id'] = Uuid::generate()->string;
+            Message::create($msg);
+        }
+
         return \response()->json([
             'conversation'=>$conversation,
             'messages'=>$conversation->messages()->orderBy('created_at','asc')->with('user')->get(),

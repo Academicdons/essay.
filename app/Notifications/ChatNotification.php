@@ -57,7 +57,14 @@ class ChatNotification extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            //
+            'text'=>$this->message->message
+        ];
+    }
+
+    public function toDatabase($notifiable){
+
+        return [
+            'text'=>$this->message->message
         ];
     }
 

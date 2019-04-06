@@ -153,7 +153,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
     Route::get('/discipline/index', 'DashboardController@discipline')->name('discipline');
     Route::get('/education_level/index', 'DashboardController@educationLevel')->name('education_level');
     Route::get('/paper_type/index', 'DashboardController@paperType')->name('paper_type');
-
+    Route::get('mark_all_notification_As_read','DashboardController@markNotAsRead')->name('mark_all_notification_As_read');
 
     Route::group(['prefix' => 'general', 'as' => 'general.'], function () {
         Route::get('/suggest_writer', 'GeneralController@suggestWriters')->name('suggest_writer');

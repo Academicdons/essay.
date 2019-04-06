@@ -29,6 +29,9 @@
     <link rel="stylesheet" href="{{asset('dist/css/skins/_all-skins.min.css')}}">
     <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
 
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
 
 @yield('style')
 
@@ -63,7 +66,9 @@
             <div class="navbar-custom-menu">
 
                 <ul class="nav navbar-nav">
+                    <li class="">
 
+                    </li>
                     <li class="dropdown notifications-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-bell-o"></i>
@@ -95,9 +100,7 @@
 
 
 
-                    <li>
 
-                    </li>
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             {{--<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">--}}
@@ -159,6 +162,8 @@
                     <p>{{ \Illuminate\Support\Facades\Auth::user()->name }}</p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
+
+
             </div>
             <!-- search form -->
             <form action="#" method="get" class="sidebar-form">
@@ -170,9 +175,14 @@
               </span>
                 </div>
             </form>
+
+
+
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
+
+
                 <li class="header">MAIN NAVIGATION</li>
                 <li class="active"><a href="{{ route('admin.index') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
                 <li class="treeview">

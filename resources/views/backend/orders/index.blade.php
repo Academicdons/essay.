@@ -6,6 +6,13 @@
             Orders
             <small>Control panel</small>
         </h1>
+        <div>
+            <div id="console-event">Auto Assign Jobs</div>
+
+            <input id="toggle-event" type="checkbox" data-toggle="toggle">
+
+        </div>
+
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">Orders</li>
@@ -179,4 +186,19 @@
 
     </script>
 
+    <script>
+        $(function() {
+            $('#toggle-event').change(function() {
+                if ($(this).prop('checked')==true){
+                    //true
+                    $('#console-event').html('Auto Assign is ON')
+
+                } else{
+                    //false
+                    $('#console-event').html('Auto Assign is OFF' )
+
+                }
+            })
+        })
+    </script>
     @endsection

@@ -103,5 +103,6 @@
     <orderEntry type="library" name="sweetalert" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="wysihtml5" level="application" />
+    <orderEntry type="library" name="bootstrap-toggle" level="application" />
   </component>
 </module>

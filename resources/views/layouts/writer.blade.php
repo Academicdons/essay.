@@ -202,6 +202,7 @@
 <script src="{{asset('js/sock.min.js')}}"></script>
 <script src="{{asset('js/thunder.js')}}"></script>
 
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 <script>
   var OneSignal = window.OneSignal || [];
   OneSignal.push(function() {

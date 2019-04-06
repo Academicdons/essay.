@@ -7,6 +7,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -94,5 +95,12 @@ class DashboardController extends Controller
         }
 
         return json_encode($data);
+    }
+
+    public function markNotAsRead()
+    {
+        Auth::user()->unreadNotifications()->update(['read_at' => now()]);
+
+        return redirect()->back();
     }
 }

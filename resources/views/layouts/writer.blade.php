@@ -202,6 +202,24 @@
 <script src="{{asset('js/sock.min.js')}}"></script>
 <script src="{{asset('js/thunder.js')}}"></script>
 
+<script>
+  var OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: "e0f5df37-237c-4801-93b8-c1ac464031f9",
+    });
+  });
+
+  OneSignal.push(function() {
+    OneSignal.sendTags({
+      user_id: '{{Auth::id()}}'
+    }).then(function(tagsSent) {
+      // Callback called when tags have finished sending
+      console.log(tagsSent);
+    });
+  });
+</script>
+
 
 @yield('script')
 {{--handle the announcements here--}}

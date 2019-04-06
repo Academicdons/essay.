@@ -403,6 +403,31 @@
         }
     </script>
 
+    @if(Auth::check())
+        <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+        <script>
+            var OneSignal = window.OneSignal || [];
+            OneSignal.push(function() {
+                OneSignal.init({
+                    appId: "9503cc91-2855-4e51-9ce8-f38a026069ec",
+                    notifyButton: {
+                        enable: true,
+                    },
+                });
+            });
+
+            OneSignal.push(function() {
+                OneSignal.sendTags({
+                    user_id: '{{Auth::id()}}'
+                }).then(function(tagsSent) {
+                    // Callback called when tags have finished sending
+                    console.log(tagsSent);
+                });
+            });
+
+        </script>
+        @endif
+
 
     @yield('script')
 

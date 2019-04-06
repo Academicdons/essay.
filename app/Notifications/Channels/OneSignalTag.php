@@ -19,7 +19,11 @@ class OneSignalTag
     public function send($notifiable, Notification $notification)
     {
         $data = $notification->toOneSignalTag($notifiable);
-        Log::info(OneSignalHelper::sendMessage($data['tags'],$data['title'],$data['message'],$data['data']));
+        if($notifiable->user_type == 2){
+            Log::info(OneSignalHelper::sendClientMessage($data['tags'],$data['title'],$data['message'],$data['data']));
+        }else{
+            Log::info(OneSignalHelper::sendMessage($data['tags'],$data['title'],$data['message'],$data['data']));
+        }
     }
 
 }

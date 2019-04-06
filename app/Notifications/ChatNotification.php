@@ -45,7 +45,7 @@ class ChatNotification extends Notification implements ShouldQueue
     {
         return (new MailMessage)
 
-                    ->line($notifiable->name . ' says: /n' . $this->message->message);
+                    ->line('Homework pro says: /n' . $this->message->message);
     }
 
     /**

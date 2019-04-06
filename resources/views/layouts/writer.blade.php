@@ -69,6 +69,35 @@
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
+            <li class="dropdown notifications-menu">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-bell-o"></i>
+                <span class="label label-warning">{{count(\Illuminate\Support\Facades\Auth::user()->unreadNotifications)}}</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="header">You have {{count(\Illuminate\Support\Facades\Auth::user()->unreadNotifications)}} notifications</li>
+                <li>
+                  <!-- inner menu: contains the actual data -->
+                  <ul class="menu">
+
+                    @foreach(\Illuminate\Support\Facades\Auth::user()->unreadNotifications as $notification)
+                      <li>
+                        <a href="#">
+                          <i class="fa fa-users text-aqua"></i>{{$notification->data['text']}}
+                        </a>
+                      </li>
+
+                    @endforeach
+
+                    @if(count(\Illuminate\Support\Facades\Auth::user()->unreadNotifications)>0)
+                      <li class="footer"><a href="{{route('admin.mark_all_notification_As_read')}}">Mark All as Read</a></li>
+                    @endif
+                  </ul>
+                </li>
+
+              </ul>
+            </li>
+
             <li class="dropdown user user-menu">
               <!-- Menu Toggle Button -->
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">

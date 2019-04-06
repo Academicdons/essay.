@@ -10,14 +10,17 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\OrderReview;
+use App\Notifications\ChatNotification;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\MessageBag;
 use Webpatser\Uuid\Uuid;
@@ -68,6 +71,14 @@ class OrdersController extends Controller
     {
         $conversation = Conversation::firstOrCreate(['user_id' => Auth::id(),'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => Auth::id(),'order_id'=>$order->id]);
 
+        if($conversation->messages()->count()<=0){
+            $msg = ['id'=>Uuid::generate(),'conversation_id'=>$conversation->id,'message'=>'Hello there, start a conversation about this order here'];
+            $msg['user_id'] = config('app.admin');
+            $msg['id'] = Uuid::generate()->string;
+            Message::create($msg);
+        }
+
+
         return response()->json([
             'conversation'=>$conversation,
             'messages'=>$conversation->messages()->with('user')->get(),
@@ -80,7 +91,11 @@ class OrdersController extends Controller
         $msg = $request->all();
         $msg['user_id'] = Auth::id();
         $msg['id'] = Uuid::generate()->string;
-        Message::create($msg);
+        $message = Message::create($msg);
+
+        $user_ids = Message::select('user_id')->where('conversation_id',$msg['conversation_id'])->distinct('user_id')->get()->toArray();
+        $conversation_users = User::whereIn('id',Arr::pluck($user_ids,'user_id'))->get();
+        Notification::send($conversation_users, new ChatNotification($message));
 
         return \response()->json([
             'success'=>true
@@ -100,8 +115,6 @@ class OrdersController extends Controller
                 $filename=time() . '.' . $image->getClientOriginalExtension();
                 $path = public_path('uploads/files/order_files/');
                 if(!File::exists($path)) {File::makeDirectory($path, $mode = 0777, true, true);}
-
-
 
                 $image->move($path,$filename);
 

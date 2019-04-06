@@ -20,13 +20,16 @@ use App\Models\Order;
 use App\Models\OrderReview;
 use App\Models\PaperType;
 use App\Models\PaypalTransaction;
+use App\Notifications\ChatNotification;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\View;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Support\Facades\Validator;
@@ -222,6 +225,15 @@ class OrdersController extends Controller
                     ]);
                 }
                 $conversation = Conversation::firstOrCreate(['user_id' => $assignment->user_id,'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $assignment->user_id,'order_id'=>$order->id]);
+
+                if($conversation->messages()->count()<=0){
+                    $msg = ['id'=>Uuid::generate(),'conversation_id'=>$conversation->id,'message'=>'Admin started a conversation about this order'];
+                    $msg['user_id'] = $assignment->user_id;
+                    $msg['id'] = Uuid::generate()->string;
+                    Message::create($msg);
+                }
+
+
                 return \response()->json([
                     'conversation'=>$conversation,
                     'messages'=>$conversation->messages()->orderBy('created_at','asc')->with('user')->get(),
@@ -237,6 +249,14 @@ class OrdersController extends Controller
                  */
 
                 $conversation = Conversation::firstOrCreate(['user_id' => $order->created_by,'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $order->created_by,'order_id'=>$order->id]);
+
+                if($conversation->messages()->count()<=0){
+                    $msg = ['id'=>Uuid::generate(),'conversation_id'=>$conversation->id,'message'=>'Admin started a conversation about this order'];
+                    $msg['user_id'] = $order->created_by;
+                    $msg['id'] = Uuid::generate()->string;
+                    Message::create($msg);
+                }
+
                 return \response()->json([
                     'conversation'=>$conversation,
                     'messages'=>$conversation->messages()->orderBy('created_at','asc')->with('user')->get(),
@@ -248,6 +268,14 @@ class OrdersController extends Controller
         }else if($request->has('user')){
 
             $conversation = Conversation::firstOrCreate(['user_id' => $request->input('user'),'order_id'=>$order->id], ['id'=>Uuid::generate()->string,'user_id' => $request->input('user'),'order_id'=>$order->id]);
+
+            if($conversation->messages()->count()<=0){
+                $msg = ['id'=>Uuid::generate(),'conversation_id'=>$conversation->id,'message'=>'Admin started a conversation about this order'];
+                $msg['user_id'] = $request->input('user');
+                $msg['id'] = Uuid::generate()->string;
+                Message::create($msg);
+            }
+
             return \response()->json([
                 'conversation'=>$conversation,
                 'messages'=>$conversation->messages()->orderBy('created_at','asc')->with('user')->get(),
@@ -267,20 +295,21 @@ class OrdersController extends Controller
         $msg = $request->all();
         $msg['user_id'] = Auth::id();
         $msg['id'] = Uuid::generate()->string;
-        Message::create($msg);
+        $message = Message::create($msg);
 
         dispatch(new ThunderPushAsync($msg['conversation_id'],$event = ["event"=>"conversation",
             "data"=>null
         ]));
 
-        $message = $msg['message'];
-        $user = User::find($msg['user_id']);
-        $email = new MessageMail($user,$message);
-        $this->dispatch(new SendSystemEmail($user->email,$email));
+        $user_ids = Message::select('user_id')->where('conversation_id',$msg['conversation_id'])->distinct('user_id')->get()->toArray();
+        $conversation_users = User::whereIn('id',Arr::pluck($user_ids,'user_id'))->get();
+        Notification::send($conversation_users, new ChatNotification($message));
 
-        return \response()->json([
+        return response()->json([
             'success'=>true
         ]);
+
+
 
     }
 

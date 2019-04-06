@@ -70,7 +70,7 @@
                             <span class="label label-warning">{{count(\Illuminate\Support\Facades\Auth::user()->unreadNotifications)}}</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have {{count(\Illuminate\Support\Facades\Auth::user()->unreadNotifications)}} notifications</li>
+                            <li class="header">You have {{Auth::user()->unreadNotifications->count()}} notifications</li>
                             <li>
                                 <!-- inner menu: contains the actual data -->
                                 <ul class="menu">
@@ -78,7 +78,7 @@
                                     @foreach(\Illuminate\Support\Facades\Auth::user()->unreadNotifications as $notification)
                                     <li>
                                         <a href="#">
-                                            <i class="fa fa-users text-aqua"></i>{{$notification->data}}
+                                            <i class="fa fa-users text-aqua"></i>{{json_encode($notification->data)}}
                                         </a>
                                     </li>
 

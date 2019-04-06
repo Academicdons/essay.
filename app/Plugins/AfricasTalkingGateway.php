@@ -56,7 +56,8 @@ class AfricasTalkingGateway
   
   //Messaging methods
   public function sendMessage($to_, $message_, $from_ = null, $bulkSMSMode_ = 1, Array $options_ = array())
-  {php artisan clear-compiled
+    {
+
     if ( strlen($to_) == 0 || strlen($message_) == 0 ) {
       throw new Exception('Please supply both to and message parameters');
     }

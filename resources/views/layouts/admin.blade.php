@@ -78,7 +78,7 @@
                                     @foreach(\Illuminate\Support\Facades\Auth::user()->unreadNotifications as $notification)
                                     <li>
                                         <a href="#">
-                                            <i class="fa fa-users text-aqua"></i>{{json_encode($notification->data)}}
+                                            <i class="fa fa-users text-aqua"></i>{{$notification->data['text']}}
                                         </a>
                                     </li>
 

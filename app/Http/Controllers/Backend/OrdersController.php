@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Jobs\AssignOrderMail;
 use App\Jobs\SendSystemEmail;
 use App\Jobs\ThunderPushAsync;
+use App\Jobs\WriterAssignerJob;
 use App\Mail\OrderAssignmentMail;
 use App\Mail\MessageMail;
 use App\Mail\WriterEssayTest;
@@ -534,5 +535,15 @@ class OrdersController extends Controller
         ]);
     }
 
+    public function toggleAutoAssign($status)
+    {
+        if ($status==1){
+            //init the job
+
+            $this->dispatch(new WriterAssignerJob());
+        }else{
+            //stop the job
+        }
+    }
 }
 

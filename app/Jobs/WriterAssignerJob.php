@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Webpatser\Uuid\Uuid;
 
 class WriterAssignerJob implements ShouldQueue
 {
@@ -33,16 +34,17 @@ class WriterAssignerJob implements ShouldQueue
      */
     public function handle()
     {
-        $allWriters=User::where('user_type',1)->where('status',true)->orderBy('ratings','DESC')->withCount('')->get();
+        $allWriters=User::where('user_type',1)->where('account_status',true)->orderBy('ratings','DESC')->withCount('')->get();
 
         //loop through the users determining the ones with orders less than 3
         foreach ($allWriters as $writer){
             $writerActiveOrders=Assignment::where('user_id',$writer->id)->where('status',1)->get();
             if (count($writerActiveOrders)<3){
                 //get one order and assign the user
-                $unAssignedOrders=Order::where('status',0)->where('bid_deadline','<',Carbon::now()->toDateTimeString())->first();
+                $unAssignedOrders=Order::where('status',0)->where('bid_expiry','<',Carbon::now()->toDateTimeString())->first();
 
                 $assignment=new Assignment();
+                $assignment->id=Uuid::generate()->string;
                 $assignment->order_id=$unAssignedOrders->id;
                 $assignment->user_id=$writer->id;
                 $assignment->status=true;

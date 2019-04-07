@@ -152,6 +152,7 @@
 
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script type="text/javascript">
 
@@ -191,13 +192,27 @@
             $('#toggle-event').change(function() {
                 if ($(this).prop('checked')==true){
                     //true
-                    $('#console-event').html('Auto Assign is ON')
+                    $('#console-event').html('Auto Assign is ON');
+                    var url='{{url('admin/orders/toggle_auto_assign')}}'+'/'+1;
+
 
                 } else{
                     //false
-                    $('#console-event').html('Auto Assign is OFF' )
+                    $('#console-event').html('Auto Assign is OFF' );
+                    var url='{{url('admin/orders/toggle_auto_assign')}}'+'/'+0;
 
                 }
+
+                axios.get(url)
+                    .then(res=>{
+                        swal("Success!",'The auto assign has successfully been toggled', "success");
+
+                    })
+                    .catch(err=>{
+                        swal("Error!",'Something went wrong as you were toggling', "error");
+
+
+                    })
             })
         })
     </script>

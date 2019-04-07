@@ -13,6 +13,7 @@ use App\Models\Bargain;
 use App\Models\Bid;
 use App\Models\Conversation;
 use App\Models\Discipline;
+use App\Models\DisputedOrder;
 use App\Models\EducationLevel;
 use App\Models\Group;
 use App\Models\Message;
@@ -21,6 +22,7 @@ use App\Models\OrderReview;
 use App\Models\PaperType;
 use App\Models\PaypalTransaction;
 use App\Notifications\ChatNotification;
+use App\Notifications\DisputedNotification;
 use App\Notifications\OrderAssignment;
 use App\Notifications\RevisedNotification;
 use App\User;
@@ -487,5 +489,50 @@ class OrdersController extends Controller
         return redirect()->back();
 
     }
+
+
+    public function disputeOrder(Request $request)
+    {
+        $this->validate($request,[
+            'dispute_reason'=>'required',
+            'order_id'=>'required'
+        ]);
+
+        //create the dispute record
+        $dispute=new DisputedOrder();
+        $dispute->id=Uuid::generate()->string;
+        $dispute->reason=$request->dispute_reason;
+        $dispute->order_id=$request->order_id;
+        $dispute->save();
+
+        //change the status value of the order to disputed
+        $order=Order::find($request->order_id);
+        $order->status=5;
+        $order->save();
+
+        //get the active assignment for the order
+        $active_assignment=$order->currentAssignment;
+        if ($active_assignment!=null){
+            $user=User::find($active_assignment->user_id);
+            $user->notify(new DisputedNotification('The order '. $order->order_no.' has been disputed with the following reason: '. $request->dispute_reason));
+        }
+
+        return response()->json([
+            'dispute'=>$dispute
+        ]);
+    }
+
+
+
+    public function fetchDisputes($order_id)
+    {
+
+        $disputes= DisputedOrder::where('order_id',$order_id)->get();
+
+        return response()->json([
+            'disputes'=>$disputes
+        ]);
+    }
+
 }
 

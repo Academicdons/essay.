@@ -207,6 +207,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::post('/upload_file/{order}', 'OrdersController@saveFile')->name('upload_file');
         Route::get('/verify_file/{attachment}', 'OrdersController@verifyFile')->name('verify_file');
         Route::get('/mark_completed_revision/{order}', 'OrdersController@markCompletedOrder')->name('mark_completed_revision');
+        Route::post('dispute_order','OrdersController@disputeOrder')->name('dispute_order');
+        Route::get('fetch_disputes/{order_id}','OrdersController@fetchDisputes')->name('fetch_disputes');
 
 
         //send email

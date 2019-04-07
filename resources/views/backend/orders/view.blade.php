@@ -662,7 +662,8 @@
                 requestDispute:function(){
                     let order_id_id='<?php echo $order->id; ?>';
 
-                    let url = '{{route('customer.orders.dispute_order',$order->id)}}';
+                    let url = '{{route('admin.orders.dispute_order',$order->id)}}';
+{{--                    let url = '{{route('customer.orders.dispute_order',$order->id)}}';--}}
                     let me = this;
                     axios.post(url,{'dispute_reason':me.dispute_reason,'order_id':order_id_id})
                         .then(function (res) {
@@ -672,7 +673,8 @@
                         })
                 },
                 getDisputes(){
-                    let url='{{route('customer.orders.fetch_disputes',$order->id)}}';
+                    let url='{{route('admin.orders.fetch_disputes',$order->id)}}';
+{{--                    let url='{{route('customer.orders.fetch_disputes',$order->id)}}';--}}
                     let me = this
                     axios.get(url)
                         .then(function (res) {

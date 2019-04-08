@@ -242,6 +242,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
         Route::get('/list/{type}', 'UsersController@users')->name('all');
         Route::get('/create', 'UsersController@create')->name('create');
+        Route::get('/profile', 'UsersController@getProfile')->name('profile');
         Route::post('/store', 'UsersController@store')->name('store');
         Route::get('/edit/{user}', 'UsersController@editUser')->name('edit');
         Route::get('/status/{status}/{user}', 'UsersController@toggleStatus')->name('status');

@@ -22,6 +22,7 @@ use App\Models\Order;
 use App\Models\OrderReview;
 use App\Models\PaperType;
 use App\Models\PaypalTransaction;
+use App\Models\Revision;
 use App\Notifications\ChatNotification;
 use App\Notifications\DisputedNotification;
 use App\Notifications\OrderAssignment;
@@ -512,7 +513,7 @@ class OrdersController extends Controller
         $order->save();
 
         //get the active assignment for the order
-        $active_assignment=$order->currentAssignment;
+        $active_assignment=$order->currentAssignment();
         if ($active_assignment!=null){
             $user=User::find($active_assignment->user_id);
             $user->notify(new DisputedNotification('The order '. $order->order_no.' has been disputed with the following reason: '. $request->dispute_reason));
@@ -544,6 +545,32 @@ class OrdersController extends Controller
         }else{
             //stop the job
         }
+    }
+
+    public function reviseOrder(Request $request)
+    {
+
+
+        $revision=new Revision();
+        $revision->id=Uuid::generate()->string;
+        $revision->reason=$request->revise_data;
+        $revision->order_id=$request->order_id;
+        $revision->save();
+
+        //change status of th order
+        $order=Order::find($revision->order_id);
+        $order->status=2;
+        $order->save();
+
+        //notify the writer
+        //get the active assignment for the order
+        $active_assignment=$order->currentAssignment();
+        if ($active_assignment!=null){
+            $user=User::find($active_assignment->user_id);
+            $user->notify(new RevisedNotification('The order '. $order->order_no.' has to be revised'));
+        }
+
+        return \redirect()->back();
     }
 }
 

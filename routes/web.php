@@ -102,6 +102,8 @@ Route::get('/testing', function (){
 #Routes controlling writers workspace
 Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 'middleware' => ['auth','account_status']],function(){
 
+    Route::get('mark_all_notification_As_read','ProfileController@markNotAsRead')->name('mark_all_notification_As_read');
+
     #Orders routes
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
         Route::get('/available', 'OrdersController@availableOrders')->name('available');

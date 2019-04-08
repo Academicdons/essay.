@@ -90,7 +90,7 @@
                     @endforeach
 
                     @if(count(\Illuminate\Support\Facades\Auth::user()->unreadNotifications)>0)
-                      <li class="footer"><a href="{{route('admin.mark_all_notification_As_read')}}">Mark All as Read</a></li>
+                      <li class="footer"><a href="{{route('writer.mark_all_notification_As_read')}}">Mark All as Read</a></li>
                     @endif
                   </ul>
                 </li>

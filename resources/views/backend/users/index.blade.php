@@ -1,5 +1,57 @@
 @extends('layouts.admin')
 
+@section('style')
+
+    <style class="text/css">
+
+        .padding-top{
+            padding-top: 15px;
+        }
+
+        .border-right{
+            border-right: 1px solid #c0c0c0;
+        }
+
+        .stat{
+            width: 100%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            text-align: center;
+            border-radius: 3px;
+        }
+
+        .stat h3,h4,h5{
+            margin-top: 7px !important;
+            margin-bottom: 7px !important;
+        }
+
+        .stat-blue{
+            border: 2px solid dodgerblue;
+        }
+
+        .stat-blue .label{
+            color: forestgreen;
+        }
+
+        .stat h3{
+            font-weight: bold;
+            font-size: 38px;
+        }
+
+        .stat h5{
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .rating{
+            font-size: 30px;
+            color: orange;
+        }
+
+
+    </style>
+    @endsection
+
 @section('content')
     <section class="content-header">
         <h1>
@@ -61,6 +113,7 @@
                                         </td>
                                         <td>
                                             <a href="{{route('admin.users.edit',[$user->id])}}"><i class="fa fa-edit"></i></a>
+                                            <a href="javascript:;" onclick="loadUser('{{$user->id}}')"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -124,10 +177,113 @@
             </div>
         </div>
     </section>
+
+    <div id="profileModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content" id="profile">
+                <div class="modal-header">
+
+                    <div style="float: left">
+                        <img src="{{asset('images/logo2.png')}}" width="25" height="25" alt="">
+                        <span class="h3 font-weight-bold">User profile</span>
+                    </div>
+                    <div style="float: right">
+                        <button type="button" class="btn btn-sm btn-info" id="downloadLog" translate>Deactivate</button>
+                        <button type="button" class="btn btn-sm btn-success" id="downloadLog" translate>Activate</button>
+
+                    </div>
+                </div>
+                <div class="modal-body"  v-if="user!=null">
+
+                    <div class="row" style="padding-left: 20px;padding-right: 20px">
+                        <div class="col-sm-4 border-right">
+                            <h4>Bio information</h4>
+                            <img src="https://hips.hearstapps.com/hbz.h-cdn.co/assets/cm/14/52/54991fbc44f03_-_hbz-met-gala-2014-beauty-michelle-williams-promo.jpg" class="img img-responsive" alt="">
+
+                            <h3 class="font-weight-bold text-primary">@{{ user.name }}</h3>
+                            <p><i class="fa fa-envelope"></i> @{{ user.email }}</p>
+                            <p><i class="fa fa-phone-square"></i> @{{ user.phone_number }}</p>
+                            <p><i class="fa fa-calendar"></i> @{{ user.date_of_birth }}</p>
+
+                        </div>
+                        <div class="col-sm-8">
+
+                            <h4 class="font-weight-bold">@{{ user.name }}</h4>
+                            <p><span class="font-weight-bold">Education level</span> <span class="label label-primary">University</span></p>
+                            <h4 class="padding-top">Ratings @{{user.ratings}}</h4>
+                            <div class="rating mx-auto"></div>
+
+                            <span class="float-right h3" v-for="star in Math.ceil(user.ratings)"><i class="text-orange fa fa-star"></i></span>
+                            <span class="float-right h3" v-for="star in (10-Math.ceil(user.ratings))"><i class="fa fa-star"></i></span>
+
+                            <hr>
+                            <h4>User account statistics</h4>
+
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="stat stat-blue">
+                                        <h5 class="label">Balance</h5>
+                                        <h3>$40</h3>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="stat stat-blue">
+                                        <h5 class="label">Orders</h5>
+                                        <h3>2</h3>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="stat stat-blue">
+                                        <h5 class="label">In progress</h5>
+                                        <h3>0</h3>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <br>
+                            <h4>Payment information</h4>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Mpesa name</th><td><span v-if="user.payment_information!=null">@{{ user.payment_information.mpesa_name }}</span></td>
+                                    <th>Mpesa number</th><td><span v-if="user.payment_information!=null">@{{ user.payment_information.mpesa_number }}</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Id number</th><td><span v-if="user.payment_information!=null">@{{ user.payment_information.id_number }}</span></td>
+                                    <th>Bank name</th><td><span v-if="user.payment_information!=null">@{{ user.payment_information.bank_name }}</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Account number</th><td><span v-if="user.payment_information!=null">@{{ user.payment_information.account_number }}</span></td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 @stop
 
 @section('script')
+    <script src="{{asset('js/vue_rate.js')}}"></script>
+
     <script>
+
+        $(function () {
+
+
+        })
+
         function editDiscipline(discipline_id) {
             var base_url = '{{ route('admin.discipline.index') }}';
             var url = base_url + '/edit'+'/'+discipline_id;
@@ -141,5 +297,34 @@
                     $('#disciplinesModal').modal('show');
                 })
         }
+
+        function loadUser(id){
+            window.profile_vue.getUserProfile(id);
+        }
+
+        window.profile_vue = new Vue({
+            el:'#profile',
+            data:{
+                user:null
+            },
+            created:function(){
+                console.log('ceated-user-profile-vue')
+            },
+            methods: {
+                getUserProfile:function(id){
+                    let url = '{{route('admin.users.profile')}}'+"?user="+id;
+                    let me = this;
+                    axios.get(url)
+                        .then(res=>{
+                            me.user = res.data;
+                            $('#profileModal').modal('show');
+                            me.setUpRating(me.user.ratings)
+                        })
+                },
+                setUpRating:function(value){
+
+                }
+            }
+        })
     </script>
 @stop

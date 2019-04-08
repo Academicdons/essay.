@@ -132,4 +132,11 @@ class UsersController extends Controller
 
 
     }
+
+    public function getProfile(Request $request)
+    {
+        $user= User::find($request->input('user'));
+        $user->load('paymentInformation');
+        return response()->json($user);
+    }
 }

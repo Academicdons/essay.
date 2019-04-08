@@ -71,4 +71,11 @@ class ProfileController extends Controller
             return redirect()->back();
         }
     }
+
+    public function markNotAsRead()
+    {
+        Auth::user()->unreadNotifications()->update(['read_at' => now()]);
+
+        return redirect()->back();
+    }
 }

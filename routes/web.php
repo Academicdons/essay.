@@ -102,6 +102,8 @@ Route::get('/testing', function (){
 #Routes controlling writers workspace
 Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 'middleware' => ['auth','account_status']],function(){
 
+    Route::get('mark_all_notification_As_read','ProfileController@markNotAsRead')->name('mark_all_notification_As_read');
+
     #Orders routes
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
         Route::get('/available', 'OrdersController@availableOrders')->name('available');
@@ -207,6 +209,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::post('/upload_file/{order}', 'OrdersController@saveFile')->name('upload_file');
         Route::get('/verify_file/{attachment}', 'OrdersController@verifyFile')->name('verify_file');
         Route::get('/mark_completed_revision/{order}', 'OrdersController@markCompletedOrder')->name('mark_completed_revision');
+        Route::post('dispute_order','OrdersController@disputeOrder')->name('dispute_order');
+        Route::get('fetch_disputes/{order_id}','OrdersController@fetchDisputes')->name('fetch_disputes');
+        Route::get('toggle_auto_assign/{status}','OrdersController@toggleAutoAssign')->name('toggle_auto_assign');
+        Route::post('revise_order','OrdersController@reviseOrder')->name('revise_order');
 
 
         //send email

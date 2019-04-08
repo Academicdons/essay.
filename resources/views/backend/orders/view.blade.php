@@ -368,9 +368,9 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <h3>Notes</h3>
-                                    <p>
-                                        Any topic (writer's choice)
-                                    </p>
+                                    <li>
+                                        {!! $order->notes !!}
+                                    </li>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="pull-right">

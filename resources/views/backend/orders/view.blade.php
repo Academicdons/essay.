@@ -127,8 +127,39 @@
                             <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#rateModal"  @click="getBids('{{$order->id}}')">View Placed Bids</button>
                             @endif
 
+                            @if($order->currentAssignment()!=null)
+                            <button   data-toggle="modal" data-target="#reviseModal" class="btn btn-danger btn-xs">Revise Order</button>
 
-                            @if($order->status==2 )
+                            @endif
+
+                            <div class="modal" id="reviseModal" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title">Revise Order</h3>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p class="text-ceter">Revise the Order</p>
+
+                                            <form action="{{route('admin.orders.revise_order')}}" method="post" >
+
+                                                @csrf
+                                                <input type="hidden" name="order_id" value="{{$order->id}}">
+                                                <textarea class="form-control" name="revise_data" placeholder=""></textarea>
+                                                <br>
+                                                <p class="text-center">
+                                                    <button type="submit" class="btn btn-success mt-3">Submit Reason</button>
+                                                </p>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        @if($order->status==2 )
 
                                 <a href="{{route('admin.orders.mark_completed_revision',$order->id)}}" class="btn btn-primary btn-xs"   >Mark As Completed Revision</a>
                             @endif
@@ -527,6 +558,8 @@
     </div>
 
     <!------------------ manual assign Modals----------------->
+
+
     <div id="bargainsModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="box">

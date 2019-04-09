@@ -78,7 +78,7 @@ class GeneralController extends Controller
 //        return $pdf->download('invoice.pdf');
 
         $test = new AfricasTalking();
-        $test->safeSend("0718942538","hello there");
+        $test->safeSend("0705850774","hello there");
 
 
     }

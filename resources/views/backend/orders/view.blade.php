@@ -368,9 +368,11 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <h3>Notes</h3>
-                                    <li>
+                                    <p>
                                         {!! $order->notes !!}
-                                    </li>
+
+                                    </p>
+
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="pull-right">

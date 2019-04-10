@@ -196,7 +196,7 @@
                                 <div class="col-sm-6">
                                     <h3>Notes</h3>
                                     <p>
-                                        Any topic (writer's choice)
+                                        {!! $order->notes !!}
                                     </p>
                                 </div>
                                 <div class="col-sm-12">

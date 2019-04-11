@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Assignment;
 use App\Models\Order;
+use App\Models\SystemSettings;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -11,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\DB;
 use Webpatser\Uuid\Uuid;
 
 class WriterAssignerJob implements ShouldQueue
@@ -34,26 +36,50 @@ class WriterAssignerJob implements ShouldQueue
      */
     public function handle()
     {
-        $allWriters=User::where('user_type',1)->where('account_status',true)->orderBy('ratings','DESC')->withCount('')->get();
 
-        //loop through the users determining the ones with orders less than 3
-        foreach ($allWriters as $writer){
-            $writerActiveOrders=Assignment::where('user_id',$writer->id)->where('status',1)->get();
-            if (count($writerActiveOrders)<3){
-                //get one order and assign the user
-                $unAssignedOrders=Order::where('status',0)->where('bid_expiry','<',Carbon::now()->toDateTimeString())->first();
+        /*
+         * check if settings allow the auto assign job
+         */
+
+        $settings = SystemSettings::firstOrCreate(['auto_assign' => true]);
+        if($settings->auto_assign){
+            /*
+             * get all unassigned orders
+             * loop through the orders
+             * For every order find the most suitable writer
+             * Assign the most suitable writer the order
+             */
+
+            $orders = Order::where('status',0)->where('bid_expiry','<',Carbon::now()->toDateTimeString())->get();
+            foreach ($orders as $order){
+
+                /*
+                 * Query for users who have less than 3 orders in progress
+                 */
+                $users = User::join('assignments','users.id','assignments.user_id')
+                    ->join('orders','assignments.order_id','orders.id')
+                    ->select(['users.*', DB::raw("count(users.id) as orders_count")])
+                    ->where('orders.status',1)
+                    ->having('orders_count', '<' , 3)
+                    ->groupBy(['users.id'])
+                    ->orderBy('users.ratings','desc')
+                    ->get();
+
+                $users->shuffle();
+                $user = $users[0];
 
                 $assignment=new Assignment();
                 $assignment->id=Uuid::generate()->string;
-                $assignment->order_id=$unAssignedOrders->id;
-                $assignment->user_id=$writer->id;
+                $assignment->order_id=$order->id;
+                $assignment->user_id=$user->id;
                 $assignment->status=true;
                 $assignment->save();
-            }else{
-                //user not viable for assignment
-            }
 
+                $order->status = 1;
+                $order->save();
+            }
         }
+
     }
 
 }

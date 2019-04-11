@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\FqdnConfiguration;
+use App\Models\SystemSettings;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 
 class SettingsController extends Controller
 {
@@ -48,6 +50,24 @@ class SettingsController extends Controller
     public function editDomain(FqdnConfiguration $domain)
     {
         Session::flash('_old_input',$domain);
+        return back();
+    }
+
+    public function systemSettings()
+    {
+        $settings = SystemSettings::firstOrCreate(['auto_assign' => true]);
+        Session::flash('_old_input',$settings);
+        return View::make('backend.settings.system');
+    }
+
+    public function storeSystemSettings(Request $request)
+    {
+        $settings = SystemSettings::firstOrCreate(['auto_assign' => true]);
+        $settings->auto_assign = $request->has('auto_assign');
+        $settings->send_sms = $request->has('send_sms');
+
+        $settings->save();
+
         return back();
     }
 }

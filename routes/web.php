@@ -167,7 +167,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::post('/add_domain', 'SettingsController@saveDomain')->name('add_domain');
         Route::get('/delete_domain/{domain}', 'SettingsController@deleteDomain')->name('delete_domain');
         Route::get('/edit_domain/{domain}', 'SettingsController@editDomain')->name('edit_domain');
-        Route::get('/system', 'SettingsController@getSystemDomains')->name('system');
+        Route::get('/system', 'SettingsController@systemSettings')->name('system');
+        Route::post('/store_system', 'SettingsController@storeSystemSettings')->name('store_system');
     });
 
     Route::group(['prefix' => 'accounts', 'as' => 'accounts.'], function () {

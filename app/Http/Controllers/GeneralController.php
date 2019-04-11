@@ -10,6 +10,7 @@ use App\Models\Group;
 use App\Models\Order;
 use App\Plugins\AfricasTalking;
 use App\Plugins\Thunderpush;
+use App\User;
 use Dilab\Network\SimpleRequest;
 use Dilab\Network\SimpleResponse;
 use Dilab\Resumable;
@@ -18,6 +19,7 @@ use GuzzleHttp\RequestOptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -77,8 +79,22 @@ class GeneralController extends Controller
 //        $pdf = PDF::loadView('layouts.invoice', []);
 //        return $pdf->download('invoice.pdf');
 
-        $test = new AfricasTalking();
-        $test->safeSend("0705850774","hello there");
+//        $test = new AfricasTalking();
+//        $test->safeSend("0705850774","hello there");
+
+        $users = User::join('assignments','users.id','assignments.user_id')
+            ->join('orders','assignments.order_id','orders.id')
+            ->select(['users.*', DB::raw("count(users.id) as orders_count")])
+            ->where('orders.status',1)
+            ->having('orders_count', '<' , 3)
+            ->groupBy(['users.id'])
+            ->orderBy('users.ratings','desc')
+            ->get();
+
+        $users->shuffle();
+
+        echo json_encode($users);
+
 
 
     }

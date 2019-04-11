@@ -572,13 +572,22 @@
 
                     <form action="">
                         <div class="row">
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control" v-model="bargain.amount">
+                            <div class="col-sm-6">
+                                <label>Amount</label>
+                                <input type="number" class="form-control" placeholder="amount" v-model="bargain.amount">
                             </div>
-                            <div class="col-sm-4">
-                                <button type="button" @click="saveBargain()" class="btn btn-block btn-primary">Add bargain</button>
+                            <div class="col-sm-6">
+                                <label>Reason</label>
+                                <textarea class="form-control" placeholder="Reason" v-model="bargain.reason"></textarea>
                             </div>
                         </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <button type="button" @click="saveBargain()" class="btn btn-block btn-primary">Add bargain</button>
+
+                                </div>
+                            </div>
+
                         
                         <table class="table">
                             <thead>
@@ -586,6 +595,7 @@
                                     <th>#</th>
                                     <th>Type</th>
                                     <th>Amount</th>
+                                    <th>Reason</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -597,6 +607,7 @@
                                         <span v-if="bar.amount<0"class="label label-danger">fine</span>
                                     </td>
                                     <td>@{{ bar.amount }}</td>
+                                    <td>@{{ bar.reason }}</td>
                                     <td>
                                         <button   class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                     </td>
@@ -877,7 +888,7 @@
             methods:{
 
                 getBargains:function () {
-                    let url = '{{route('admin.orders.bargains',$order->id)}}'
+                    let url = '{{route('admin.orders.bargains',$order->id)}}';
                     let me = this;
                     axios.get(url)
                         .then(function(res){

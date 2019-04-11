@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\Bargain;
 use App\Models\Order;
 use App\Models\PaymentTransaction;
 use App\User;
@@ -114,5 +115,11 @@ class AccountsController extends Controller
 
         $pdf = PDF::loadView('layouts.invoice', ['orders'=>$result,'user'=>$user,'date'=>Carbon::now()]);
         return $pdf->download('invoice.pdf');
+    }
+
+    public function bargains(Request $request)
+    {
+        $b = Bargain::where('order_id',$request->input('order'))->get();
+        return response()->json($b);
     }
 }

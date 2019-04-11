@@ -112,6 +112,7 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
         Route::get('/finished_orders', 'OrdersController@finishedOrders')->name('finished_orders');
         Route::get('/view/{order}', 'OrdersController@viewOrder')->name('view');
         Route::get('/revisions', 'OrdersController@revisions')->name('revisions');
+        Route::get('/bargains', 'OrdersController@bargains')->name('bargains');
         Route::get('/reviews/{order}', 'OrdersController@orderReviews')->name('reviews');
         Route::get('/messages/{order}', 'OrdersController@getMessages')->name('messages');
         Route::post('/save_messages/{order}', 'OrdersController@saveMessage')->name('save_messages');
@@ -174,6 +175,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/users', 'AccountsController@users')->name('users');
         Route::get('/invoice/{user}', 'AccountsController@invoice')->name('invoice');
         Route::get('/data', 'AccountsController@getData')->name('data');
+        Route::get('/bargains', 'AccountsController@bargains')->name('bargains');
         Route::post('/pay_orders', 'AccountsController@payOrder')->name('pay_orders');
 
     });

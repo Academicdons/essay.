@@ -16,7 +16,7 @@
         </ol>
     </section>
 
-    <section class="content">
+    <section class="content" id="accounts_area">
 
         <div class="box box-primary">
             <div class="box-header">
@@ -45,7 +45,7 @@
                     </form>
                 </div>
             </div>
-            <div class="box-body" id="accounts_area">
+            <div class="box-body" >
                 
                 <table class="table table-striped">
                     <thead>
@@ -71,7 +71,7 @@
                             <td>#@{{ order.order_no }}</td>
                             <td>@{{ order.name }}</td>
                             <td>@{{ order.salary }}</td>
-                            <td>@{{ order.bargains_sum }}
+                            <td @click="loadBargains(order.id)">@{{ order.bargains_sum }}
                                 <i class="fa fa-arrow-up" style="color: green" v-if="order.bargains_sum > 0"></i>
                                 <i class="fa fa-arrow-down" style="color: red" v-if="order.bargains_sum < 0"></i>
                                 <span class="label label-primary" style="color: red" v-if="order.bargains_sum == null">none</span>
@@ -86,6 +86,44 @@
 
             </div>
         </div>
+
+
+        <div id="bargainsModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="box">
+                    <div class="box-header">
+                        <h3>Fines/Bonuses</h3>
+                    </div>
+                    <div class="box-body" id="bargains_area">
+
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Reason</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(bar,index) in bargains">
+                                    <td>@{{ index+1 }}</td>
+                                    <td>
+                                        <span v-if="bar.amount>0" class="label label-success">bonus</span>
+                                        <span v-if="bar.amount<0"class="label label-danger">fine</span>
+                                    </td>
+                                    <td>@{{ bar.amount }}</td>
+                                    <td>@{{ bar.reason }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 
     @endsection
@@ -130,7 +168,8 @@
         window.accounts_area = new Vue({
             el:'#accounts_area',
             data:{
-                orders:[]
+                orders:[],
+                bargains:[]
             },
             created:function () {
                 console.log("Orders vue created")
@@ -151,6 +190,15 @@
                     axios.post(url,{order:order_id})
                         .then(function(res){
                             me.getAllData();
+                        })
+                },
+                loadBargains:function(id){
+                    let url='{{route('admin.accounts.bargains')}}'+"?order="+id;
+                    let me = this;
+                    axios.get(url)
+                        .then(function (res) {
+                            me.bargains = res.data;
+                            $('#bargainsModal').modal('show')
                         })
                 }
             }

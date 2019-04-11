@@ -44,11 +44,11 @@ class WriterAssignerJob implements ShouldQueue
         $settings = SystemSettings::firstOrCreate(['auto_assign' => true]);
         if($settings->auto_assign){
             /*
-             * get all unassigned orders
-             * loop through the orders
-             * For every order find the most suitable writer
-             * Assign the most suitable writer the order
-             */
+         * get all unassigned orders
+         * loop through the orders
+         * For every order find the most suitable writer
+         * Assign the most suitable writer the order
+         */
 
             $orders = Order::where('status',0)->where('bid_expiry','<',Carbon::now()->toDateTimeString())->get();
             foreach ($orders as $order){

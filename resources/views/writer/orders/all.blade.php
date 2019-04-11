@@ -149,7 +149,7 @@
                                     <td>@{{ index+1 }}</td>
                                     <td><a href="#">@{{ order.order_no }}</a></td>
                                     <td ><b>$@{{ order.salary }}</b></td>
-                                    <td>$@{{ order.bargains_sum }}</td>
+                                    <td @click="loadBargains(order.id)"><span class="label label-primary">$@{{ order.bargains_sum }}</span></td>
                                     <td>$@{{ order.bargains_sum+order.salary }}</td>
                                     <td>
                                         <a :href="'{{url('/writer/orders/view')}}/' + order.id" class="btn btn-xs btn-default">Read more</a>
@@ -203,6 +203,43 @@
             </div>
         </div>
 
+        <div id="bargainsModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="box">
+                    <div class="box-header">
+                        <h3>Fines/Bonuses</h3>
+                    </div>
+                    <div class="box-body" id="bargains_area">
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Reason</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(bar,index) in bargains">
+                                <td>@{{ index+1 }}</td>
+                                <td>
+                                    <span v-if="bar.amount>0" class="label label-success">bonus</span>
+                                    <span v-if="bar.amount<0"class="label label-danger">fine</span>
+                                </td>
+                                <td>@{{ bar.amount }}</td>
+                                <td>@{{ bar.reason }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </section>
 
     @endsection
@@ -217,6 +254,7 @@
             data:{
                 orders:[],
                 revisions:[],
+                bargains:[],
                 pay_orders:[],
                 accounts:false
             },
@@ -271,6 +309,15 @@
                         return "processing"
                     }
                 },
+                loadBargains:function(id){
+                    let url='{{route('writer.orders.bargains')}}'+"?order="+id;
+                    let me = this;
+                    axios.get(url)
+                        .then(function (res) {
+                            me.bargains = res.data;
+                            $('#bargainsModal').modal('show')
+                        })
+                }
             }
 
         })

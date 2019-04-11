@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Writer;
 use App\Jobs\AssignOrderMail;
 use App\Jobs\SendSystemEmail;
 use App\Models\Attachment;
+use App\Models\Bargain;
 use App\Models\Bid;
 use App\Models\Conversation;
 use App\Models\Message;
@@ -241,6 +242,12 @@ class OrdersController extends Controller
     {
         $order = Order::find($request->input('order_id'));
         return response()->json($order->revision);
+    }
+
+    public function bargains(Request $request)
+    {
+        $b = Bargain::where('order_id',$request->input('order'))->get();
+        return response()->json($b);
     }
 
 }

@@ -142,13 +142,28 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <p class="text-ceter">Revise the Order</p>
+                                            {{--<p class="text-ceter">Revise the Order</p>--}}
 
                                             <form action="{{route('admin.orders.revise_order')}}" method="post" >
 
                                                 @csrf
                                                 <input type="hidden" name="order_id" value="{{$order->id}}">
-                                                <textarea class="form-control" name="revise_data" placeholder=""></textarea>
+                                                <input type="hidden" name="tz" id="tz">
+
+                                                <div class="row">
+                                                    <div class="form-group col-sm-12">
+                                                        <label>Revise the Order</label>
+                                                        <textarea class="form-control" name="revise_data" placeholder=""></textarea>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6">
+                                                        <label>Deadline</label>
+                                                        <input type="date" name="deadline" class="form-control" >
+                                                    </div>
+                                                </div>
                                                 <br>
                                                 <p class="text-center">
                                                     <button type="submit" class="btn btn-success mt-3">Submit Reason</button>
@@ -629,8 +644,16 @@
     <script src="{{asset('plugins/easycomplete/jquery.easy-autocomplete.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
     <script src="{{asset('plugins/rater/rater.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jstz.min.js')}}"></script>
+
 
     <script type="text/javascript">
+
+        $(function () {
+            var tz = jstz.determine();
+
+            $('#tz').val(tz.name());
+        });
 
         $(function () {
             var options = {

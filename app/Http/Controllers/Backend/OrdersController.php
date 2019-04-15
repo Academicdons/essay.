@@ -551,10 +551,16 @@ class OrdersController extends Controller
     {
 
 
+
+        $deadline = Carbon::createFromFormat("Y-m-d", $request->deadline, request('tz'));
+        $deadline->setTimezone('UTC');
+
+
         $revision=new Revision();
         $revision->id=Uuid::generate()->string;
         $revision->reason=$request->revise_data;
         $revision->order_id=$request->order_id;
+        $revision->deadline=$deadline;
         $revision->save();
 
         //change status of th order

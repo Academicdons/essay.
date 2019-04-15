@@ -270,7 +270,7 @@
                     axios.get(url)
                         .then(function (res) {
                             console.log(res.data.orders);
-                            me.accounts = false
+                            me.accounts = false;
                             me.orders = res.data.orders
                         })
                 },

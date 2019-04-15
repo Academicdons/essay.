@@ -319,8 +319,16 @@ class OrdersController extends Controller
     public function revision(Order $order,Request $request)
     {
         $data = $request->only('reason');
+
+        $deadline = Carbon::createFromFormat("Y-m-d", $request->deadline, request('tzone'));
+
+        $deadline->setTimezone('UTC');
+
+
+
         $data['id']=Uuid::generate()->string;
         $data['order_id']=$order->id;
+        $data['deadline']=$deadline;
         Revision::create($data);
 
         //get the active assignment for the order

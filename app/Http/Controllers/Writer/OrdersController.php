@@ -11,6 +11,7 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\OrderReview;
+use App\Models\Revision;
 use App\Notifications\ChatNotification;
 use App\User;
 use Carbon\Carbon;
@@ -250,4 +251,10 @@ class OrdersController extends Controller
         return response()->json($b);
     }
 
+    public function getRevisionDeadline($order_id)
+    {
+       $revision=Revision::where('order_id',$order_id)->first();
+
+       return response()->json(['revision'=>$revision]);
+    }
 }

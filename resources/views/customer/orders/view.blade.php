@@ -380,9 +380,16 @@
                             </div>
                             <div class="modal-body">
                                 <p>Provide a reason for the request and suggest improvements to be done on the revised work</p>
+                                <input type="hidden" v-model="revision.tz" name="tz" id="tz">
 
                                 <textarea v-model="revision.reason" style="min-height: 200px" class="form-control" placeholder="Example: I would like the page numbers included too, thanks"></textarea>
 
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label>Deadline</label>
+                                        <input type="date" name="deadline" v-model="revision.deadline" class="form-control" >
+                                    </div>
+                                </div>
                                 <p class="text-center">
                                     <button @click="requestRevision()" class="btn btn-success mt-3">Submit revision request</button>
                                 </p>
@@ -485,8 +492,11 @@
 
     <script type="text/javascript" src="{{asset('js/resumable.js')}}"></script>
     <script src="{{asset('plugins/rater/rater.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jstz.min.js')}}"></script>
 
     <script>
+
+
 
         $(function () {
             //or for example
@@ -630,7 +640,11 @@
                         })
                 },
                 requestRevision:function () {
-                    let url = '{{route('customer.orders.revision',$order->id)}}'
+
+                    var tz = jstz.determine();
+
+                    this.revision.tzone=tz.name();
+                    let url = '{{route('customer.orders.revision',$order->id)}}';
                     let me = this;
                     axios.post(url,this.revision)
                         .then(function (res) {

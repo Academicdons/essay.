@@ -96,6 +96,14 @@
 
                                &nbsp <b>-</b> &nbsp;Bid Expiry Time - <span class="text-orange">  @{{ expiry }}</span> &nbsp;
                             </span>
+
+                            @if($order->status==2)
+                            <span  class="badge badge-danger" id="revision_content">Bid Deadline:@{{ deadliner }}
+
+                            </span>
+
+                                @endif
+
                         </div>
 
                         <div class="row">
@@ -382,10 +390,38 @@
             el:'#description_data',
             data:{
                 deadline:moment.utc('{{$order->writer_deadline}}').local().startOf('hour').fromNow(),
-                expiry:moment.utc('{{$order->bid_expiry}}').local().startOf('hour').fromNow()
+                expiry:moment.utc('{{$order->bid_expiry}}').local().startOf('hour').fromNow(),
+
             },
             created:function(){
 
+            },
+            methods:{
+
+            }
+        });
+        var dadsrfefd=new Vue({
+            el:'#revision_content',
+            data:{
+                deadline:moment.utc('{{$order->writer_deadline}}').local().startOf('hour').fromNow(),
+                expiry:moment.utc('{{$order->bid_expiry}}').local().startOf('hour').fromNow(),
+                revision:{},
+                deadliner:''
+            },
+            created:function(){
+                var url43='{{url('writer/orders/get_revision_deadline')}}'+'/'+'{{$order->id}}';
+                let me=this;
+                axios.get(url43)
+                    .then(function (res) {
+                        me.revision=res.data.revision;
+                        // me.deadliner=res.data.revision.deadline
+                        if (res.data.revision.deadline==null || res.data.revision.deadline===''){
+                            me.deadliner='No deadline'
+                        } else{
+                            me.deadliner=res.data.revision.deadline;
+                        }
+                        console.log(me.revision)
+                    })
             },
             methods:{
 

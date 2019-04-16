@@ -123,6 +123,7 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
         Route::get('place_bid/{order_id}','OrdersController@placeBid')->name('place_bid');
         Route::get('mark_as_complete/{order}','OrdersController@markAsComplete')->name('mark_as_complete');
         Route::get('get_revision_deadline/{order_id}','OrdersController@getRevisionDeadline')->name('get_revision_deadline');
+        Route::get('mark_order_complete/{order}','OrdersController@markCompletedOrder')->name('mark_order_complete');
 
 
     });

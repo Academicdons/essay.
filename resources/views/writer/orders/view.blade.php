@@ -102,6 +102,7 @@
 
                             </span>
 
+                                <a href="{{route('writer.orders.mark_order_complete',$order->id)}}" class="btn btn-xs btn-primary">Mark As Complete</a>
                                 @endif
 
                         </div>

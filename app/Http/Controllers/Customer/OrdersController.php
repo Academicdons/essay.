@@ -320,7 +320,10 @@ class OrdersController extends Controller
     {
         $data = $request->only('reason');
 
-        $deadline = Carbon::createFromFormat("Y-m-d", $request->deadline, request('tzone'));
+        $deadline = Carbon::createFromFormat("d/m/Y H:i:s", $request->deadline, request('tzone'));
+
+
+//        $deadline = Carbon::createFromFormat("Y-m-d", $request->deadline, request('tzone'));
 
         $deadline->setTimezone('UTC');
 

@@ -62,7 +62,9 @@
         }
 
     </style>
-    @endsection
+    <link rel="stylesheet" href="{{asset('bstpick/css/bootstrap-datetimepicker.css')}}">
+
+@endsection
 
 @section('content')
     <section class="content-header">
@@ -159,10 +161,19 @@
                                                 </div>
 
                                                 <div class="row">
+
                                                     <div class="form-group col-sm-6">
-                                                        <label>Deadline</label>
-                                                        <input type="date" name="deadline" class="form-control" >
+                                                        <label for="">Deadline</label>
+                                                        <div class='input-group date' id='deadline'>
+                                                            <input type='text' name="deadline" value="{{old('deadline')}}" class="form-control" />
+                                                            <span class="input-group-addon">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                                        </div>
+                                                        <span class="form-control-feedback text-danger text-sm">{{($errors->has('deadline')?$errors->first('deadline'):"")}}</span>
                                                     </div>
+
+
                                                 </div>
                                                 <br>
                                                 <p class="text-center">
@@ -646,6 +657,8 @@
     <script src="{{asset('plugins/rater/rater.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/jstz.min.js')}}"></script>
 
+    <script src="{{ asset('bower_components/moment/moment.js') }}"></script>
+    <script src="{{asset('bstpick/js/bootstrap-datetimepicker.min.js')}}"></script>
 
     <script type="text/javascript">
 
@@ -653,6 +666,13 @@
             var tz = jstz.determine();
 
             $('#tz').val(tz.name());
+
+            $('#deadline').datetimepicker({
+                format:'DD/MM/YYYY H:mm:ss'
+            });
+
+
+
         });
 
         $(function () {

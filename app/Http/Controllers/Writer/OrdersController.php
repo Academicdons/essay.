@@ -13,6 +13,7 @@ use App\Models\Order;
 use App\Models\OrderReview;
 use App\Models\Revision;
 use App\Notifications\ChatNotification;
+use App\Notifications\RevisedNotification;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -256,5 +257,21 @@ class OrdersController extends Controller
        $revision=Revision::where('order_id',$order_id)->first();
 
        return response()->json(['revision'=>$revision]);
+    }
+
+    public function markCompletedOrder(Order $order)
+    {
+        $order->status=3;
+        $order->save();
+
+        //get the active assignment for the order
+        $active_assignment=$order->currentAssignment();
+        if ($active_assignment!=null){
+            $user=User::find($active_assignment->user_id);
+            $user->notify(new RevisedNotification('The order '. $order->order_no.' has now been marked as complete from revision'));
+        }
+
+
+        return \redirect()->back();
     }
 }

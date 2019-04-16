@@ -196,6 +196,7 @@
 
 
     </style>
+    <link rel="stylesheet" href="{{asset('bstpick/css/bootstrap-datetimepicker.css')}}">
 
     @endsection
 
@@ -385,10 +386,23 @@
                                 <textarea v-model="revision.reason" style="min-height: 200px" class="form-control" placeholder="Example: I would like the page numbers included too, thanks"></textarea>
 
                                 <div class="row">
+
                                     <div class="form-group col-sm-6">
-                                        <label>Deadline</label>
-                                        <input type="date" name="deadline" v-model="revision.deadline" class="form-control" >
+                                        <label for="">Deadline</label>
+                                        <div class='input-group date' >
+                                            <input type='text' id='deadline' name="deadline" v-model="revision.deadline" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
                                     </div>
+
+
+
+                                    {{--<div class="form-group col-sm-6">--}}
+                                        {{--<label>Deadline</label>--}}
+                                        {{--<input id="deadline" name="deadline" v-model="revision.deadline" class="form-control" >--}}
+                                    {{--</div>--}}
                                 </div>
                                 <p class="text-center">
                                     <button @click="requestRevision()" class="btn btn-success mt-3">Submit revision request</button>
@@ -494,11 +508,21 @@
     <script src="{{asset('plugins/rater/rater.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/jstz.min.js')}}"></script>
 
+    <script src="{{ asset('bower_components/moment/moment.js') }}"></script>
+    <script src="{{asset('bstpick/js/bootstrap-datetimepicker.min.js')}}"></script>
     <script>
 
 
 
         $(function () {
+
+
+            $('#deadline').datetimepicker({
+                format:'DD/MM/YYYY H:mm:ss'
+            });
+
+
+
             //or for example
             var options = {
                 max_value: 10,

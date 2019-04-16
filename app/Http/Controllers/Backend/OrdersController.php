@@ -445,7 +445,7 @@ class OrdersController extends Controller
         $order->save();
 
         //get the active assignment for the order
-        $active_assignment=$order->currentAssignment;
+        $active_assignment=$order->currentAssignment();
         if ($active_assignment!=null){
             $user=User::find($active_assignment->user_id);
             $user->notify(new RevisedNotification('The order '. $order->order_no.' has now been marked as complete from revision'));
@@ -551,8 +551,9 @@ class OrdersController extends Controller
     {
 
 
+        $deadline = Carbon::createFromFormat("d/m/Y H:i:s", $request->deadline, request('tz'));
 
-        $deadline = Carbon::createFromFormat("Y-m-d", $request->deadline, request('tz'));
+
         $deadline->setTimezone('UTC');
 
 

@@ -212,6 +212,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/get_order_bids/{order}', 'OrdersController@getOrderBids')->name('get_order_bids');
         Route::get('/assign_user_bid/{order_id}/{user_id}', 'OrdersController@assignUserBid')->name('assign_user_bid');
         Route::post('/upload_file/{order}', 'OrdersController@saveFile')->name('upload_file');
+        Route::post('/advance_uploads/{order}', 'OrdersController@advancedUploads')->name('advance_uploads');
         Route::get('/verify_file/{attachment}', 'OrdersController@verifyFile')->name('verify_file');
         Route::get('/mark_completed_revision/{order}', 'OrdersController@markCompletedOrder')->name('mark_completed_revision');
         Route::post('dispute_order','OrdersController@disputeOrder')->name('dispute_order');

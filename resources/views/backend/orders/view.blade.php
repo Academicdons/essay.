@@ -61,6 +61,14 @@
             color: orange;
         }
 
+        .upload-area{
+            min-height: 200px;
+            width: 100%;
+            text-align: center;
+            border: 2px dashed dodgerblue;
+            margin-bottom: 10px;
+        }
+
     </style>
     <link rel="stylesheet" href="{{asset('bstpick/css/bootstrap-datetimepicker.css')}}">
 
@@ -402,12 +410,14 @@
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="pull-right">
+
                                         <form action="{{route('admin.orders.upload_file',$order->id)}}" method="post" enctype="multipart/form-data">
                                             @csrf
                                             <input type="text" name="display_name" class="btn btn-default btn-xs" placeholder="display name" required>
                                             <label for="file" class="btn btn-xs btn-warning">Choose file</label>
                                             <input type="file" name="file" id="file" style="display: none" required>
                                             <button class="btn btn-primary btn-xs" type="submit"><i class="fa fa-upload"></i></button>
+                                            <button class="btn btn-default btn-xs" type="button" data-toggle="modal" data-target="#resumableUploader">upload multiple files</button>
                                         </form>
                                     </div>
 
@@ -585,7 +595,7 @@
         </div>
     </div>
 
-    <!------------------ manual assign Modals----------------->
+    <!------------------ bargains assign Modals----------------->
 
 
     <div id="bargainsModal" class="modal fade" role="dialog">
@@ -647,6 +657,34 @@
         </div>
     </div>
 
+    <!------------------ resumable uploads Modals----------------->
+
+
+    <div id="resumableUploader" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="box">
+                <div class="box-header">
+                    <h3>Upload files</h3>
+                </div>
+                <div class="box-body" id="">
+
+                    <div class="upload-area" id="upload-area">
+                        <p class="text-center" style="margin-top:95px">
+                            <i class="fa fa-cloud-upload"></i> Click here or drop files to upload
+                        </p>
+                        </div>
+
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">40% Complete (success)</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 @stop
 
@@ -659,6 +697,8 @@
 
     <script src="{{ asset('bower_components/moment/moment.js') }}"></script>
     <script src="{{asset('bstpick/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/resumable.js')}}"></script>
+
 
     <script type="text/javascript">
 
@@ -955,6 +995,29 @@
             $('#bargainsModal').modal('show')
         }
 
+    </script>
+
+    <script type="text/javascript">
+        var r = new Resumable({
+            target: '{{route('admin.orders.advance_uploads',$order->id)}}'
+        });
+        r.assignBrowse(document.getElementById('upload-area'));
+
+        r.on('fileProgress', function(file){
+            var p =(r.progress()*100).toFixed(2);
+            $('.progress-bar').css('width',p+"%")
+            $('.progress-bar').text(p + "%")
+        });
+
+        r.on('complete', function(){
+            $('.active-upload').hide()
+            window.location.reload()
+        });
+
+        r.on('fileAdded', function(file, event){
+            $('.active-upload').show()
+            r.upload();
+        });
     </script>
 
     @endsection

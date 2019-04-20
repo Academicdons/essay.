@@ -29,10 +29,14 @@ use App\Notifications\OrderAssignment;
 use App\Notifications\RevisedNotification;
 use App\User;
 use Carbon\Carbon;
+use Dilab\Network\SimpleRequest;
+use Dilab\Network\SimpleResponse;
+use Dilab\Resumable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Notification;
@@ -428,6 +432,46 @@ class OrdersController extends Controller
 
         }
 
+
+    }
+
+    public function advancedUploads(Order $order)
+    {
+
+        $request = new SimpleRequest();
+        $response = new SimpleResponse();
+        $temp_path=Config::get('app.folder') . '/temps';
+        $file_path = Config::get('app.folder') . '/order_files';
+
+
+        if (!File::exists($temp_path)) {
+            File::makeDirectory($temp_path, 0777, true, true);
+        }
+
+        if (!File::exists($file_path)) {
+            File::makeDirectory($file_path, 0777, true, true);
+        }
+
+        $resumable = new Resumable($request, $response);
+        $resumable->tempFolder = $temp_path ;
+        $resumable->uploadFolder = $file_path;
+
+        $originalName = $resumable->getOriginalFilename(Resumable::WITHOUT_EXTENSION);
+        $filename = uniqid() . '.' . $resumable->getExtension();
+        $resumable->setFilename($filename);
+
+
+        $resumable->process();
+
+        if (true === $resumable->isUploadComplete()) {
+            $document = new Attachment();
+            $document->id = Uuid::generate();
+            $document->file_name = $filename;
+            $document->display_name = $originalName;
+            $document->order_id = $order->id;
+            $document->save();
+
+        }
 
     }
 

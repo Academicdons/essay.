@@ -55,7 +55,7 @@
                                             <select name="spacing" id="spacing" class="form-control academic-input"  v-model="selected">
                                                 <option value="0" {{ old('spacing') == 0?"selected":'' }}>Single</option>
                                                 <option value="1" {{ old('spacing') == 1?"selected":'' }}>Double</option>
-                                            </select>
+                                                                                                     </select>
                                         </div>
                                     </div>
                                 </div>
@@ -236,9 +236,9 @@
         var  content=new Vue({
             el:'#content_area',
             data:{
-                no_of_pages:0,
+                no_of_pages:'{{old('no_pages')}}',
                 no_words:'{{old('no_words')}}',
-                selected:0,
+                selected:'{{ old('spacing')}}',
             },
             created:function(){
                 this.calculatePages()
@@ -251,7 +251,6 @@
                     var rawPages;
                     if (this.selected==0){
                         rawPages=Math.round(no_of_words/550);
-
                     } else{
                         rawPages=Math.round(no_of_words/275);
                     }

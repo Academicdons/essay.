@@ -180,6 +180,7 @@ return [
         \App\Providers\FacadeProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
+        \App\Providers\ViewComposerProvider::class,
 
 
 

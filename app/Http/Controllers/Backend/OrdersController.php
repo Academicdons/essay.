@@ -488,7 +488,7 @@ class OrdersController extends Controller
         $order->status=3;
         $order->save();
 
-        //get the active assignment for the order
+        //get the active assignment for the order8
         $active_assignment=$order->currentAssignment();
         if ($active_assignment!=null){
             $user=User::find($active_assignment->user_id);

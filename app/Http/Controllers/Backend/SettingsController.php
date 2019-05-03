@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Models\FqdnConfiguration;
 use App\Models\SystemSettings;
+use App\Models\UsageStatistics;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
@@ -60,6 +61,13 @@ class SettingsController extends Controller
         return View::make('backend.settings.system');
     }
 
+    public function usageSettings()
+    {
+        $stats = UsageStatistics::firstOrCreate([]);
+        Session::flash('_old_input',$stats);
+        return View::make('backend.settings.usage');
+    }
+
     public function storeSystemSettings(Request $request)
     {
         $settings = SystemSettings::firstOrCreate(['auto_assign' => true]);
@@ -69,5 +77,17 @@ class SettingsController extends Controller
         $settings->save();
 
         return back();
+    }
+
+    public function storeUsageSettings(Request $request)
+    {
+        $settings = UsageStatistics::first();
+        $settings->loyal_customers = request('loyal_customers');
+        $settings->current_orders = request('current_orders');
+        $settings->active_writers = request('active_writers');
+        $settings->save();
+
+        return back();
+
     }
 }

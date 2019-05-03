@@ -233,6 +233,7 @@
                     <ul class="treeview-menu" style="">
                         <li class="active"><a href="{{route('admin.settings.domains')}}"><i class="fa fa-cog"></i>Domains</a></li>
                         <li class="active"><a href="{{route('admin.settings.system')}}"><i class="fa fa-cog"></i>System settings</a></li>
+                        <li class="active"><a href="{{route('admin.settings.usage')}}"><i class="fa fa-cog"></i>Usage settings</a></li>
                     </ul>
                 </li>
 

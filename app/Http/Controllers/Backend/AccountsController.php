@@ -9,6 +9,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Webpatser\Uuid\Uuid;
@@ -115,6 +116,66 @@ class AccountsController extends Controller
 
         $pdf = PDF::loadView('layouts.invoice', ['orders'=>$result,'user'=>$user,'date'=>Carbon::now()]);
         return $pdf->download('invoice.pdf');
+    }
+
+    public function previewInvoice(Request $request)
+    {
+
+        $user = User::find($request->user);
+
+        /*
+         *get currently assigned orders ignoring other assignments fines
+         */
+
+//        $orders = Order::join('assignments', 'orders.active_assignment', '=', 'assignments.id');
+//        $orders->join('users', 'assignments.user_id', '=', 'users.id');
+//        $orders->leftJoin('bargains', 'bargains.order_id', '=', 'orders.id');
+//        $orders->doesntHave('payment');
+//        $orders->where('orders.status',4);
+//        $orders->where('assignments.user_id',$user->id);
+//        $orders->select(['orders.id','orders.order_no','orders.title','bargains.order_id','users.id as user_id','users.email','orders.order_no','orders.salary','users.name',DB::raw('SUM(bargains.amount) As bargains_sum, (IFNULL(SUM(bargains.amount),0)+orders.salary) as total')]);
+//        $orders->groupBy(['orders.id']);
+//        $result = $orders->get();
+
+        /*
+         *Get any other fines for this user that have the status unprocessed
+         */
+
+        $orders = Order::join('assignments', 'orders.active_assignment', '=', 'assignments.id');
+        $orders->join('users', 'assignments.user_id', '=', 'users.id');
+        $orders->doesntHave('payment');
+        $orders->where('orders.status',4);
+        $orders->where('assignments.user_id',$user->id);
+        $orders->select(['orders.id']);
+        $order_ids = $orders->get()->pluck('id');
+
+
+        /*
+         * get the current assigned orders particulars
+         */
+
+        $active_orders = Order::leftJoin('bargains', 'orders.id', '=', 'bargains.order_id');
+        $active_orders->doesntHave('payment');
+        $active_orders->where('orders.status',4);
+        $active_orders->select(['orders.id','orders.order_no','orders.title','orders.order_no','orders.salary',DB::raw('SUM(bargains.amount) As bargains_sum, (IFNULL(SUM(bargains.amount),0)+orders.salary) as total')]);
+        $active_orders->groupBy(['orders.id']);
+        $active_orders->whereIn('orders.id',$order_ids);
+        $active_result =$active_orders->get();
+
+        /*
+         * get all active bargains not in the above orders meaning a reassignment happened.
+         */
+        $bargains = Bargain::join('orders','bargains.order_id','=','orders.id');
+        $bargains->select(['bargains.order_id','bargains.amount','orders.title','orders.order_no','bargains.reason']);
+        $bargains->whereNotIn('orders.id',$order_ids);
+        $bargains->where('bargains.status',0);
+        $barg =$bargains->get();
+
+
+        return view('backend.accounts.invoice')->withOrders($active_result)->withUser($user)->withBargains($barg)->withDate(Carbon::now());
+
+
+
     }
 
     public function bargains(Request $request)

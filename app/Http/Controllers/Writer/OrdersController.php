@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Writer;
 
 use App\Jobs\AssignOrderMail;
 use App\Jobs\SendSystemEmail;
+use App\Models\Assignment;
 use App\Models\Attachment;
 use App\Models\Bargain;
 use App\Models\Bid;
@@ -16,10 +17,14 @@ use App\Notifications\ChatNotification;
 use App\Notifications\RevisedNotification;
 use App\User;
 use Carbon\Carbon;
+use Dilab\Network\SimpleRequest;
+use Dilab\Network\SimpleResponse;
+use Dilab\Resumable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
@@ -38,9 +43,17 @@ class OrdersController extends Controller
         return View::make('writer.orders.available');
     }
 
-    public function allOrders()
+    public function getRecentOrders(Request $request)
     {
-        return View::make('writer.orders.all');
+        $orders = Assignment::join('orders','assignments.order_id','orders.id')
+            ->where('assignments.user_id',Auth::id())
+            ->get();
+        return response()->json($orders);
+    }
+
+    public function allOrders(Request $request)
+    {
+        return View::make('writer.orders.all')->withStatus($request->status);
     }
 
     public function getUsersOrders(Request $request)
@@ -48,8 +61,8 @@ class OrdersController extends Controller
 
         $orders = Order::join('assignments', 'orders.active_assignment', '=', 'assignments.id');
         $orders->join('users', 'assignments.user_id', '=', 'users.id');
-        $orders->where('assignments.user_id',Auth::id());
-        $orders->where('assignments.status',1);
+//        $orders->where('assignments.user_id',Auth::id());
+//        $orders->where('assignments.status',1);
         $orders->where('orders.status',$request->input('status'));
 
 
@@ -57,6 +70,7 @@ class OrdersController extends Controller
             'orders'=>$orders->withCount('attachments')->get()
         ]);
     }
+
 
     public function viewOrder(Order $order)
     {
@@ -105,35 +119,42 @@ class OrdersController extends Controller
         ]);
     }
 
-    public function saveFile(Request $request,Order $order)
+    public function saveFile(Order $order)
     {
 
-        if($request->hasFile('file')) {
-            if (!$request->file('file')->isValid()) {
-                return redirect()->back()->withErrors(['error'=>'The picture is invalid']);
-            } else {
-
-                //save picture
-                $image=Input::file('file');
-                $filename=time() . '.' . $image->getClientOriginalExtension();
-                $path = public_path('uploads/files/order_files/');
-                if(!File::exists($path)) {File::makeDirectory($path, $mode = 0777, true, true);}
-
-                $image->move($path,$filename);
+        $request = new SimpleRequest();
+        $response = new SimpleResponse();
+        $temp_path=Config::get('app.folder') . '/temps';
+        $file_path = Config::get('app.folder') . '/order_files';
 
 
-            $attachment=new Attachment();
-            $attachment->id = Uuid::generate();
-            $attachment->file_name=$filename;
-            $attachment->display_name=$request->display_name;
-            $attachment->order_id=$order->id;
-                $attachment->created_by=Auth::id();
-            $attachment->save();
+        if (!File::exists($temp_path)) {
+            File::makeDirectory($temp_path, 0777, true, true);
+        }
 
-            return redirect()->back();
-            }
-        }else{
-            return redirect()->back()->withErrors(['error'=>'The picture is absent']);
+        if (!File::exists($file_path)) {
+            File::makeDirectory($file_path, 0777, true, true);
+        }
+
+        $resumable = new Resumable($request, $response);
+        $resumable->tempFolder = $temp_path ;
+        $resumable->uploadFolder = $file_path;
+
+        $originalName = $resumable->getOriginalFilename(Resumable::WITHOUT_EXTENSION);
+        $filename = uniqid() . '.' . $resumable->getExtension();
+        $resumable->setFilename($filename);
+
+
+        $resumable->process();
+
+        if (true === $resumable->isUploadComplete()) {
+            $document = new Attachment();
+            $document->id = Uuid::generate();
+            $document->file_name = $filename;
+            $document->display_name = $originalName;
+            $document->order_id = $order->id;
+            $document->created_by=Auth::id();
+            $document->save();
 
         }
 
@@ -213,26 +234,33 @@ class OrdersController extends Controller
         return redirect()->back();
     }
 
+    public function finished(Request $request)
+    {
+        return View::make('writer.orders.finished')->withPaid($request->paid);
+
+    }
+
     public function finishedOrders(Request $request)
     {
         $orders = Order::join('assignments', 'orders.active_assignment', '=', 'assignments.id');
         $orders->join('users', 'assignments.user_id', '=', 'users.id');
         $orders->leftJoin('bargains', 'bargains.order_id', '=', 'orders.id');
 
+        //TODO revert this comments
         /*
          * Consider complete orders which are paid or unpaid
          */
-        if(request('pay_state')==0 || !$request->has('pay_state')){
-            $orders->doesntHave('payment');
-        }else{
-            $orders->has('payment');
-        }
-        $orders->with('payment');
+//        if(request('pay_state')==0 || !$request->has('pay_state')){
+//            $orders->doesntHave('payment');
+//        }else{
+//            $orders->has('payment');
+//        }
+//        $orders->with('payment');
 
 
-        $orders->where('orders.status',4);
+//        $orders->where('orders.status',4);
         $orders->where('assignments.user_id',Auth::id());
-        $orders->select(['orders.id','orders.order_no','orders.salary',DB::raw('SUM(bargains.amount) As bargains_sum')]);
+        $orders->select(['orders.id','orders.title','orders.deadline','orders.no_pages','orders.no_words','orders.order_no','orders.salary',DB::raw('SUM(bargains.amount) As bargains_sum')]);
         $orders->groupBy('orders.id');
 
         $result = $orders->get();

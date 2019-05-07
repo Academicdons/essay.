@@ -282,27 +282,27 @@
                 </div>
                 <div class="col-sm-3 text-center">
                     <img src="{{asset('images/signup.png')}}" class="img-fluid" alt="">
-                    <h4 class="mt-3">Sign up</h4>
+                    <h4 class="mt-3"><a href="{{route('login')}}">Sign up</a></h4>
                     <p class="mt-3">Get started by submitting a form in less than a minutes.
                     </p>
                 </div>
 
                 <div class="col-sm-3 text-center">
                     <img src="{{asset('images/start-career.png')}}" class="img-fluid" alt="">
-                    <h4 class="mt-3">Place your order</h4>
+                    <h4 class="mt-3"><a href="{{route('login')}}">Place your order</a></h4>
                     <p class="mt-3">Use our interactive system to request your order.
                     </p>
                 </div>
                 <div class="col-sm-3 text-center">
                     <img src="{{asset('images/show-skill.png')}}" class="img-fluid" alt="">
-                    <h4 class="mt-3">Follow up</h4>
+                    <h4 class="mt-3"><a href="{{route('login')}}">Follow up</a></h4>
                     <p class="mt-3">Follow on the progress of your order.
                     </p>
                 </div>
 
                 <div class="col-sm-3 text-center">
                     <img src="{{asset('images/get-paid.png')}}" class="img-fluid" alt="">
-                    <h4 class="mt-3">Get value</h4>
+                    <h4 class="mt-3"><a href="{{route('login')}}">Get value</a></h4>
                     <p class="mt-3">Our professional strive to give you value for your money.
                     </p>
                 </div>
@@ -425,7 +425,7 @@
                                     <th>Topic</th>
                                     <th>Level</th>
                                     <th>No of pages</th>
-                                    <th>Amount</th>
+                                    <th>No of words</th>
                                 </tr>
                                 </thead>
 
@@ -435,7 +435,7 @@
                                             <td>{{$order->title}}</td>
                                             <td>{{$order->Education->name}}</td>
                                             <td>{{$order->no_pages}}</td>
-                                            <td>${{$order->amount}}</td>
+                                            <td>{{$order->no_words}}</td>
                                         </tr>
                                         @endforeach
                                 </tbody>

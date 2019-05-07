@@ -1,291 +1,376 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Homework pro writers</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{asset('bs4/dist/css/bootstrap.css')}}">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="node_modules/open-sans-fontface/open-sans.css">
+    <link rel="stylesheet" href="{{asset('css/perfect-scrollbar.css')}}">
+    <link rel="stylesheet" href="{{asset('css/sidebar.css')}}">
 
-  <meta name="description" content="HomeWorkPro Writers is taking writing to the next level">
-  <meta name="keywords" content="Writers,Writing,Clients,Order,Clients,HomeworkPro Writers,Homework writers, HomeworkPro">
-  <meta name="author" content="Neverest ltd">
+    <style type="text/css">
 
-  <link rel="icon" type="image/png" href="{{asset('images/logo2.png')}}" />
+        @font-face {
+            font-family: 'Helvetica';
+            src: URL('{{asset('css/helvetica.ttf')}}') format('truetype');
+        }
 
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="{{asset('bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{asset('bower_components/font-awesome/css/font-awesome.min.css')}}">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="{{asset('bower_components/Ionicons/css/ionicons.min.css')}}">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{{asset('dist/css/AdminLTE.min.css')}}">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="{{asset('dist/css/skins/_all-skins.min.css')}}">
-  <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
+        body{
+            font-family: Helvetica;
+            font-size: 110%;
+        }
 
-  @yield('style')
+        .bg-base{
+            background: green;
+            color: white;
+        }
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+        .light-border{
+            border: 1px solid #E8E8E8;
+            box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+            transition: 0.3s;
 
-  <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+        }
+
+        /*
+        Available orders styles
+         */
+        .available-order{
+            border: 1px solid #c0ddf6;
+            background: white;
+        }
+
+        .available-order label{
+            font-weight: bold;
+        }
+
+        .available-order .bottom-bar{
+            background: #e9e9e9;
+            color:black;
+        }
+
+        .title{
+            color: #23c0e9;
+        }
+
+        .available-order:hover{
+            border: 1px solid #23c0e9;
+        }
+        .available-order:hover .bottom-bar {
+            background: #23c0e9;
+            color: white;
+        }
+
+        .text-aqua{
+            color: #23c0e9;
+
+        }
+
+        .heading:before {
+            content: '';
+            border: 1px solid #23c0e9;
+            width: 15px;
+            position: absolute;
+            bottom: 0px;
+            left: 15px;
+        }
+
+        .heading:after {
+            content: '';
+            border: 1px solid #23c0e9;
+            width: 40px;
+            position: absolute;
+            bottom: 0px;
+            left: 33px;
+        }
+
+        .right-side-bar{
+            background: white;
+            min-height: 100vh;
+        }
+
+
+        #available_container a{
+            text-decoration: none;
+            color: black;
+        }
+
+        #available_container label,span{
+            font-size: 14px;
+        }
+
+        .mini-btn{
+            border-radius: 3px;
+            border: 1px solid #23c0e9;
+            padding: 5px 10px 5px 10px;
+            margin: 1px;
+        }
+
+
+        /*
+        pace js css
+         */
+        .pace {
+            -webkit-pointer-events: none;
+            pointer-events: none;
+
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+
+            z-index: 2000;
+            position: fixed;
+            margin: auto;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 5px;
+            width: 200px;
+            background: #fff;
+            border: 1px solid #29d;
+
+            overflow: hidden;
+        }
+
+        .pace .pace-progress {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -ms-box-sizing: border-box;
+            -o-box-sizing: border-box;
+            box-sizing: border-box;
+
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+            -o-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+
+            max-width: 200px;
+            position: fixed;
+            z-index: 2000;
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 100%;
+            height: 100%;
+            width: 100%;
+            background: #29d;
+        }
+
+        .pace.pace-inactive {
+            display: none;
+        }
+
+
+
+
+    </style>
+
+    @yield('style')
+    <title>Sidebar menu on bootstrap 4</title>
 </head>
-<!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
-<body class="hold-transition skin-green layout-top-nav">
-<div class="wrapper">
 
-  <header class="main-header">
-    <nav class="navbar navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <a href="../../index2.html" class="navbar-brand"><b>Homework</b>PRO</a>
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-            <i class="fa fa-bars"></i>
-          </button>
+<body class="body body-lighten">
+<div class="d-flex" id="wrapper">
+
+    <!-- sidebar -->
+    <div class="sidebar sidebar-lighten">
+        <!-- sidebar menu -->
+        <div class="sidebar-menu">
+
+            <!-- menu -->
+            <ul class="list list-unstyled list-scrollbar">
+
+                <!-- simple menu -->
+                <li class="list-item">
+                    <p class="list-title text-uppercase">Account</p>
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('writer.profile.index')}}" class="list-link current">Profile</a></li>
+                    </ul>
+                </li>
+
+                <!-- multi-level dropdown menu -->
+                <li class="list-item">
+                    <p class="list-title text-uppercase">Dashboard</p>
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('writer.dashboard.index')}}" class="list-link"><span class="list-icon"><i class="fa fa-home" aria-hidden="true"></i></span>Home</a></li>
+                        <li><a href="{{route('writer.orders.available')}}" class="list-link"><span class="list-icon"><i class="fa fa-briefcase" aria-hidden="true"></i></span>Available orders</a></li>
+                        <li><a href="#" class="list-link link-arrow link-current"><span class="list-icon"><i class="fa fa-cog" aria-hidden="true"></i></span>My orders</a>
+                            <ul class="list-unstyled list-hidden">
+                                <li><a href="{{route('writer.orders.all')}}?status=1" class="list-link"><i class="fa fa-spinner"></i> In-progress</a></li>
+                                <li><a href="{{route('writer.orders.all')}}?status=2" class="list-link"><i class="fa fa-refresh"></i> Revision</a></li>
+                                <li><a href="{{route('writer.orders.all')}}?status=3" class="list-link"><i class="fa fa-check"></i> Completed</a></li>
+                                <li><a href="{{route('writer.orders.all')}}?status=5" class="list-link"><i class="fa fa-times"></i> Disputed orders</a></li>
+                                <li><a href="#" class="list-link link-arrow link-current"> <i class="fa fa-check-circle"></i> Finished orders</a>
+                                    <ul class="list-unstyled list-hidden">
+                                        <li><a href="{{route('writer.orders.finished')}}?paid=1" class="list-link"><i class="fa fa-cart-plus"></i> paid orders</a></li>
+                                        <li><a href="{{route('writer.orders.finished')}}?paid=0" class="list-link"><i class="fa fa-shopping-cart"></i> unpaid orders</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <!-- multi-level dropdown menu -->
+                <li class="list-item">
+                    <p class="list-title text-uppercase">Notifications</p>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="list-link"><span class="list-icon"><i class="fa fa-envelope" aria-hidden="true"></i></span>All notifications</a></li>
+                        <li><a href="#" class="list-link link-arrow"><span class="list-icon"><i class="fa fa-cog" aria-hidden="true"></i></span>Settings</a>
+                            <ul class="list-unstyled list-hidden">
+                                <li><a href="#" class="list-link">Disable</a></li>
+                                <li><a href="#" class="list-link">Enable</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+{{--                <!-- simple menu -->--}}
+{{--                <li class="list-item">--}}
+{{--                    <p class="list-title text-uppercase">Blog</p>--}}
+{{--                    <ul class="list-unstyled">--}}
+{{--                        <li><a href="#" class="list-link"><span class="list-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>Add</a></li>--}}
+{{--                        <li><a href="#" class="list-link"><span class="list-icon"><i class="fa fa-table" aria-hidden="true"></i></span>List</a></li>--}}
+{{--                    </ul>--}}
+{{--                </li>--}}
+            </ul>
         </div>
+    </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="{{route('writer.orders.available')}}">Available orders <span class="sr-only">(current)</span></a></li>
-            <li><a href="{{route('writer.orders.all')}}">My orders</a></li>
-            <li><a href="{{route('writer.payments.info')}}">Payment Information</a></li>
-          </ul>
-          <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
+    <!-- website content -->
+    <div class="content">
+
+        <!-- navbar top fixed -->
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-base">
+
+            <!-- navbar title -->
+            <a class="navbar-brand navbar-link" href="#">Homework pro</a>
+
+            <!-- navbar sidebar menu toggle -->
+            <span class="navbar-text">
+					<a href="#" id="sidebar-toggle" class="navbar-bars">
+						<i class="fa fa-bars" aria-hidden="true"></i>
+					</a>
+				</span>
+
+            <!-- navbar dropdown menu-->
+            <div class="collapse navbar-collapse">
+                <div class="dropdown dropdown-logged dropdown-logged-lighten">
+                    <a href="#" data-toggle="dropdown" class="dropdown-logged-toggle dropdown-link">
+                        <span class="dropdown-user text-white float-left">{{Auth::user()->name}}</span>
+                        <img src="https://cdn3.iconfinder.com/data/icons/business-avatar-1/512/10_avatar-512.png" alt="avatar" class="dropdown-avatar">
+                    </a>
+                    <div class="dropdown-menu dropdown-logged-menu dropdown-menu-right border-0 dropdown-menu-lighten">
+                        <div class="dropdown-menu-arrow"></div>
+                        <a class="dropdown-item dropdown-logged-item" href="#"><i class="fa fa-user-o" aria-hidden="true"></i>Your profile</a>
+                        <a class="dropdown-item dropdown-logged-item" href="#"><i class="fa fa-comments-o" aria-hidden="true"></i>Your comments</a>
+                        <a class="dropdown-item dropdown-logged-item" href="#"><i class="fa fa-key" aria-hidden="true"></i>Change password</a>
+                        <div class="dropdown-divider border-light"></div>
+                        <a class="dropdown-item dropdown-logged-item" href="#"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+                    </div>
+                </div>
             </div>
-          </form>
+        </nav>
+
+        <!-- content container -->
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-sm-10 border-right">
+                    <br>
+
+                    @yield('content')
+
+                </div>
+                <div class="col-sm-2 d-none d-lg-block right-side-bar" >
+
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <img class="img-fluid" src="{{asset('images/logo.png')}}" alt="">
+                        </div>
+                    </div>
+
+
+                    <div class="row" id="recent_orders">
+                        <div class="col-sm-12">
+                            <h6 class="heading mt-3">Recent orders</h6>
+                        </div>
+                        <div class="col-sm-12 small mt-3" v-for="order in recent_orders">
+                            <div class="recent-order">
+                                <a :href="'{{url('/writer/orders/view')}}/' + order.id"><span class="text-aqua font-weight-bold">#@{{ order.order_no }}- @{{ order.title }}</span></a>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12" v-if="recent_orders.length<=0">
+                            <div class="alert alert-info">
+                                <p class="small">No recent orders available</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <p class="small">
+                        © 2019 Homework pro inc <br> <br>
+                        site design / logo © 2019 Homework pro inc; user contributions licensed under cc by-sa 3.0 with attribution required. rev 2019.5.3.33fsr4
+                    </p>
+
+                </div>
+            </div>
+
+
         </div>
-        <!-- /.navbar-collapse -->
-        <!-- Navbar Right Menu -->
-        <div class="navbar-custom-menu">
-          <ul class="nav navbar-nav">
-            <li class="dropdown notifications-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-bell-o"></i>
-                <span class="label label-warning">{{count(\Illuminate\Support\Facades\Auth::user()->unreadNotifications)}}</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="header">You have {{count(\Illuminate\Support\Facades\Auth::user()->unreadNotifications)}} notifications</li>
-                <li>
-                  <!-- inner menu: contains the actual data -->
-                  <ul class="menu">
-
-                    @foreach(\Illuminate\Support\Facades\Auth::user()->unreadNotifications as $notification)
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-users text-aqua"></i>{{(isset($notification->data['text']))?$notification->data['text']:""}}
-                        </a>
-                      </li>
-
-                    @endforeach
-
-                    @if(count(\Illuminate\Support\Facades\Auth::user()->unreadNotifications)>0)
-                      <li class="footer"><a href="{{route('writer.mark_all_notification_As_read')}}">Mark All as Read</a></li>
-                    @endif
-                  </ul>
-                </li>
-
-              </ul>
-            </li>
-
-            <li class="dropdown user user-menu">
-              <!-- Menu Toggle Button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
-                <span class="hidden-xs">{{\Illuminate\Support\Facades\Auth::user()->name}}</span>
-              </a>
-              <ul class="dropdown-menu">
-                <!-- The user image in the menu -->
-                <li class="user-header">
-                  @if(\Illuminate\Support\Facades\Auth::user()->avatar!='')
-                  <img src="{{asset('uploads/user_pictures/'. \Illuminate\Support\Facades\Auth::user()->avatar)}}" class="img-circle" alt="User Image">
-
-                  @else
-
-                    <img src="{{asset('dist/img/anonymous.jpg')}}" class="img-circle" alt="User Image">
-
-                  @endif
-                  <p>
-                   {{\Illuminate\Support\Facades\Auth::user()->name}}
-                    <small>Member since {{\Illuminate\Support\Facades\Auth::user()->created_at->toDayDateTimeString()}}</small>
-                  </p>
-                </li>
-
-                <li class="user-footer">
-                  <div class="pull-left">
-                    <a href="{{route('writer.profile')}}" class="btn btn-default btn-flat">Profile</a>
-                  </div>
-                  <div class="pull-right">
-                    <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Sign out</a>
-
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-        <!-- /.navbar-custom-menu -->
-      </div>
-      <!-- /.container-fluid -->
-    </nav>
-  </header>
-  <!-- Full Width Column -->
-  <div class="content-wrapper">
-    <section class="content-header" style="background: white;padding-bottom: 10px">
-      <h1>
-        Writers portal
-        <small></small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">writer</a></li>
-        <li class="active">@yield('page')</li>
-      </ol>
-    </section>
-
-    <div class="container-fluid">
-      <!-- Content Header (Page header) -->
-
-
-      <!-- Main content -->
-      <section class="content">
-
-        @yield('content')
-        <!-- /.box -->
-      </section>
-      <!-- /.content -->
     </div>
-    <!-- /.container -->
-  </div>
-
-  <div class="modal " tabindex="-1" role="dialog" id="announcement_modal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Current Unread Announcements</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-          <div class="box-body">
-            <table class="table table-responsive">
-           <thead>
-             <tr>
-               <th>Title</th>
-               <th>New Article</th>
-             </tr>
-           </thead>
-              <tbody>
-              <tr v-for="announcement in announcements">
-                <td>   @{{ announcement.title }}</td>
-                <td v-html=" announcement.news_article ">   @{{ announcement.news_article }}</td>
-              </tr>
-              </tbody>
-            </table>
-
-
-          </div>
-
-
-        </div>
-        <div class="modal-footer">
-          <a href="{{route('writer.change_announcement')}}"  class="btn btn-primary" >Mark As Read</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <div class="container">
-      <div class="pull-right hidden-xs">
-        <b>Version</b> 2.4.0
-      </div>
-      <strong>Copyright &copy; {{date('Y')}} <a href="https://adminlte.io">Homeworkprowriters</a>.</strong> All rights
-      reserved.
-    </div>
-    <!-- /.container -->
-  </footer>
 </div>
-<!-- ./wrapper -->
 
-<!-- Bootstrap 3.3.7 -->
-<script src="{{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-<!-- AdminLTE App -->
-<script src="{{asset('dist/js/adminlte.min.js')}}"></script>
+<!-- javascript library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="{{asset('bs4/dist/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('js/sidebar.menu.js')}}"></script>
+<script src="{{asset('js/perfect-scrollbar.min.js')}}"></script>
+<script src='{{asset('js/pace.js')}}'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+
+<script>
+    $(function() {
+        new PerfectScrollbar('.list-scrollbar');
+    });
+</script>
 <script src="{{asset('axios.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
 <script src="{{asset('js/sock.min.js')}}"></script>
 <script src="{{asset('js/thunder.js')}}"></script>
 
-<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-<script>
-  var OneSignal = window.OneSignal || [];
-  OneSignal.push(function() {
-    OneSignal.init({
-      appId: "e0f5df37-237c-4801-93b8-c1ac464031f9",
-    });
-  });
-
-  OneSignal.push(function() {
-    OneSignal.sendTags({
-      user_id: '{{Auth::id()}}'
-    }).then(function(tagsSent) {
-      // Callback called when tags have finished sending
-      console.log(tagsSent);
-    });
-  });
-</script>
-
-
 @yield('script')
-{{--handle the announcements here--}}
-<script type="application/javascript">
-
-  let modal_content=new Vue({
-    el:'#announcement_modal',
-    data:{
-      announcements:[],
-    },
-    created:function(){
-      let url='{{route('writer.check_announcements')}}';
-      let me=this;
-      axios.get(url)
-              .then(res=>{
-              me.announcements=res.data.announcements;
-          console.log('{{session()->get('markedRead')}}');
-                if (res.data.announcements.length===0  ){
-
-              }else{
-                  if ('{{session()->get('markedRead')}}'==='yes'){
-
-                  } else{
-                    //show the modal
-                    $('#announcement_modal').modal('show');
-
-                  }
-              }
-              })
-    },
-    methods:{
-
-
-    }
-  });
-
+<script>
+    let recent_orders = new Vue({
+        el:'#recent_orders',
+        data:{
+            recent_orders:[]
+        },
+        created:function(){
+            this.getRecentOrders()
+        },
+        methods:{
+            getRecentOrders:function(){
+                let url = '{{route('writer.orders.recent')}}'
+                let me = this;
+                axios.get(url)
+                    .then(function(res){
+                        me.recent_orders  = res.data;
+                    })
+            }
+        }
+    })
 </script>
 </body>
+
 </html>

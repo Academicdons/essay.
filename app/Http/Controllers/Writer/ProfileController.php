@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Writer;
 
+use App\Models\Discipline;
+use App\Models\PaymentInformation;
 use App\Models\UserDiscipline;
 use App\User;
 use http\Exception;
@@ -17,14 +19,35 @@ use Intervention\Image\Facades\Image;
 class ProfileController extends Controller
 {
     //
-    public function __invoke()
-    {
-        Session::flash('_old_input',Auth::user());
 
-        $userDisciplines=UserDiscipline::where('user_id',Auth::id())->with('Discipline')->get();
-        return view('writer.profile')->withDisciplines($userDisciplines);
+    public function index()
+    {
+        $userDisciplines=UserDiscipline::where('user_id',Auth::id())->get()->pluck('discipline_id');
+        return view('writer.profile.info')->withUser(Auth::user())->withDisciplines(Discipline::all())->withDis($userDisciplines);
+    }
+
+    public function payments()
+    {
+        Session::flash('_old_input',Auth::user()->paymentInformation);
+        return view('writer.profile.payments')->withUser(Auth::user());
 
     }
+
+    public function storePayments(Request $request)
+    {
+        PaymentInformation::updateOrCreate(
+            ['user_id' => Auth::id()],
+            [
+                'mpesa_number' => request('mpesa_number'),
+                'id_number' => request('id_number'),
+                'mpesa_name' => request('mpesa_name'),
+                'bank_name' => request('bank_name'),
+                'account_number' => request('account_number'),
+            ]
+        );
+        return back();
+    }
+
 
     public function updateUser(Request $request)
     {

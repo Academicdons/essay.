@@ -617,10 +617,14 @@
                                 <textarea class="form-control" placeholder="Reason" v-model="bargain.reason"></textarea>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="text-danger" v-html="error"></p>
+                            </div>
+                        </div>
                             <div class="row">
                                 <div class="col-sm-4">
                                     <button type="button" @click="saveBargain()" class="btn btn-block btn-primary">Add bargain</button>
-
                                 </div>
                             </div>
 
@@ -710,9 +714,6 @@
             $('#deadline').datetimepicker({
                 format:'DD/MM/YYYY H:mm:ss'
             });
-
-
-
         });
 
         $(function () {
@@ -728,7 +729,7 @@
             });
         });
 
-        var dadsd=new Vue({
+        var general_data=new Vue({
             el:'#description_data',
             data:{
                 deadline:null,
@@ -792,7 +793,6 @@
                     let order_id_id='<?php echo $order->id; ?>';
 
                     let url = '{{route('admin.orders.dispute_order',$order->id)}}';
-{{--                    let url = '{{route('customer.orders.dispute_order',$order->id)}}';--}}
                     let me = this;
                     axios.post(url,{'dispute_reason':me.dispute_reason,'order_id':order_id_id})
                         .then(function (res) {
@@ -803,7 +803,6 @@
                 },
                 getDisputes(){
                     let url='{{route('admin.orders.fetch_disputes',$order->id)}}';
-{{--                    let url='{{route('customer.orders.fetch_disputes',$order->id)}}';--}}
                     let me = this
                     axios.get(url)
                         .then(function (res) {
@@ -962,7 +961,8 @@
             el:'#bargains_area',
             data:{
                 bargains:[],
-                bargain:{}
+                bargain:{},
+                error:""
             },
             created:function(){
                 console.log("Bargain area created");
@@ -984,6 +984,9 @@
                     axios.post(url,this.bargain)
                         .then(function(res){
                             me.getBargains()
+                        })
+                        .catch(function (res) {
+                            me.error = res.response.data.message
                         })
 
                 }

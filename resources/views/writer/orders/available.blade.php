@@ -6,114 +6,54 @@
 
 @section('style')
 
-    <style type="text/css">
-
-        .table-striped tr:nth-child(odd){
-            background: lightgrey !important;
-        }
-
-
-
-        .order h4 span{
-            font-weight: bold;
-        }
-
-        .order h4{
-            font-weight: bold;
-        }
-
-        .order .col-sm-4:nth-child(1){
-            padding-right: 0px !important;
-        }
-
-        .order .col-sm-4:nth-child(2){
-            padding-right: 2px !important;
-            padding-left: 2px !important;
-        }
-
-        .order .col-sm-4:nth-child(3){
-            padding-left: 0px !important;
-        }
-
-        .table-sm th,td{
-            padding: 5px !important;
-        }
-
-    </style>
-
     @endsection
 
 
 @section('content')
 
-    <div class="container pb-5" id="available_container">
-        <div class="order box box-solid" v-for="order in orders">
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12"><h4 class="text-light-blue">@{{ order.title }}</h4></div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4"><h4>ID: <span>@{{ order.order_no }}</span></h4></div>
-                    <div class="col-sm-4"><h4>Deadline: <span>@{{ moment.utc(order.writer_deadline).local().format("dddd,Do M-YYYY, h:mm:ss a")  }}  </span></h4></div>
-                    <div class="col-sm-4"><h4 style="">Duration: <span v-bind:class="getDeadlineClass(order.writer_deadline)">@{{ getTimedifference(order.writer_deadline) }}  </span></h4></div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-4 col-lg-4">
-                        <table class="table table-sm table-striped">
-                            <tr>
-                                <td>Discipline</td><th><span v-if="order.discipline!=null">@{{ order.discipline.name }}</span></th>
-                            </tr>
-                            <tr>
-                                <td>Education level</td><th><span v-if="order.education!=null">@{{ order.education.name }}</span></th>
-                            </tr>
-                            <tr>
-                                <td>Paper type</td><th><span v-if="order.paper!=null">@{{ order.paper.name }}</span></th>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-sm-12 col-md-4 col-lg-4">
-                        {{--<div class="row">--}}
-                            {{--<div class="col-sm-12">--}}
-                                <table class="table table-sm table-striped">
-                                    <tr>
-                                        <td>No of words</td><th>@{{ order.no_words }}</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Pages</td><th>@{{ order.no_pages }}</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Salary</td><th>@{{ order.salary }}</th>
-                                    </tr>
-                                </table>
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    </div>
-                    <div class="col-sm-12 col-md-4 col-lg-4">
-                        <table class="table table-sm table-striped">
-                            <tr>
-                                <td>Spacing</td><th>
-                                    <span v-if="order.spacing==0">Single</span>
-                                    <span v-if="order.spacing==1">Double</span>
-                                    </th>
-                            </tr>
-                            <tr>
-                                <td>Created at</td><th>@{{ moment.utc(order.created_at).local().format("D-M-YYYY, h:mm:ss a") }}</th>
-                            </tr>
-                            <tr>
-                                <td>Status</td><th>@{{ getStatusString(order.status) }}</th>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <a :href="'{{url('/writer/orders/view')}}/' + order.id" class="btn btn-default pull-right btn-sm"><i class="fa text-primary fa-file"></i> view</a> &nbsp;
 
-                        <a :href="'{{url('/writer/orders/view')}}/' + order.id" class="btn btn-default pull-right btn-sm" style="margin-right: 10px"><i class="fa text-primary fa-paperclip"></i> @{{ order.attachments_count }} files</a>
 
+    <div class="row">
+        <div class="col-sm-12">
+            <h5 class="heading">Available orders</h5>
+        </div>
+    </div>
+
+    <!-- Available orders -->
+    <div class="row" id="available_container">
+        <div class="col-sm-6 mb-3 col-md-6" v-for="order in orders">
+            <a :href="'{{url('/writer/orders/view')}}/' + order.id">
+            <div class="row p-3">
+                <div class="col-sm-12 available-order">
+                    <div class="row mt-2 mb-2">
+                        <div class="col-sm-3 border-right"><label for="">Order ID:</label><span> @{{ order.order_no }}</span></div>
+                        <div class="col-sm-6"><label for="">Deadline</label><span> @{{ moment.utc(order.writer_deadline).local().format("dddd,Do M-YYYY, h:mm:ss a")  }}</span></div>
+                        <div class="col-sm-3 border-left"><label for="">Salary</label><span> $@{{ order.salary }}</span></div>
+                    </div>
+                    <div class="row mb-3 mt-2">
+                        <div class="col-sm-12">
+                            <label>Title:</label><label class="title">@{{ order.title }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 bottom-bar">
+                            <div class="row">
+                                <div class="col-sm-4 pt-2">
+                                    <p class="small text-center">Discipline: <span v-if="order.discipline!=null">@{{ order.discipline.name }}</span> </p>
+                                </div>
+                                <div class="col-sm-4 pt-2">
+                                    <p class="small text-center">Education level: <span v-if="order.education!=null">@{{ order.education.name }}</span></p>
+                                </div>
+                                <div class="col-sm-4 pt-1">
+                                    <p class="small text-center">Pages/Words: @{{ order.no_pages }}/@{{ order.no_words }}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            </a>
+
         </div>
     </div>
 

@@ -13,6 +13,7 @@
 
 Route::get('/', 'GeneralController@index');
 Route::get('/register_writer', 'GeneralController@registerWriter');
+Route::get('/contact', 'GeneralController@contact')->name('contact');
 //terms and conditions
 Route::get('terms',function (){
    return view('terms_and_condition');
@@ -104,11 +105,18 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
 
     Route::get('mark_all_notification_As_read','ProfileController@markNotAsRead')->name('mark_all_notification_As_read');
 
-    #Orders routes
+    Route::group(['as'=>'dashboard.','prefix'=>'dashboard'],function() {
+        Route::get('/', 'DashboardController@index')->name('index');
+    });
+
+
+        #Orders routes
     Route::group(['as'=>'orders.','prefix'=>'orders'],function(){
         Route::get('/available', 'OrdersController@availableOrders')->name('available');
+        Route::get('/recent', 'OrdersController@getRecentOrders')->name('recent');
         Route::get('/all', 'OrdersController@allOrders')->name('all');
         Route::get('/user_orders', 'OrdersController@getUsersOrders')->name('user_orders');
+        Route::get('/finished', 'OrdersController@finished')->name('finished');
         Route::get('/finished_orders', 'OrdersController@finishedOrders')->name('finished_orders');
         Route::get('/view/{order}', 'OrdersController@viewOrder')->name('view');
         Route::get('/revisions', 'OrdersController@revisions')->name('revisions');
@@ -116,7 +124,7 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
         Route::get('/reviews/{order}', 'OrdersController@orderReviews')->name('reviews');
         Route::get('/messages/{order}', 'OrdersController@getMessages')->name('messages');
         Route::post('/save_messages/{order}', 'OrdersController@saveMessage')->name('save_messages');
-        Route::post('/upload_file/{order}', 'OrdersController@saveFile')->name('upload_file');
+        Route::post('/upload/{order}', 'OrdersController@saveFile')->name('upload');
         Route::get('/available_orders_json','OrdersController@availableOrdersJson');
         Route::get('view/{order}','OrdersController@view')->name('view');
         Route::post('review','OrdersController@review')->name('review');
@@ -128,18 +136,19 @@ Route::Group(['prefix' => 'writer', 'namespace' => 'Writer', 'as' => 'writer.', 
 
     });
 
-    Route::group(['as'=>'payments.','prefix'=>'payments'],function (){
-        Route::get('/info', 'PaymentsController@info')->name('info');
-        Route::post('/store', 'PaymentsController@store')->name('store');
+
+
+    Route::group(['as'=>'profile.','prefix'=>'profile'],function (){
+        Route::get('/', 'ProfileController@index')->name('index');
+        Route::get('payments','ProfileController@payments')->name('payments');
+        Route::post('store_payments','ProfileController@storePayments')->name('store_payments');
+        Route::post('update_profile','ProfileController@updateUser')->name('update_profile');
+        Route::post('update_user_profile','ProfileController@updateUserProfile')->name('update_user_profile');
     });
 
     //announcement routes
     Route::get('check_announcements','AnnouncementController@getAnnouncementsJson')->name('check_announcements');
     Route::get('change_announcement','AnnouncementController@toggleAnnouncement')->name('change_announcement');
-    //profile routes
-    Route::get('profile','ProfileController')->name('profile');
-    Route::post('update_profile','ProfileController@updateUser')->name('update_profile');
-    Route::post('update_user_profile','ProfileController@updateUserProfile')->name('update_user_profile');
 
     //user discipline routes
     Route::get('get_all_disciplines','UserDisciplineController@getAllDisciplines')->name('get_all_disciplines');
@@ -179,6 +188,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
         Route::get('/', 'AccountsController@index')->name('all');
         Route::get('/users', 'AccountsController@users')->name('users');
         Route::get('/invoice/{user}', 'AccountsController@invoice')->name('invoice');
+        Route::get('/preview', 'AccountsController@previewInvoice')->name('preview');
         Route::get('/data', 'AccountsController@getData')->name('data');
         Route::get('/bargains', 'AccountsController@bargains')->name('bargains');
         Route::post('/pay_orders', 'AccountsController@payOrder')->name('pay_orders');
@@ -196,6 +206,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Backend', 'as' => 'admin.', '
     Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
         Route::get('/', 'OrdersController@index')->name('index');
         Route::get('/all', 'OrdersController@getOrders')->name('all');
+        Route::get('/search', 'OrdersController@search')->name('search');
         Route::get('/new', 'OrdersController@newOrder')->name('new');
         Route::post('/store', 'OrdersController@store')->name('store');
         Route::post('/review', 'OrdersController@review')->name('review');

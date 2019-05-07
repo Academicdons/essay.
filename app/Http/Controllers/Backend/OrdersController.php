@@ -65,6 +65,20 @@ class OrdersController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+
+        if(!$request->has('search') || $request->input('search')=="")
+            return response()->json(['orders'=>[]]);
+
+        return \response()->json([
+            'orders'=>Order::has('PaypalTransaction')
+                ->where('order_no', 'like', '%' . Input::get('search') . '%')
+                ->orWhere('title', 'like', '%' . Input::get('search') . '%')
+                ->get()
+        ]);
+    }
+
     public function newOrder()
     {
         return view('backend.orders.new')->withDisciplines(Discipline::all())->withEducations(EducationLevel::all())->withPapers(PaperType::all());
@@ -386,11 +400,21 @@ class OrdersController extends Controller
 
     public function saveBargain(Request $request,Order $order)
     {
+        $assignment = $order->currentAssignment();
+
+        if($order->currentAssignment()==null){
+            return response()->json([
+                'success'=>false,
+                'message'=>"The order does not have a current assignment"
+            ],422);
+        }
+
         $bargain = $request->all();
         $bargain['order_id']=$order->id;
+        $bargain['user_id']=$assignment->user_id;
         Bargain::create($bargain);
 
-        return \response()->json([
+        return response()->json([
             'success'=>true
         ]);
     }

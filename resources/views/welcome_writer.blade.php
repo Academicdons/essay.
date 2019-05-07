@@ -274,27 +274,27 @@
                 </div>
                 <div class="col-sm-3 text-center">
                     <img src="{{asset('images/signup.png')}}" class="img-fluid" alt="">
-                    <h4 class="mt-3">Sign up</h4>
+                    <h4 class="mt-3"><a href="{{route('login')}}">Sign up</a></h4>
                     <p class="mt-3">Get started by submitting a form in less than 5 minutes.
                     </p>
                 </div>
 
                 <div class="col-sm-3 text-center">
                     <img src="{{asset('images/start-career.png')}}" class="img-fluid" alt="">
-                    <h4 class="mt-3">Start career</h4>
+                    <h4 class="mt-3"><a href="{{route('login')}}">Start career</a></h4>
                     <p class="mt-3">Your road to earning begins with receiving a starter kit from.
                     </p>
                 </div>
                 <div class="col-sm-3 text-center">
                     <img src="{{asset('images/show-skill.png')}}" class="img-fluid" alt="">
-                    <h4 class="mt-3">Show skills</h4>
+                    <h4 class="mt-3"><a href="{{route('login')}}">Show skills</a></h4>
                     <p class="mt-3">Carry out the task in the starter kit and submit it for evaluation.
                     </p>
                 </div>
 
                 <div class="col-sm-3 text-center">
                     <img src="{{asset('images/get-paid.png')}}" class="img-fluid" alt="">
-                    <h4 class="mt-3">Earn money</h4>
+                    <h4 class="mt-3"><a href="{{route('login')}}">Earn money</a></h4>
                     <p class="mt-3">Receive orders, bid for more and get paid
                     </p>
                 </div>
@@ -410,9 +410,8 @@
                                 <tr>
                                     <th>Topic</th>
                                     <th>Level</th>
-                                    <th>Deadline</th>
                                     <th>No of pages</th>
-                                    <th>Salary</th>
+                                    <th>No of words</th>
                                 </tr>
                                 </thead>
 
@@ -421,9 +420,8 @@
                                         <tr>
                                             <td>{{$order->title}}</td>
                                             <td>{{$order->Education->name}}</td>
-                                            <td>{{$order->deadline->diffForHumans()}}</td>
                                             <td>{{$order->no_pages}}</td>
-                                            <td>${{$order->amount}}</td>
+                                            <td>{{$order->no_words}}</td>
                                         </tr>
                                         @endforeach
                                 </tbody>

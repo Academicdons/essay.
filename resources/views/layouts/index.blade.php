@@ -368,7 +368,7 @@
                 </div>
                 <div class="col-sm-3">
 
-                    <button type="button" class="btn btn-default">Contact us</button>
+                    <a href="{{route('contact')}}" type="button" class="btn btn-default">Contact us</a>
                 </div>
             </div>
         </div>

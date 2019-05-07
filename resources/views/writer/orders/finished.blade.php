@@ -2,19 +2,16 @@
 
 @section('page')
     Available orders
-    @endsection
+@endsection
 
 @section('style')
 
     <style type="text/css">
 
-        table{
-            font-size: 14px;
-        }
 
     </style>
 
-    @endsection
+@endsection
 
 
 @section('content')
@@ -25,11 +22,8 @@
                 <div class="row mb-5">
                     <div class="col-sm-12 text-center">
                         <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" @click="getUserOrders(1)" class="btn btn-outline-primary"><i class="fa fa-spinner"></i> In progress</button>
-                            <button type="button" @click="getUserOrders(2)" class="btn btn-outline-warning"><i class="fa fa-refresh"></i> Revision</button>
-                            <button type="button" @click="getUserOrders(3)" class="btn btn-outline-success"><i class="fa fa-check"></i> Complete</button>
-                            <button type="button" @click="getUserOrders(5)" class="btn btn-outline-danger"><i class="fa fa-trash"></i> Disputed</button>
-                            <button type="button" class="btn btn-outline-info" @click="loadAvailable()">Available orders</button>
+                            <button type="button" @click="getFinishedOrders(0)" class="btn btn-outline-primary"><i class="fa fa-spinner"></i> Paid orders</button>
+                            <button type="button" @click="getFinishedOrders(1)" class="btn btn-outline-warning"><i class="fa fa-refresh"></i> Unpaid orders</button>
                         </div>
                     </div>
                 </div>
@@ -41,11 +35,10 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Order No</th>
-                                    <th>Title </th>
-                                    <th>Files</th>
-                                    <th class="text-center">Deadline</th>
-                                    <th>Status</th>
+                                    <th class="text-center">Order details</th>
+                                    <th>Deadline</th>
+                                    <th class="text-center">Salary</th>
+                                    <th>fines/bonuses</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -53,23 +46,23 @@
                                 <tbody>
                                 <tr v-for="(order,index) in orders">
                                     <td>@{{ index+1 }}</td>
-                                    <td class="font-weight-bold">#@{{ order.order_no }}</td>
-                                    <td><a :href="'{{url('/writer/orders/view')}}/' + order.id">@{{ order.title }}</a>
-                                        <br> <span class="small">@{{ order.no_pages }} page(s) / @{{ order.no_words }} words</span>
+                                    <td class="text-center"><a :href="'{{url('/writer/orders/view')}}/' + order.id">#@{{ order.order_no }}
+                                            <br>
+                                            <span class="small text-gray">@{{ order.title }}</span>
+                                        </a>
                                     </td>
-                                    <td><i class="fa fa-paperclip"></i> @{{ order.attachments_count }}</td>
-                                    <td class="text-center">
+                                    <td>
                                         @{{ getTimedifference(order.deadline) }} <br>
                                         <span class="small">
                                             @{{ moment.utc(order.deadline).local().format("dddd,Do M-YYYY, h:mm:ss a")  }}
                                         </span>
                                     </td>
-                                    <td>@{{ getStatusString(order.status) }}</td>
+                                    <td class="text-center">$ @{{ order.salary }} <br>
+                                    <span class="small">@{{ order.no_pages }}pages /@{{ order.no_words }} words</span>
+                                    </td>
+                                    <td class="text-center">$ @{{ 0+order.bargains_sum }}</td>
                                     <td>
-                                        <a v-if="order.status==1" :href="'{{url('/writer/orders/mark_as_complete')}}/' + order.id" class="btn btn-primary btn-sm" ><i class="fa fa-check"></i></a>
-                                        <a :href="'{{url('/writer/orders/view')}}/' + order.id" class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a>
-                                        <button v-if="order.status==2" class="btn btn-primary btn-sm" data-target="#edit_modal" data-toggle="modal" @click="getRevisions(order.id)"><i class="fa fa-refresh"></i></button>
-
+                                        <button title="view fines/bonuses" class="btn btn-primary btn-sm" data-target="#bargainsModal" data-toggle="modal" @click="loadBargains(order.id)"><i class="fa fa-refresh"></i></button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -82,47 +75,17 @@
         </div>
 
 
-        <!--Show the revisions an order has-->
-        <div class="modal " tabindex="-1" role="dialog" id="edit_modal">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Revision Reasons</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="row">
-                            <div class="form-group">
-
-                                <ul>
-                                <li v-for="revision in revisions">
-                                   @{{ revision.reason }}
-
-                                </li>
-                                </ul>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
 
         <!--Bargains modal needed for finished orders-->
         <div id="bargainsModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
-                <div class="box">
-                    <div class="box-header">
-                        <h3>Fines/Bonuses</h3>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6>Fines/Bonuses</h6>
                     </div>
-                    <div class="box-body" id="bargains_area">
+                    <div class="modal-body" id="bargains_area">
 
-                        <table class="table">
+                        <table class="table table-sm">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -153,7 +116,7 @@
 
     </section>
 
-    @endsection
+@endsection
 
 
 @section('script')
@@ -164,34 +127,22 @@
             el:'#orders_area',
             data:{
                 orders:[],
-                revisions:[],
                 bargains:[],
+                accounts:false
             },
             created:function(){
                 console.log("the orders vue created");
-                this.getUserOrders({{$status}})
+                this.getFinishedOrders({{$paid}})
             },
             methods:{
-                getUserOrders:function(status){
-                    // alert(status);
-                    let url = '{{route('writer.orders.user_orders')}}'+"?status="+status;
-                    let me = this;
-                    axios.get(url)
-                        .then(function (res) {
-                            console.log(res.data.orders);
-                            me.orders = res.data.orders
-                        })
-                },
-                loadAvailable:function(){
-                    location.href='{{route('writer.orders.available')}}'
-                },
-                getRevisions:function (order_id) {
-                    let url = '{{route('writer.orders.revisions')}}'+"?order_id="+order_id;
-                    let me = this;
-                    axios.get(url)
-                        .then(function (res) {
-                            me.revisions=res.data;
 
+                getFinishedOrders:function (pay_state) {
+                    let url = '{{route('writer.orders.finished_orders')}}'+"?pay_state="+pay_state;
+                    let me = this;
+                    axios.get(url)
+                        .then(function (res) {
+                            me.orders=res.data
+                            me.accounts = true
                         })
 
                 },
@@ -216,11 +167,19 @@
                         return "processing"
                     }
                 },
-
+                loadBargains:function(id){
+                    let url='{{route('writer.orders.bargains')}}'+"?order="+id;
+                    let me = this;
+                    axios.get(url)
+                        .then(function (res) {
+                            me.bargains = res.data;
+                            $('#bargainsModal').modal('show')
+                        })
+                }
             }
 
         })
 
     </script>
 
-    @endsection
+@endsection

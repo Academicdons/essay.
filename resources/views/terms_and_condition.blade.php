@@ -26,6 +26,7 @@
                         <li>	"Website" means homeworkprowriters.com;</li>
 
                         <li>	" t Writer" or "you" or "yours" mean and refer to you as a person who submits the paper to the company</li>
+                        <li>Review</li>
 
                     </div>
 

@@ -25,7 +25,7 @@
                         <li>	"Paper" - an originally written product that is drafted by You by these Terms and Conditions, including but not limited to: essay, academic paper, research, report, review and/or other creative products;</li>
                         <li>	"Website" means homeworkprowriters.com;</li>
 
-                        <li>	"Writer" or "you" or "yours" mean and refer to you as a person who submits the paper to the company</li>
+                        <li>	" t Writer" or "you" or "yours" mean and refer to you as a person who submits the paper to the company</li>
 
                     </div>
 

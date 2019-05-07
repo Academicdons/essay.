@@ -3,11 +3,20 @@
 <html>
 <head>
     <meta charset="utf-8">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Homework-Pro-Writers</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
+
+
+    <meta name="description" content="HomeWorkPro Writers is taking writing to the next level">
+    <meta name="keywords" content="Writers,Writing,Clients,Order,Clients,HomeworkPro Writers,Homework writers, HomeworkPro">
+    <meta name="author" content="Neverest ltd">
+
+    <link rel="icon" type="image/png" href="{{asset('images/logo2.png')}}" />
+
     <link rel="stylesheet" href="{{asset('bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{asset('bower_components/font-awesome/css/font-awesome.min.css')}}">
@@ -18,7 +27,13 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{asset('dist/css/skins/_all-skins.min.css')}}">
-    @yield('style')
+    <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
+
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+@yield('style')
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -39,7 +54,7 @@
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>H</b>PW</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Home</b>Pro</span>
+            <span class="logo-lg"><b>HomeWorkProWriters</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -51,15 +66,81 @@
             <div class="navbar-custom-menu">
 
                 <ul class="nav navbar-nav">
+                    <li class="">
 
-                    {{--<li class="dropdown user user-menu">--}}
-                        {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown">--}}
-                            {{--<form class="form-inline ml-3" action="{{url('logout')}}" method="post">--}}
-                                {{--{{csrf_field()}}--}}
-                                {{--<button type="submit" class="btn btn-sm btn-warning"><i class="fa fa-sign-out"></i> Logout</button>--}}
-                            {{--</form>--}}
-                        {{--</a>--}}
-                    {{--</li>--}}
+                    </li>
+                    <li class="dropdown notifications-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-bell-o"></i>
+                            <span class="label label-warning">{{count(\Illuminate\Support\Facades\Auth::user()->unreadNotifications)}}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">You have {{Auth::user()->unreadNotifications->count()}} notifications</li>
+                            <li>
+                                <!-- inner menu: contains the actual data -->
+                                <ul class="menu">
+
+                                    @foreach(\Illuminate\Support\Facades\Auth::user()->unreadNotifications as $notification)
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-users text-aqua"></i>{{(isset($notification->data['text']))?$notification->data['text']:""}}
+                                        </a>
+                                    </li>
+
+                                    @endforeach
+
+                                    @if(count(\Illuminate\Support\Facades\Auth::user()->unreadNotifications)>0)
+                                        <li class="footer"><a href="{{route('admin.mark_all_notification_As_read')}}">Mark All as Read</a></li>
+                                    @endif
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+
+
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {{--<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">--}}
+                            <span class="hidden-xs">Referral Link</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                                <p>
+                                    Alexander Pierce - Web Developer
+                                    <small>Member since Nov. 2012</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="row">
+                                    <div class="col-xs-4 text-center">
+                                        <button class="btn btn-primary" onclick="generateReferralLink()">Generate Referral Link</button>
+
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+
+                                    <input class="form-control" name="referral_link" id="referral_link" >
+
+                                </div>
+
+                            </li>
+                        </ul>
+                    </li>
                     <!-- Control Sidebar Toggle Button -->
                     <li>
                         <a href="{{ url('/logout') }}" class=""><i class="fa fa-sign-out"></i> Logout</a>
@@ -81,6 +162,8 @@
                     <p>{{ \Illuminate\Support\Facades\Auth::user()->name }}</p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
+
+
             </div>
             <!-- search form -->
             <form action="#" method="get" class="sidebar-form">
@@ -92,12 +175,17 @@
               </span>
                 </div>
             </form>
+
+
+
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
+
+
                 <li class="header">MAIN NAVIGATION</li>
                 <li class="active"><a href="{{ route('admin.index') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                <li class="active treeview menu-open">
+                <li class="treeview">
                     <a href="#">
                         <i class="fa fa-users"></i> <span>Users</span>
                                 <span class="pull-right-container">
@@ -113,9 +201,56 @@
                 </li>
                 <li class="active"><a href="{{ route('admin.announce.index') }}"><i class="fa fa-microphone"></i> Announcements</a></li>
                 <li class="active"><a href="{{ route('admin.orders.index') }}"><i class="fa fa-list"></i> Orders</a></li>
-                <li class="active"><a href="{{ route('admin.discipline') }}"><i class="fa fa-book"></i> Disciplines</a></li>
+                <li class="active"><a href="{{ route('admin.blog.all_blogs') }}"><i class="fa fa-rss"></i> Blogs</a></li>
+
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-book"></i> <span>Disciplines</span>
+                        <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                    </a>
+                    <ul class="treeview-menu" style="">
+                        <li class="active"><a href="{{route('admin.discipline.group')}}"><i class="fa fa-bookmark"></i>Groups</a></li>
+                        <li class="active"><a href="{{route('admin.discipline')}}"><i class="fa fa-bookmark"></i>Disciplines</a></li>
+                    </ul>
+                </li>
+
+
+
+                {{--<li class="active"><a href="{{ route('admin.discipline') }}"><i class="fa fa-book"></i> Disciplines</a></li>--}}
                 <li class="active"><a href="{{ route('admin.education_level') }}"><i class="fa fa-graduation-cap"></i> Education Levels</a></li>
                 <li class="active"><a href="{{ route('admin.paper_type') }}"><i class="fa fa-paperclip"></i> Paper Types</a></li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-cogs"></i> <span>Settings</span>
+                        <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                    </a>
+                    <ul class="treeview-menu" style="">
+                        <li class="active"><a href="{{route('admin.settings.domains')}}"><i class="fa fa-cog"></i>Domains</a></li>
+                        <li class="active"><a href="{{route('admin.settings.system')}}"><i class="fa fa-cog"></i>System settings</a></li>
+                        <li class="active"><a href="{{route('admin.settings.usage')}}"><i class="fa fa-cog"></i>Usage settings</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-money"></i> <span>Accounts</span>
+                        <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                    </a>
+                    <ul class="treeview-menu" style="">
+                        <li class="active"><a href="{{route('admin.accounts.users')}}"><i class="fa fa-user"></i>Users accounts</a></li>
+                        <li class="active"><a href="{{ route('admin.accounts.all') }}"><i class="fa fa-line-chart"></i>Orders</a></li>
+                    </ul>
+                </li>
+
+
             </ul>
         </section>
         <!-- /.sidebar -->
@@ -131,7 +266,7 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 2.4.0
         </div>
-        <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Homework pro writers</a>.</strong> All rights
+        <strong>Copyright &copy; {{date('Y')}}<a href="https://adminlte.io">Homework pro writers</a>.</strong> All rights
         reserved.
     </footer>
 
@@ -332,7 +467,6 @@
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
-<script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{{asset('bower_components/jquery-ui/jquery-ui.min.js')}}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -344,13 +478,42 @@
 <script src="{{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{asset('dist/js/pages/dashboard.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{asset('dist/js/demo.js')}}"></script>
 <script src="{{asset('axios.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="{{asset('js/sock.min.js')}}"></script>
+<script src="{{asset('js/thunder.js')}}"></script>
+<script>
 
+    function generateReferralLink() {
+        //get the referra link
+        var url_refer='{{route('generate_referral_link')}}';
+        axios.get(url_refer)
+            .then(function (res) {
+                   $('#referral_link').val( res.data.ref_value);
+            })
+    }
+</script>
+
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script>
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+        OneSignal.init({
+            appId: "e0f5df37-237c-4801-93b8-c1ac464031f9",
+        });
+    });
+
+    OneSignal.push(function() {
+        OneSignal.sendTags({
+            user_id: '{{Auth::id()}}'
+        }).then(function(tagsSent) {
+            // Callback called when tags have finished sending
+            console.log(tagsSent);
+        });
+    });
+</script>
 @yield('script')
+
 </body>
 </html>

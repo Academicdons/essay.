@@ -57,15 +57,17 @@
 
 @section('content')
 
-    <section class="place-order">
+    <section class="place-order mt-5 mb-5">
 
 
         <div class="container">
             <h3>Place your order</h3>
 
-            <form action="https://essaysolve.com/order/create" method="post" onsubmit="return submitOrderForm()">
-                <input type="hidden" name="_token" value="Fp5i84K51p8OMHhAW4Yn9va9zYp9qp7D4mZ5MG3S">                <input type="hidden" name="cost" id="cost">
+            <form action="{{route('customer.orders.store')}}" method="post" onsubmit="return submitOrderForm()">
+                @csrf
                 <input type="hidden" name="id" value="">
+                <input type="hidden" name="tz" id="tz">
+                <input type="hidden" name="tz_offset" id="tz_offset">
                 <div class="row">
 
                     <div class="col-sm-4">
@@ -73,40 +75,10 @@
 
                             <div class="form-group">
                                 <label for="">Type of paper</label>
-                                <select name="essay_type" class="form-control academic-input">
-                                    <option value="1" selected="">Essay (Any Type)</option>
-                                    <option value="13">Research Paper</option>
-                                    <option value="28">Assignment</option>
-                                    <option value="2">Admission Essay</option>
-                                    <option value="3">Annotated Bibliography</option>
-                                    <option value="42">Application Essay</option>
-                                    <option value="4">Argumentative Essay</option>
-                                    <option value="18">Article (Any Type)</option>
-                                    <option value="5">Article Review</option>
-                                    <option value="28">Assignment</option>
-                                    <option value="6">Book/Movie Review</option>
-                                    <option value="7">Business Plan</option>
-                                    <option value="21">Capstone Project</option>
-                                    <option value="8">Case Study</option>
-                                    <option value="19">Content (Any Type)</option>
-                                    <option value="9">Coursework</option>
-                                    <option value="10">Creative Writing</option>
-                                    <option value="11">Critical Thinking</option>
-                                    <option value="22">Dissertation</option>
-                                    <option value="29">Dissertation chapter</option>
-                                    <option value="23">Lab Report</option>
-                                    <option value="25">Math Problem</option>
-                                    <option value="12">Presentation or Speech</option>
-                                    <option value="20">Q&amp;A</option>
-                                    <option value="13">Research Paper</option>
-                                    <option value="14">Research Proposal</option>
-                                    <option value="27">Research Summary</option>
-                                    <option value="24">Scholarship Essay</option>
-                                    <option value="30">Speech</option>
-                                    <option value="26">Statistic Project</option>
-                                    <option value="15">Term Paper</option>
-                                    <option value="16">Thesis</option>
-                                    <option value="17">Other</option>
+                                <select name="essay_type" class="form-control academic-input" onchange="getDisciplines(this.value)">
+                                        @foreach($groups as $group)
+                                            <option value="{{$group->id}}" {{($group->id == old('id'))?$group->id:""}}>{{$group->name}}</option>
+                                        @endforeach
                                 </select>
                             </div>
 
@@ -118,70 +90,53 @@
 
                             <div class="form-group">
                                 <label for="">Select your subject</label>
-                                <select name="skill_id" class="form-control academic-input">
-                                    <option value="1">Anthropology</option>
-                                    <option value="2">Biology (and other Life Sciences)</option>
-                                    <option value="3">Business Studies</option>
-                                    <option value="4">Chemistry</option>
-                                    <option value="5">Communications</option>
-                                    <option value="6">Composition</option>
-                                    <option value="7">Computer science</option>
-                                    <option value="8">Cultural and Ethnic Studies</option>
-                                    <option value="9">Economics</option>
-                                    <option value="10">English 101</option>
-                                    <option value="11">Environmental studies and Forestry</option>
-                                    <option value="12">Environmental studies and Forestry</option>
-                                    <option value="13">Ethics</option>
-                                    <option value="14">Geography</option>
-                                    <option value="15">Health Care</option>
-                                    <option value="16">History</option>
-                                    <option value="17">Human Resources Management (HRM)</option>
-                                    <option value="18">Law</option>
-                                    <option value="19">Leadership Studies</option>
-                                    <option value="20">Literature</option>
-                                    <option value="21">Logistics</option>
-                                    <option value="22">Management</option>
-                                    <option value="23">Marketing</option>
-                                    <option value="24">Medicine</option>
-                                    <option value="25">Music</option>
-                                    <option value="26">Nursing</option>
-                                    <option value="27">Philosophy</option>
-                                    <option value="28">Political science</option>
-                                    <option value="29">Psychology</option>
-                                    <option value="30">Social Work and Human Services</option>
-                                    <option value="31">Sociology</option>
-                                    <option value="32">Technology</option>
+                                <select name="discipline" id="discipline" class="form-control academic-input">
 
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label for="">Number of pages</label>
+                                <label for="">Spacing</label>
+                                <select name="spacing" id="spacing" onchange="updateBySpacing(this.value)" class="form-control academic-input">
+                                    <option value="0" selected>Single</option>
+                                    <option value="1">Double</option>
+                                </select>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="">Number of Words</label>
                                 <div class="row">
                                     <div class="col-sm-8">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span onclick="updatePages(1)" class="input-group-text" id="basic-addon1">+</span>
+                                                <span onclick="updateWords(+50)" class="input-group-text" id="basic-addon1">+</span>
                                             </div>
-                                            <input id="number_of_pages" name="number_of_pages" onchange="evaluateCost()" type="number" value="1" class="form-control academic-input flat" style="text-align: center" placeholder="required pages" aria-label="Username" aria-describedby="basic-addon1">
+                                            <input id="number_of_words" name="number_of_words" onchange="updateByWords(this.value)" type="number" value="550" class="form-control academic-input flat" style="text-align: center" placeholder="required words" aria-label="Words" aria-describedby="basic-addon1">
                                             <div class="input-group-append">
-                                                <span onclick="updatePages(-1)" class="input-group-text" id="basic-addon1">-</span>
+                                                <span onclick="updateWords(-50)" class="input-group-text" id="basic-addon1">-</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-4 pt-2">
-                                        (<span id="words"></span>) words
+                                        {{--(<span id="total_pages"></span>) Total Pages--}}
                                     </div>
                                 </div>
 
                             </div>
+
+
+
+
+
+
 
                             <div class="form-group">
                                 <label for="">Deadline</label>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="input-group">
-                                            <input name="date_input" value="03/18/2019" type="text" id="date-input" class="form-control academic-input curve-left" placeholder="18/03/2019">
+                                            <input name="date_input" type="text" id="date-input" class="form-control academic-input curve-left" placeholder="">
 
                                             <div class="input-group-append" data-target="#date-input" data-toggle="datetimepicker">
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -191,7 +146,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="input-group">
-                                            <input type="text" value="8:31 PM" name="time_input" id="time-input" class="form-control academic-input curve-left" placeholder="8 PM">
+                                            <input type="text" name="time_input" id="time-input" class="form-control academic-input curve-left" placeholder="">
                                             <div class="input-group-append" data-target="#time-input" data-toggle="datetimepicker">
                                                 <span class="input-group-text"><i class="fa fa-clock-o"></i></span>
                                             </div>
@@ -211,7 +166,26 @@
                             <input type="radio" value="2" name="type_of_service">Rewriting <br>
                             <input type="radio" value="3" name="type_of_service">Editing <br>
                             <span class="error-text" id="service_type_error"></span>
-                            <br> <br>
+                            <br>
+
+                            <div class="form-group">
+                                <label for="">Number of pages</label>
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span onclick="updatePages(1)" class="input-group-text" id="basic-addon1">+</span>
+                                            </div>
+                                            <input type="number" onchange="updateByPages(this.value)" id="number_pages" name="number_pages" value="1" class="form-control academic-input flat" style="text-align: center" placeholder="0" aria-label="Username" aria-describedby="basic-addon1">
+                                            <div class="input-group-append">
+                                                <span onclick="updatePages(-1)" class="input-group-text" id="basic-addon1">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 pt-2">
+                                    </div>
+                                </div>
+                            </div>
 
                             <span class="mb-2 mt-2 font-weight-bold">Writer quality</span> <br>
 
@@ -227,9 +201,8 @@
                                     <p class="triangle-border">
 
                                         <small>
-                                            <strong>Qualified</strong>-Approved experts <br>
-                                            <strong>Premium</strong>-Experts with at most masters degree and have a rating more than 9
-                                            <br>
+                                            <strong>Standard</strong>-General level language<br>
+                                            <strong>Premium</strong>-College level language
                                             <strong>Platinum</strong>Experts with PHD and rated higher than 9.5 <br>
                                         </small>
 
@@ -247,7 +220,7 @@
                                             <div class="input-group-prepend">
                                                 <span onclick="updateSources(1)" class="input-group-text" id="basic-addon1">+</span>
                                             </div>
-                                            <input type="number" onchange="evaluateCost()" id="number_of_sources" name="number_of_sources" value="0" class="form-control academic-input flat" style="text-align: center" placeholder="0" aria-label="Username" aria-describedby="basic-addon1">
+                                            <input type="number" onchange="evaluateCost()" id="number_of_sources" name="no_of_sources" value="0" class="form-control academic-input flat" style="text-align: center" placeholder="0" aria-label="Username" aria-describedby="basic-addon1">
                                             <div class="input-group-append">
                                                 <span onclick="updateSources(-1)" class="input-group-text" id="basic-addon1">-</span>
                                             </div>
@@ -261,14 +234,10 @@
 
                             <div class="form-group">
                                 <label for="format_of_citation">Format of citation</label>
-                                <select name="format_of_citation" id="format_of_citation" class="form-control academic-input">
-                                    <option value="1">MLA</option>
-                                    <option value="2">APA</option>
-                                    <option value="3">Chicago/Turabian</option>
-                                    <option value="4">Harvard</option>
-                                    <option value="5">Vancouver</option>
-                                    <option value="6">Not Applicable</option>
-                                    <option value="7">Other</option>
+                                <select name="paper_type" id="paper_type" class="form-control academic-input">
+                                    @foreach($papers as $paper)
+                                        <option value="{{$paper->id}}" {{(old('paper_type')==$paper->id)?"selected":""}}>{{$paper->name}}</option>
+                                        @endforeach
                                 </select>
                             </div>
 
@@ -287,11 +256,10 @@
 
                             <div class="form-group">
                                 <label for="education_level">Education Level</label>
-                                <select name="education_level" class="form-control academic-input" id="education_level">
-                                    <option value="1">University</option>
-                                    <option value="2">College</option>
-                                    <option value="3">Masters</option>
-                                    <option value="4">PHD</option>
+                                <select name="education_level" class="form-control academic-input" onchange="getEdPriceFactor(this.value)" id="education_level">
+                                    @foreach($education as $ed)
+                                        <option value="{{$ed->id}}" {{(old('education_level')==$ed->id)?"selected":""}}>{{$ed->name}}</option>
+                                        @endforeach
                                 </select>
                             </div>
 
@@ -316,13 +284,13 @@
 
                             </div>
 
-                            <div class="form-group p-2" style="border: 1px solid dodgerblue">
+                            <div class="form-group p-2">
                                 <p class="text-center m-2" for="" style="color: orange;font-size: 30px;font-weight: bold;">
                                     <span id="amount">
 
                                     </span>
                                     <br>
-                                    <button type="submit" style="border: none !important;" onclick="evaluateCost()" class="btn btn-primary mx-auto academic-button elevate">Proceed to bidding</button>
+                                    <button type="submit"  onclick="evaluateCost()" class="button">Order Now</button>
 
                                 </p>
                             </div>
@@ -344,18 +312,24 @@
 
 
     <script type="text/javascript" src="{{asset('js/resumable.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jstz.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 
 
 
     <script type="text/javascript">
+
+        window.base_price = 10;
+        window.ed_factor =1;
+
+
+
         var r = new Resumable({
             @if(old('id')==null)
-            target: '{{url('/upload_order_files_main')}}'
-            @else
             target: '{{url('/upload_order_files')}}'
+            @else
+            target: '{{url('/upload_order_files_main')}}'
             @endif
         });
         r.assignBrowse(document.getElementById('upload-area'));
@@ -388,7 +362,7 @@
                         var file = "<div class=\"file p-2 border-bottom\">\n" +
                             "                                <span><i class=\"fa fa-file\"></i></span>\n" +
                             "                                <span class=\"file-name\">"+value.display_name+"</span>\n" +
-                            "                                <span class=\"pull-right\"><a href=\"{{url('/delete_order_upload')}}/"+value.id+"\" class=\"text-danger\"><i class=\"fa fa-trash\"></i></a></span>\n" +
+                            "                                <span class=\"pull-right\"><a onclick=\"deleteFile('"+value.id+"')\" href=\"javascript:;\" class=\"text-danger\"><i class=\"fa fa-trash\"></i></a></span>\n" +
                             "                            </div>"
 
                         $('.session-files').append(file);
@@ -405,8 +379,8 @@
                             var file = "<div class=\"file p-2 border-bottom\">\n" +
                                 "                                <span><i class=\"fa fa-file\"></i></span>\n" +
                                 "                                <span class=\"file-name\" style=\"padding-right:40px\">"+value.display_name+"</span>\n" +
-                                "                                <span class=\"pull-right\"><a href=\"{{url('/delete_order_file')}}/"+value.id+"\" class=\"text-danger\"><i class=\"fa fa-trash\"></i></a></span>\n" +
-                                "                            </div>"
+                                "                                <span class=\"pull-right\"><a onclick=\"deleteFile('"+value.id+"')\" href=\"javascript:;\" class=\"text-danger\"><i class=\"fa fa-trash\"></i></a></span>\n" +
+                                "                            </div>";
 
                             $('.session-files').append(file);
                         })
@@ -427,22 +401,47 @@
                 evaluateCost()
             })
 
+            /*
+            preload the active disciplines
+             */
+
+            getDisciplines($("select[name='essay_type']").val())
+            getEdPriceFactor($("select[name='education_level']").val())
+
+            /*
+            configure timezone
+             */
+            var tz = jstz.determine();
+
+            $('#tz').val(tz.name());
+
 
         })
 
+        function deleteFile(id){
+            var url = '{{url('delete_order_upload')}}'+"/"+id;
+            axios.get(url)
+                .then(function(res){
+                    loadSeddionFiles();
+                })
+        }
         /*
         Configure the time concious inputs
          */
         $(function () {
             $('#date-input').datetimepicker({
-                format: 'L'
+                format: 'L',
+                minDate:moment.now(),
+                useCurrent:true
             });
             $('#date-input').on('input', function() {
                 evaluateCost()
             });
 
             $('#time-input').datetimepicker({
-                format: 'LT'
+                format: 'LT',
+                minDate:moment.now(),
+                useCurrent:true
             });
             $('#date-input').on('input', function() {
                 evaluateCost()
@@ -450,16 +449,79 @@
 
         });
 
+        function getDisciplines(group) {
+            let url = '{{url('get_disciplines')}}'+"/"+group
+            axios.get(url)
+                .then(function (res) {
+                    $('#discipline').html('')
+                    $.each(res.data.disciplines,function(key,value){
+                        let choosen = ""
+                        if('{{old('discipline')}}' == value.id){
+                            choosen = "selected"
+                        }
+                        $('#discipline').append('<option value="'+value.id+'"'+ choosen +'>'+value.name+'</option>')
+                    })
 
-        function updatePages(delta) {
-            var number_of_pages = $('#number_of_pages').val();
-            if(number_of_pages<=1 && delta<=0){
+                    window.base_price = res.data.group.base_price
+                })
+        }
+
+        function getEdPriceFactor(ed) {
+            let url = '{{url('get_ed_factor')}}'+"/"+ed
+            axios.get(url)
+                .then(function (res) {
+                    window.ed_factor = res.data;
+                });
+        }
+
+
+        function updateBySpacing(spacing) {
+            var words =  $('#number_of_words').val()
+            updateByWords(words)
+
+        }
+
+        function updateByWords(words) {
+            var spacing = $('#spacing').val();
+            var pages = 0;
+            if(spacing==0){
+                pages = Math.round(words / 550)
+                if(pages==0)pages=1;
+            }else{
+                pages = Math.round(words / 275)
+            }
+            $('#number_pages').val(pages)
+            evaluateCost()
+
+        }
+
+        function updateByPages(pages) {
+            var spacing = $('#spacing').val();
+            var words = 0;
+            if(spacing==0){
+                words = pages * 550
+            }else{
+                words = pages * 275;
+            }
+            $('#number_of_words').val(words)
+            evaluateCost()
+        }
+
+
+
+        function updateWords(delta) {
+            var number_of_words = $('#number_of_words').val();
+            if(number_of_words<50){
+                return;
+            }
+            if(number_of_words<=1 && delta<=0){
                 return
             }else{
-                number_of_pages=+number_of_pages+delta;
-                $('#number_of_pages').val(number_of_pages);
+                number_of_words=+number_of_words+delta;
+                $('#number_of_words').val(number_of_words);
+                //show the no of pages
             }
-            evaluateCost()
+            updateByWords(number_of_words)
         }
 
         function updateSources(delta) {
@@ -473,6 +535,19 @@
             evaluateCost()
         }
 
+        function updatePages(delta) {
+            var number_of_pages = $('#number_pages').val();
+            if(number_of_pages<=0 && delta<=0){
+                return
+            }else{
+                number_of_pages=+number_of_pages+delta;
+                $('#number_pages').val(number_of_pages);
+            }
+            updateByPages(number_of_pages)
+        }
+
+
+
         function evaluateCost() {
 
 
@@ -483,11 +558,7 @@
             var education_level = $('#education_level').val();
             var topic = $('#topic').val();
             var instructions = $('#instructions').val();
-            var number_of_pages = $('#number_of_pages').val();
-
-
-            var words = number_of_pages*275;
-            $('#words').text(words);
+            var number_of_words = $('#number_of_words').val();
 
             /*
             valiadtion critereas to the form
@@ -497,35 +568,21 @@
 
                 var deadline = deadline_date+" "+deadline_time;
                 var hours = moment(deadline,"MM/DD/YYYY hh:mm A").diff(moment().format(),'hours');
+                console.log(hours);
 
-                var time_amt = getAmountInTime(hours);
+                var time_amt = getAmountInTime(hours)*window.base_price;
 
                 console.log(time_amt);
-                /*
-                put into consideration the second factor
-                 */
-                if (type_of_service!=1){
-                    time_amt = 0.75* time_amt;
-                }
-
-                /*
-                CONSIDER THE WRITERS QUALITY
-                */
-                if(writer_quality == 2){
-                    time_amt = 3 + time_amt;
-                }else if(writer_quality == 3){
-                    time_amt = 5 + time_amt;
-                }
-
 
                 /*
                 Consider the education level
                  */
-
-                var price_per_page = educationConstant(education_level)*time_amt
-                $('#amount').html("$ "+(price_per_page*number_of_pages))
-                $('#cost').val(price_per_page*number_of_pages);
-
+                var price_per_page = ed_factor  * time_amt;
+                var pages = Math.round(number_of_words/275);
+                if(pages == 0)
+                    pages=1;
+                $('#amount').html("$ "+(price_per_page*pages));
+                $('#cost').val(price_per_page*pages);
 
             }
 
@@ -540,8 +597,7 @@
             var education_level = $('#education_level').val();
             var topic = $('#topic').val();
             var instructions = $('#instructions').val();
-            var number_of_pages = $('#number_of_pages').val();
-
+            var number_of_words = $('#number_of_words').val();
 
 
             /*
@@ -555,28 +611,16 @@
             return false
         }
 
-        function educationConstant(level) {
-            if(level == 2)
-                return 0.9
-            if(level == 3)
-                return 1.20
-            if(level == 4)
-                return 1.50
-            return 1
-        }
+
 
         function getAmountInTime(hours) {
 
-            if (hours<9)
-                return 30
-            else if (hours<24)
-                return 28
+            if (hours<20)
+                return 1.25
             else if (hours<72)
-                return 23
-            else if (hours<168)
-                return 19
+                return 1
             else
-                return 15
+                return 0.75
         }
 
         function  validate(ts,wq,dd,dt,tp,ins) {

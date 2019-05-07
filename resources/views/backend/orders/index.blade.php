@@ -1,11 +1,60 @@
 @extends('layouts.admin')
 
+@section('style')
+
+    <style>
+        /*---------- Search ----------*/
+        .result-bucket li {
+            padding: 7px 15px;
+        }
+        .instant-results {
+            background: #fff;
+            width: 100%;
+            color: gray;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            border: 1px solid rgba(0, 0, 0, .15);
+            border-radius: 4px;
+            -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, .175);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .175);
+            display: none;
+            z-index: 9;
+        }
+        .form-search {
+            transition: all 200ms ease-out;
+            -webkit-transition: all 200ms ease-out;
+            -ms-transition: all 200ms ease-out;
+        }
+        .search-form {
+            position: relative;
+            max-width: 100%;
+        }
+
+        .top-keyword {
+            margin: 3px 0 0;
+            font-size: 12px;
+            font-family: Arial;
+        }
+        .top-keyword a {
+            font-size: 12px;
+            font-family: Arial;
+        }
+        .top-keyword a:hover {
+            color: rgba(0, 0, 0, 0.7);
+        }
+    </style>
+
+    @endsection
+
 @section('content')
     <section class="content-header">
         <h1>
             Orders
             <small>Control panel</small>
         </h1>
+
+
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">Orders</li>
@@ -13,12 +62,57 @@
     </section>
 
     <section class="content">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="search-form" class="search-form js-search-form">
+                        <form class="form-search" role="search" action="/search.php" method="get">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="search_field" placeholder="Search for Order number, Title or more..." />
+                                <span class="input-group-btn">
+                        <button class="btn btn-info" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                            </div>
+                            <p class="clear top-keyword"><span class="hidden-xs">Top Keywords:</span>
+                                <a href="#" title="345232423">345232423</a>,
+                                <a href="#" title="Evolution of agriculture">Evolution of agriculture</a>,
+                                <a href="#" title="The theory of law">The theory of law</a>,
+                                <a href="#" title="Waka..">Waka..</a>,
+                            </p>
+                        </form>
+                        <div class="instant-results">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Order number</th>
+                                        <th>Title</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="search_tbody">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
         <div class="row">
             <div class="col-xs-12">
 
                 <div class="nav-tabs-custom" style="cursor: move;">
                     <!-- Tabs within a box -->
                     <ul class="nav nav-tabs pull-right ui-sortable-handle">
+                        <li class=""><a href="#sales-chart" data-toggle="tab" aria-expanded="false" status="5"><i class="fa fa-times"></i> Disputed</a></li>
+                        <li class=""><a href="#sales-chart" data-toggle="tab" aria-expanded="false" status="4"><i class="fa fa-plus"></i> Finished</a></li>
                         <li class=""><a href="#sales-chart" data-toggle="tab" aria-expanded="false" status="3"><i class="fa fa-check"></i> Complete</a></li>
                         <li class=""><a href="#sales-chart" data-toggle="tab" aria-expanded="false" status="2"><i class="fa fa-refresh"></i> Revision</a></li>
                         <li class=""><a href="#sales-chart" data-toggle="tab" aria-expanded="false" status="1"><i class="fa fa-circle"></i> In progress</a></li>
@@ -49,12 +143,17 @@
                                             <td>@{{ order.no_pages }}</td>
                                             <td>@{{ order.no_words }}</td>
                                             <td>@{{ order.amount }}</td>
-                                            <td>@{{ order.deadline }}</td>
+                                            <td>
+                                                @{{ moment.utc(order.deadline).local().format("dddd,Do M-YYYY, h:mm:ss a")  }}
+
+                                            </td>
+
                                             <td>
                                                 <span class="label label-success" v-if="order.order_assign_type==0">Take</span>
                                                 <span class="label label-success" v-if="order.order_assign_type==1">Bid</span>
                                             </td>
                                             <td>
+                                                <a :href="'{{url('/admin/orders/edit')}}/'+ order.id" ><i class="fa fa-edit"></i></a>
                                                 <a :href="'{{url('/admin/orders/view')}}/' + order.id"><i class="fa fa-eye"></i></a>
                                             </td>
                                         </tr>
@@ -137,6 +236,8 @@
 @stop
 
 @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script type="text/javascript">
 
@@ -170,5 +271,88 @@
         });
 
     </script>
+
+    <script>
+        $(function() {
+            $('#toggle-event').change(function() {
+                if ($(this).prop('checked')==true){
+                    //true
+                    $('#console-event').html('Auto Assign is ON');
+                    var url='{{url('admin/orders/toggle_auto_assign')}}'+'/'+1;
+
+
+                } else{
+                    //false
+                    $('#console-event').html('Auto Assign is OFF' );
+                    var url='{{url('admin/orders/toggle_auto_assign')}}'+'/'+0;
+
+                }
+
+                axios.get(url)
+                    .then(res=>{
+                        swal("Success!",'The auto assign has successfully been toggled', "success");
+
+                    })
+                    .catch(err=>{
+                        swal("Error!",'Something went wrong as you were toggling', "error");
+
+
+                    })
+            })
+        })
+
+        $(document).ready(function () {
+            //Hover Menu in Header
+            $('ul.nav li.dropdown').hover(function () {
+                $(this).find('.mega-dropdown-menu').stop(true, true).delay(200).fadeIn(200);
+            }, function () {
+                $(this).find('.mega-dropdown-menu').stop(true, true).delay(200).fadeOut(200);
+            });
+
+            //Open Search
+            $('.form-search').click(function (event) {
+                $(".instant-results").fadeIn('slow').css('height', 'auto');
+                event.stopPropagation();
+            });
+
+            $('body').click(function () {
+                $(".instant-results").fadeOut('500');
+            });
+
+            let typingTimer;
+            let doneTypingInterval = 1000;
+
+            $('#search_field').on('keyup', function () {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+            });
+
+            $('#search_field').on('keydown', function () {
+                clearTimeout(typingTimer);
+            });
+
+            function doneTyping () {
+                let url = '{{route('admin.orders.search')}}'+"?search="+$('#search_field').val();
+                axios.get(url)
+                    .then(function(res){
+                        $('#search_tbody').html('')
+                      $.each(res.data.orders,function (key,order) {
+                          let base_url='{{url('/admin/orders/view')}}/' + order.id
+                          $('#search_tbody').append("<tr>\n" +
+                              "                                        <td>"+(key+1)+"</td>\n" +
+                              "                                        <td>"+order.order_no+"</td>\n" +
+                              "                                        <td>"+order.title+"</td>\n" +
+                              "                                        <td><a href='"+base_url+"'>view order</a></td>\n" +
+                              "                                    </tr>")
+                      })
+                    })
+                    .catch(function(res){
+                        console.log(res)
+                    })
+
+            }
+        });
+    </script>
+
 
     @endsection

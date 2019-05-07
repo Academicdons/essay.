@@ -24,6 +24,17 @@
                     </div>
                 </div>
                 <div class="box-body">
+
+                    @if(count($errors->all())>0)
+
+                    <div class="alert alert-danger">
+                        @foreach($errors->all() as $error)
+
+                            <li>{{$error}}</li>
+                            @endforeach
+                    </div>
+
+                    @endif
                     <form role="form" method="post" action="{{ route('admin.users.store') }}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" value="{{old('id')}}">
@@ -61,6 +72,21 @@
                                     </select>
                                     <span class="text-danger">{{($errors->has('email'))?$errors->first('email'):""}}</span>
                                 </div>
+
+
+                                @if(old('name')==null || old('email')==\Illuminate\Support\Facades\Auth::user()->email)
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input class="form-control" type="password" id="password" name="password" >
+                                    <span class="text-danger">{{($errors->has('password'))?$errors->first('password'):""}}</span>
+                                </div>
+                                @endif
+
+                                {{--<div class="form-group">--}}
+                                    {{--<label for="password">Password Confirmation</label>--}}
+                                    {{--<input class="form-control" type="password" id="password_confirmation" name="password_confirmation" >--}}
+                                    {{--<span class="text-danger">{{($errors->has('password_confirmation'))?$errors->first('password_confirmation'):""}}</span>--}}
+                                {{--</div>--}}
                             </div>
 
                             <div class="col-sm-4">
@@ -75,6 +101,16 @@
                                     <input class="form-control" type="text" name="ratings" value="{{old('ratings')}}">
                                     <span class="text-danger">{{($errors->has('ratings'))?$errors->first('ratings'):""}}</span>
                                 </div>
+                            </div>
+
+                            <div class="col-sm-4">
+
+
+                                {{--<div class="form-group">--}}
+                                    {{--<label for="">Ratings</label>--}}
+                                    {{--<input class="form-control" type="text" name="ratings" value="{{old('ratings')}}">--}}
+                                    {{--<span class="text-danger">{{($errors->has('ratings'))?$errors->first('ratings'):""}}</span>--}}
+                                {{--</div>--}}
                             </div>
                         </div>
 

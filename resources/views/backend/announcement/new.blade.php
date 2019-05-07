@@ -37,8 +37,8 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="news_article">News Article</label>
-                                        <textarea rows="12" id="news_article" class="form-control" name="news_article">{{old('news_article')}}</textarea>
+                                        <label for="notes">News Article</label>
+                                        <textarea rows="12" id="notes" class="form-control" name="news_article">{{old('news_article')}}</textarea>
                                         <span class="form-control-feedback text-danger text-sm">{{($errors->has('news_article')?$errors->first('news_article'):"")}}</span>
                                     </div>
                                 </div>
@@ -56,7 +56,7 @@
 
 @section('script')
     <script src="{{ asset('bower_components/ckeditor/ckeditor.js') }}"></script>
-
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/wysihtml5/0.3.0/wysihtml5.min.js"></script>--}}
     <script>
         $(function () {
             CKEDITOR.replace('notes')

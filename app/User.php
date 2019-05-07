@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Models\Assignment;
+use App\Models\Order;
+use App\Models\PaymentInformation;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone_number', 'user_type'
+        'name', 'email', 'password', 'phone_number', 'user_type','account_status','referral_value','referred_by','education_level','course','date_of_birth','full_name'
     ];
 
     /**
@@ -36,4 +39,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class,'user_id','id');
+    }
+
+    public function clientOrders()
+    {
+        return $this->hasMany(Order::class,'created_by','id');
+    }
+
+    public function paymentInformation()
+    {
+        return $this->hasOne(PaymentInformation::class,'user_id','id');
+    }
+
+
 }

@@ -53,6 +53,9 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'folder' => env('APP_FOLDER', '/var/www/public_html/writer/public/uploads'),
+    'admin' => env('APP_ADMIN', '1'),
+
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -174,6 +177,13 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        \App\Providers\FacadeProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
+        \App\Providers\ViewComposerProvider::class,
+
+
+
 
     ],
 
@@ -225,6 +235,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Saas'=>\App\Facades\Saas::class,
+        'Image' => Intervention\Image\Facades\Image::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+
+
 
     ],
 

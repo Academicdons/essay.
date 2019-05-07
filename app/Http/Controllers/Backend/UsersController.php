@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Jobs\SendApproveEmailJob;
+use App\Jobs\SendEssyMail;
+use App\Jobs\SendSystemEmail;
+use App\Mail\AccountStatusMail;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -27,8 +31,19 @@ class UsersController extends Controller
 
     public function toggleStatus($status, User $user)
     {
+
         $user->account_status=$status;
         $user->save();
+
+        if ($user->account_status==true){
+            $message = "Your account has been reviewed by our quality assurance team and has been approoved";
+        }else{
+            $message = "Your account has been reviewed by our quality assurance team and has been suspended";
+        }
+
+        $email = new AccountStatusMail($user,$message);
+        $this->dispatch(new SendSystemEmail($user->email,$email));
+
         return back();
     }
 
@@ -60,8 +75,6 @@ class UsersController extends Controller
             $user = User::find(request('id'));
         }else{
             $user = new User();
-
-
         }
 
         //upload picture
@@ -70,32 +83,60 @@ class UsersController extends Controller
                 return back()->withErrors(new MessageBag(['avatar'=>'The file uploaded is invalid']));
             } else {
 
-                $user=Auth::User();
+//                $user=Auth::User();
                 $image=Input::file('avatar');
                 $filename=time() . '.' . $image->getClientOriginalExtension();
                 $path = public_path('uploads/user_pictures/');
                 if(!File::exists($path)) {File::makeDirectory($path, $mode = 0777, true, true);}
                 Image::make($image->getRealPath())->fit(500,500)->save($path . $filename);
                 try{
-                    File::Delete($path . $user->user_pic);
+                    File::Delete($path . $user->avatar);
                 }catch (Exception $h){
                 }
 
                 $user->avatar=$filename;
-                $user->Save();
+//                $user->Save();
 
-                return back();
+//                return back();
+
+                $user->name = request('name');
+                $user->email = request('email');
+                $user->user_type = request('user_type');
+                $user->phone_number = request('phone_number');
+
+                if ($request->has('password')){
+                    $user->password = request('password');
+
+                }
+                $user->save();
+
+                return redirect()->route('admin.users.all',$user->user_type);
             }
+
+
         }else{
-            return back()->withErrors(new MessageBag(['avatar'=>'No file set for upload']));
+
+            $user->name = request('name');
+            $user->email = request('email');
+            $user->user_type = request('user_type');
+            $user->phone_number = request('phone_number');
+
+            if ($request->has('password')){
+                $user->password = bcrypt(request('password'));
+
+            }
+            $user->save();
+            return redirect()->back();
 
         }
 
-        $user->name = request('name');
-        $user->email = request('email');
-        $user->user_type = request('user_type');
-        $user->save();
 
-        return redirect()->route('admin.users.all',$user->user_type);
+    }
+
+    public function getProfile(Request $request)
+    {
+        $user= User::find($request->input('user'));
+        $user->load('paymentInformation');
+        return response()->json($user);
     }
 }

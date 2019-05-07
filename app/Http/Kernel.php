@@ -3,6 +3,8 @@
 namespace App\Http;
 
 use App\Http\Middleware\AdminChecker;
+use App\Http\Middleware\CheckWriterAccountStatus;
+use App\Http\Middleware\ProtectClient;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -61,7 +63,9 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'admin' => AdminChecker::class
+        'admin' => AdminChecker::class,
+        'client'=> ProtectClient::class,
+        'account_status'=>CheckWriterAccountStatus::class,
     ];
 
     /**

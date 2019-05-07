@@ -9,6 +9,7 @@ class Order extends Model
 {
     //
     public $incrementing = false;
+    protected $dates = ['deadline','bid_expiry'];
 
 
     public function conversations()
@@ -42,4 +43,52 @@ class Order extends Model
         return $this->hasOne(User::class,'id','created_by');
     }
 
+    public function Discipline()
+    {
+        return $this->hasOne(Discipline::class,'id','discipline');
+    }
+
+    public function Education()
+    {
+        return $this->hasOne(EducationLevel::class,'id','education_level');
+    }
+
+    public function Paper()
+    {
+        return $this->hasOne(PaperType::class,'id','paper_type');
+
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class,'order_id','id');
+
+    }
+
+
+
+    public function revision()
+    {
+        return $this->hasMany(Revision::class,'order_id','id');
+    }
+
+    public function Bid()
+    {
+        return $this->hasMany(Bid::class,'order_id','id');
+    }
+
+    public function bargains()
+    {
+        return $this->hasMany(Bargain::class,'order_id','id');
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(PaymentTransaction::class,'order_id','id');
+    }
+
+    public function PaypalTransaction()
+    {
+        return $this->hasMany(PaypalTransaction::class,'order_id','id');
+    }
 }
